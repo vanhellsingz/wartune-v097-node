@@ -21,6 +21,8 @@ const sessionState=require('./session-state');
 const movementState=require('./movement-state');
 const resourceService=require('./resource-service');
 const resourceState=require('./resource-state');
+const systemOpenState=require('./system-open-state');
+const jobTransfer=require('./job-transfer-state');
 const progressionRules=require('./progression-rules');
 const tutorialState=require('./tutorial-state');
 const cityState=require('./city-state');
@@ -34,7 +36,10 @@ const questState=require('./quest-state');
 const castleState=require('./castle-state');
 const barracksState=require('./barracks-state');
 const shopState=require('./shop-state');
+const guildSkills=require('./guild-skills');
 const shopP0=require('./shop-p0-catalog');
+const shopDbLive=require('./shop-db-live');
+const shopCatalogLive=require('./shop-catalog-live');
 const skillsState=require('./skills-state');
 const campaignState=require('./campaign-state');
 const { MpdRooms } = require('./mpd-room-state');
@@ -51,6 +56,8 @@ const uiplayState=require('./uiplay-state');
 const secondaryFeatures=require('./secondary-features-state');
 const extendedSubsystems=require('./extended-subsystems-state');
 const outerCityState=require('./outercity-state');
+const guildState=require('./guild-state');
+const guardState=require('./guard-system-state');
 const WORLD_MAP=mapConfig.selection;
 
 const fs = require('node:fs');
@@ -63,6 +70,9 @@ const itemTemplatePath=path.resolve(__dirname,'../res/release/config/t_s_itemtem
 const itemTemplateCatalog=fs.existsSync(itemTemplatePath)
   ? JSON.parse(fs.readFileSync(itemTemplatePath,'utf8')).t_s_itemtemplate||[] : [];
 const itemTemplates=new Map(itemTemplateCatalog.map(template=>[Number(template.TemplateId),template]));
+const outcityShopPath=path.resolve(__dirname,'../res/release/config/t_s_outcityshop-1fbc231827.json');
+const outcityShopCatalog=fs.existsSync(outcityShopPath)
+  ? (JSON.parse(fs.readFileSync(outcityShopPath,'utf8')).t_s_outcityshop||[]) : [];
 const dropItemPath=path.resolve(__dirname,'../res/release/config/t_s_dropitem-358e5cbc6e.json');
 const dropItemCatalog=fs.existsSync(dropItemPath)
   ? JSON.parse(fs.readFileSync(dropItemPath,'utf8')).t_s_dropitem||[] : [];
@@ -80,28 +90,8 @@ const talentUpgrades=fashionUpgradePath
 const fashionSkills=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../res/release/config/t_s_skilltemplate-cd26b32bf4.json'),'utf8'))
   .t_s_skilltemplate.filter(row=>[1090,1100,1110,1120].includes(Number(row.MasterType)));
 
-const systemOpenCatalogPath=path.resolve(__dirname,'../res/release/config/t_s_systemopen-99bc54d992.json');
-const systemOpenCatalog=fs.existsSync(systemOpenCatalogPath)
-  ? (JSON.parse(fs.readFileSync(systemOpenCatalogPath,'utf8')).t_s_systemopen||[]) : [];
-
-function getSystemsOpenForGrade(grade) {
-  const g = Number(grade || 1);
-  const open = new Set();
-  for (const item of systemOpenCatalog) {
-    if (Number(item.Grades) <= g) {
-      open.add(Number(item.SystemID));
-    }
-  }
-  if (g >= 12) {
-    open.add(124);
-    open.add(127);
-  }
-  if (g >= 18) {
-    open.add(109);
-  } else {
-    open.delete(109);
-  }
-  return Array.from(open).sort((a, b) => a - b);
+function getSystemsOpenForGrade(grade, saved = {}) {
+  return systemOpenState.resolveOpenSystems(grade, saved);
 }
 
 function buildCampaignRankList(saved, userId, fallbackCampId = 1001) {
@@ -127,22 +117,51 @@ function buildCampaignRankList(saved, userId, fallbackCampId = 1001) {
 }
 
 const HOST = '127.0.0.1';
-const API_PORT = +process.env.WARTUNE_API_PORT || 8903;
-const WS_PORT = +process.env.WARTUNE_WS_PORT || 8904;
-// Default client port restored to original 8088 as per P2 requirement
+
+const API_PORT = +process.env.WARTUNE_API_PORT || 8905;
+const WS_PORT = +process.env.WARTUNE_WS_PORT || 8906;
 const STATIC_PORT = +process.env.WARTUNE_CLIENT_PORT || 8088;
+// Entrada IPv6 de testes (pode ser atualizada por variável de ambiente).
+// HOST permanece 127.0.0.1: o portproxy Windows já encaminha as conexões.
+const PUBLIC_IPV6 = process.env.WARTUNE_PUBLIC_IPV6 || '2804:d45:bf02:ae00:5cae:9f5a:478b:464b';
+if (!/^[0-9a-f:]+$/i.test(PUBLIC_IPV6) || !PUBLIC_IPV6.includes(':')) {
+  throw new Error('WARTUNE_PUBLIC_IPV6 invalido');
+}
+const PUBLIC_HOST = `[${PUBLIC_IPV6}]`;
+const REMOTE_ORIGINS = new Set([
+  `http://${PUBLIC_HOST}:8080`,
+  `http://${PUBLIC_HOST}:8088`
+]);
+function fromRemoteBrowser(req) {
+  const origin = String(req?.headers?.origin || '');
+  const host = String(req?.headers?.host || '');
+  return REMOTE_ORIGINS.has(origin) ||
+    host === PUBLIC_HOST || host.startsWith(`${PUBLIC_HOST}:`);
+}
+function accessHost(req) {
+  return fromRemoteBrowser(req) ? PUBLIC_HOST : HOST;
+}
+function gatewayForClient(origin) {
+  return `ws://${REMOTE_ORIGINS.has(String(origin || '')) ? PUBLIC_HOST : HOST}:${WS_PORT}/ws`;
+}
+
 const ORIGINS = new Set([
   `http://127.0.0.1:${STATIC_PORT}`,
   `http://localhost:${STATIC_PORT}`,
+  'http://127.0.0.1:80',
+  'http://localhost:80',
+  'http://127.0.0.1:8080',
+  'http://localhost:8080',
   'http://127.0.0.1:8085',
   'http://localhost:8085',
   'http://127.0.0.1:8081',
-  'http://localhost:8081'
+  'http://localhost:8081',
+  ...REMOTE_ORIGINS
 ]);
 const STATIC_HOST = '127.0.0.1';
 const APP_VERSION='0.9.7-candidato';
 const APP_ENVIRONMENT=process.env.NODE_ENV||'local-candidate';
-const BUILD_FILES=['servidor_v08.js','db.js','inventory-state.js','player-state.js','map-config.js','iniciar.js','hero-state.js','attribute-calculator.js','world-state.js','session-state.js','original-protobuf.js','movement-state.js','game-observer.js','character-state.js','resource-state.js','resource-service.js','quest-state.js','castle-state.js','barracks-state.js','shop-state.js','tutorial-state.js','campaign-state.js','skills-state.js','packet-recorder.js','battle-engine.js'];
+const BUILD_FILES=['servidor_v08.js','db.js','inventory-state.js','player-state.js','map-config.js','iniciar.js','hero-state.js','attribute-calculator.js','rare-weapon-state.js','world-state.js','session-state.js','original-protobuf.js','movement-state.js','game-observer.js','character-state.js','resource-state.js','resource-service.js','quest-state.js','castle-state.js','barracks-state.js','shop-state.js','tutorial-state.js','campaign-state.js','skills-state.js','packet-recorder.js','battle-engine.js'];
 const BUILD_TIME=new Date(Math.max(...BUILD_FILES.map(name=>{try{return fs.statSync(path.join(__dirname,name)).mtimeMs;}catch(_){return Date.now();}}))).toISOString();
 const BUILD_ID=crypto.createHash('sha256').update(BUILD_FILES
   .map(name=>{try{return name+'\0'+fs.readFileSync(path.join(__dirname,name));}catch(_){return name+'\0missing';}}).join('\0')).digest('hex').slice(0,16);
@@ -182,7 +201,9 @@ const CODE_NAMES = new Map([
   [8794,'C_STAR_SELL_SETTING'],[8858,'C_STAR_ARRANGE'],[8876,'C_STAR_LOCK'],
   [8341,'C_STARSHOP_BUY'],[4261,'U_C_STARSHOP_BUY'],[4410,'U_C_VIP_INFO'],[4128,'U_C_SIMPLEUSER_INFO'],[8200,'C_SIMPLEUSER_INFO'],
   [4178,'U_C_START_MOVE_UPDATE'],[4179,'U_C_STAR_PICK'],[4180,'U_C_STAR_RAND'],[4479,'U_C_STAR_COMPOSE'],
-  [9041,'C_STARGAZING_OP'],[275,'U_C_STARGAZING_INFO'],[276,'U_C_STARGAZING_DIG_INFO'],
+  [9041,'C_STARGAZING_OP'],[275,'U_C_STARGAZING_INFO'],[276,'U_C_STARGAZING_INFO'],
+  [9057,'C_GUARD_REQ'],[4919,'U_C_ALL_GUARD_INFO'],[4918,'U_C_SINGLE_GUARD_INFO'],[4944,'U_C_GUARD_FORMATION_INFO'],
+  [9059,'C_GUARD_DRAW'],[4948,'U_C_GUARD_DRAW_INFO'],[4947,'U_C_GUARD_DRAW_AWARD_RES'],
   [8266,'C_PLAYER_SIGN_CMD'],[4177,'U_C_PLAYER_SIGN'],[5157,'U_C_ARMY_DEMOBPAWN'],[94,'U_C_ARMY_DEMOBPAWN'],
   [4105,'U_C_NPC_CHASE_ARMY'],[83,'U_CH_CHANNEL_CHA'],[75,'U_B_HERO_ORDER'],
   [8297,'C_TOWER_INFO'],[4373,'U_C_TOWERLIST'],[4205,'U_C_TOWERINFO'],[8296,'C_ENTER_TOWER'],[8299,'C_TOWER_RESET'],[8300,'C_TOWER_LIVE'],
@@ -195,8 +216,24 @@ const CODE_NAMES = new Map([
   [8327,'C_GOLD_IMPOSE'],[4242,'U_C_GOLD_IMPOSERESULT'],[8782,'C_ONLINE_REWARD'],[4697,'U_C_ONLINE_REWARD'],
   [8788,'C_ONLINE_REWARD_ENSURE'],[8784,'C_GRADE_PACKET'],[4699,'U_C_GRADE_PACKET'],[4700,'U_C_GRADE_PACKET_RECEIVE'],
   [9972,'C_GROWTH_FUND_LEVEL'],[512,'C_GROWTH_FUND_LEVEL_INFO'],
+  [8783,'C_MONTH_CARD'],[4698,'U_C_MONTH_CARD'],
+  [8806,'C_TOKEN_CHARGE'],[4710,'U_C_CHARGE_ORDER'],
+  [8235,'C_LEED_FINISH'],[4150,'U_C_LEED_RECEIVE'],[8234,'C_LEED_ADD'],[4152,'U_C_LEED_UPDATE'],
+  [9075,'C_GAME_BOX_REQ'],[814,'U_C_GAME_BOX_INFO'],[381,'U_C_MINI_GAME_OPEN'],[194,'U_C_MEMORY_CARD_INFO'],
+  [5444,'C_MEMORY_CARD_OP'],[195,'U_C_MEMORY_CARD_REWARD'],[5442,'C_LINKGAME_OP'],[196,'U_C_LINK_GAME_INFO'],
+  [9528,'C_MAPSHOPINFO'],[4946,'U_C_MAPSHOPINFO'],[294,'U_C_OUTER_CITY_SHOP_PASS'],
   [274,'U_C_TATTOO_RSP'],[9568,'C_TATTOO_REQ'],[8450,'C_MARKET_INFO_REQ'],
-  [8608,'C_EXTRAJOB_REQ'],[8609,'C_EXTRAJOBEQUIP_REQ'],[449,'U_EXTRAJOB_LIST'],[450,'U_EXTRAJOB_EQUIP_LIST']
+  [8608,'C_EXTRAJOB_REQ'],[8609,'C_EXTRAJOBEQUIP_REQ'],[449,'U_EXTRAJOB_LIST'],[450,'U_EXTRAJOB_EQUIP_LIST'],
+  [5130,'U_C_CONSORTIA_CREATE'],[34,'U_C_CONSORTIA_CREATE'],[117,'U_C_CONSORTIA_STATIC'],
+  [8213,'U_C_CONSORTIA_SEARCH'],[4139,'U_C_CONSORTIA_SEARCH'],
+  [8212,'U_C_CONSORTIA_INFO'],[4138,'U_C_CONSORTIA_INFO'],
+  [8207,'U_C_CONSORTIAUSER_LIST'],[4133,'U_C_CONSORTIAUSER_LIST'],
+  [8211,'U_C_DUTY_LIST'],[4137,'U_C_DUTY_LIST'],
+  [5144,'U_C_CONSORTIA_OFF'],[42,'U_C_CONSORTIA_OFF'],
+  [8208,'U_C_CONSORTIA_OFFER_LIST'],[4134,'U_C_CONSORTIA_OFFER_LIST'],
+  [5140,'U_C_CONSORTIA_MODIFYDESC'],[39,'U_C_CONSORTIA_MODIFYDESC'],
+  [5139,'U_C_CONSORTIA_MODIFYBBS'],[38,'U_C_CONSORTIA_MODIFYBBS'],
+  [5146,'U_C_CONSORTIA_QUIT']
 ]);
 const stats = { initLoads:0, initMessages:0, syncResponses:0, worldBootstraps:0, unknownPackets:0, lists: 0, wsConnected: 0, wsTotal: 0, binaryFrames: 0, packets: 0, lastCode: null, loginRequests: 0, responses: 0, badChecksums: 0 };
 const diagnosticEvents=[];
@@ -290,14 +327,14 @@ const log = (...args) => {
 };
 function transition(state,phase,event){if(sessionState.advance(state,phase,event))log(`[SESSAO #${state.id}] ${phase} (${event})`);}
 
-function listData() {
+function listData(req) {
   return {
     ret: 0, msg: 'Laboratorio local v0.8.2', curTime: Date.now(),
     platformId: 1, platformName: 'Local', isWhiteUser: false,
     groups: [{groupId:1, groupName:'Local', order:1, sites:[{
       siteId:1, siteName:'S1', showName:'S1 - Local (teste)', type:1,
       order:1, isOpen:true, isRepair:false, openTime:0, mainSite:'S1',
-      loginUrl:`ws://${HOST}:${WS_PORT}/ws`, webUrl:`http://${HOST}:${API_PORT}`
+      loginUrl:`ws://${accessHost(req)}:${WS_PORT}/ws`, webUrl:`http://${accessHost(req)}:${API_PORT}`
     }]}]
   };
 }
@@ -395,7 +432,7 @@ const gameHttp=http.createServer((req,res)=>{
     const u = new URL(req.url, 'http://127.0.0.1');
     const charId = Number(u.searchParams.get('charId'));
     const nickname = u.searchParams.get('nickname');
-    const level = Math.max(0, Math.min(10, Number(u.searchParams.get('level') || 0)));
+    const level = Math.max(0, Math.min(19, Number(u.searchParams.get('level') || 0)));
     const days = Math.max(1, Number(u.searchParams.get('days') || 365));
     const expireTime = level > 0 ? new Date(Date.now() + days * 86400 * 1000) : null;
     (async () => {
@@ -533,7 +570,7 @@ const gameHttp=http.createServer((req,res)=>{
     });
     req.on('end', () => {
       if (stopped) return;
-      const payload = zlib.deflateSync(Buffer.from(JSON.stringify(listData()), 'utf8'));
+      const payload = zlib.deflateSync(Buffer.from(JSON.stringify(listData(req)), 'utf8'));
       stats.lists++;
       res.writeHead(200, {
         'Access-Control-Allow-Origin': '*',
@@ -560,6 +597,7 @@ const gameHttp=http.createServer((req,res)=>{
   if(pathname.includes('\0')||pathname.includes('\\')){res.writeHead(400);return res.end();}
   if(pathname==='/')pathname='/index.html';
   if (pathname === '/siteConfig.json') {
+    const configApiHost = accessHost(req);
     const dynamicConfig = {
       siteConfig: [
         {
@@ -567,24 +605,33 @@ const gameHttp=http.createServer((req,res)=>{
             {
               area: 1, siteID: 1, platformID: "1",
               siteName: { zhcn: "美洲", en: "America", de: "Amerika", es: "América", pt: "América", tr: "Amerika", fr: "Amérique" },
-              siteOrder: `http://${HOST}:${API_PORT}/order/`,
+              siteOrder: `http://${configApiHost}:${API_PORT}/order/`,
               baseUrl: "https://bm-wan-abstract-sdk.wan.com/",
               appId: 10180, packageId: 455, android_packageId: 455, iOS_packageId: 465, official_packageId: 505,
               YOUME: "YOUMED0360EB2D54A2AFFB105335CE6DF3BB23771B383",
               localCDN: "forbidden"
             }
           ],
-          ORDER_PATH: `http://${HOST}:${API_PORT}/order/`,
-          REQUEST_PATH: `http://${HOST}:${API_PORT}/`,
-          ResourcePath: "",
-          PAY: "",
-          UPLOAD_PATH: "http://121.10.143.167:8085/"
+          ORDER_PATH: `http://${configApiHost}:${API_PORT}/order/`,
+          REQUEST_PATH: `http://${configApiHost}:${API_PORT}/`,
+          ResourcePath: "/",
+          PAY: "/",
+          UPLOAD_PATH: "/"
         }
       ]
     };
     return reply(res, 200, JSON.stringify(dynamicConfig, null, 2), 'application/json; charset=utf-8');
   }
   if(pathname==='/imgNetSpeedTest.png')pathname='/netSpeedTest-ca84938e6a.png';
+  if(pathname==='/res/release/config/'+shopCatalogLive.filename){
+    shopCatalogLive.liveCatalog(db.ready()).then(catalog=>
+      reply(res,200,JSON.stringify(catalog),'application/json; charset=utf-8')
+    ).catch(error=>{
+      log(`[LOJA CATALOGO] Falha ao carregar ofertas do MariaDB: ${error.message}`);
+      reply(res,503,'Catalogo de loja indisponivel');
+    });
+    return;
+  }
   if(pathname.split('/').some(part=>part.startsWith('.')||/^Wartune_Ultra_Backend/i.test(part)||/^REFERENCIAS_BANCO_LEGADO$/i.test(part)) || /(?:config\.local|candidato\.path|webroot\.path)/i.test(pathname)){res.writeHead(403);return res.end();}
   if(pathname==='/js/bundle_release-ad60bfe795.js'){
     const patchedBundle=path.join(__dirname,'client-p0','js','bundle_release-ad60bfe795.js');
@@ -652,7 +699,7 @@ const gameHttp=http.createServer((req,res)=>{
         fs.readFile(real,'utf8',(loadErr,raw)=>{
           if(loadErr){res.writeHead(500);return res.end();}
           try{
-            const config=JSON.parse(raw),orderUrl=`http://127.0.0.1:${API_PORT}/order/`;
+            const config=JSON.parse(raw),orderUrl=`http://${accessHost(req)}:${API_PORT}/order/`;
             const groups=Array.isArray(config.siteConfig)?config.siteConfig:[];
             for(const group of groups){
               if(!group||typeof group!=='object')continue;
@@ -944,7 +991,7 @@ const api = http.createServer((req,res)=>{
     });
     req.on('end', () => {
       if (stopped) return;
-      const payload = zlib.deflateSync(Buffer.from(JSON.stringify(listData()), 'utf8'));
+      const payload = zlib.deflateSync(Buffer.from(JSON.stringify(listData(req)), 'utf8'));
       stats.lists++;
       res.writeHead(200, {
         'Access-Control-Allow-Origin': '*',
@@ -1205,7 +1252,7 @@ async function handleLoginFlow(state, parsed, packet){
       result: true,
       message: message,
       userId: targetUserId,
-      gateIp: '127.0.0.1',
+      gateIp: gatewayForClient(state.clientOrigin),
       port: WS_PORT,
       todayFirstLogin: false
     };
@@ -1244,7 +1291,7 @@ async function handleRegister(state,parsed,packet){
     value: result.ok,
     type: result.ok ? 0 : 1,
     message: result.ok ? 'Personagem salvo no MySQL' : result.reason,
-    gateIp: '127.0.0.1',
+    gateIp: gatewayForClient(state.clientOrigin),
     port: WS_PORT,
     userId: result.ok ? result.id : 0
   };
@@ -1285,6 +1332,17 @@ function makeBasicPlayerInfo(char) {
   data.point = balens;
   data.giftToken = boundBalens;
   data.geste = Number(savedState.wallet?.honor ?? savedState.honor ?? 0);
+  data.appellId = Number(char.appell_id || savedState.appells?.curAppell || 0);
+  if (savedState.consortia && savedState.consortia.id > 0) {
+    data.consortiaId = Number(savedState.consortia.id);
+    data.consortiaName = savedState.consortia.name || '';
+    data.guildDuty = Number(savedState.consortia.dutyId || 1);
+    data.consortiaOffer = Number(savedState.consortia.offer || 0);
+    data.consortiaTotalOffer = Number(savedState.consortia.totalOffer || 0);
+    data.consortiaBuild = Number(savedState.consortia.build || 0);
+    data.consortiaTotalBuild = Number(savedState.consortia.totalBuild || 0);
+    Object.assign(data,guildSkills.playerFields(savedState));
+  }
 
   const energy = Math.min(200, Math.max(0, (char.energy !== undefined && char.energy !== null) ? Number(char.energy) : Number(savedState.energy?.value || 0)));
   data.weary = energy;
@@ -1392,13 +1450,12 @@ function makeInventorySnapshot(characterId,stateRaw) {
 function sendInventorySnapshot(state) {
   if(!state.gatewayId||!state.heroSent||!state.sceneStateSent||!state.worldRequested||state.closed||state.socket.destroyed)return false;
   const moved=inventorySnapshotEntries(state.gatewayId,state.character?.state_json);
-  const priority={1:0,4:1,27:2,28:3,0:4};
-  moved.sort((a,b)=>(priority[a.bagType]??5)-(priority[b.bagType]??5));
-  for(let i=0;i<moved.length;i+=12)
-    sendGameSession(state,115,makeBagMoveUpdate(moved.slice(i,i+12)),state.gatewayId);
+  const batchSize=16;
+  for(let i=0;i<moved.length;i+=batchSize)
+    sendGameSession(state,115,makeBagMoveUpdate(moved.slice(i,i+batchSize)),state.gatewayId);
   if(!moved.length)sendGameSession(state,115,Buffer.alloc(0),state.gatewayId);
   sendMountSnapshot(state, inventoryState.parseState(state.character?.state_json));
-  log(`[BOLSA #${state.id}] ${moved.length} item(ns) sincronizado(s) pelo protocolo 115 em ${Math.max(1,Math.ceil(moved.length/12))} pacote(s).`);
+  log(`[BOLSA #${state.id}] ${moved.length} item(ns) sincronizado(s) pelo protocolo 115 em ${Math.max(1,Math.ceil(moved.length/batchSize))} pacote(s).`);
   return true;
 }
 
@@ -1483,9 +1540,11 @@ async function handleBagArrange(state, body) {
     state.character = await db.characterById(state.gatewayId);
 
     if (result.itemMoved && result.itemMoved.length > 0) {
-      sendGameSession(state, 115, makeBagMoveUpdate(result.itemMoved), state.gatewayId);
+      for (let i = 0; i < result.itemMoved.length; i += 12) {
+        sendGameSession(state, 115, makeBagMoveUpdate(result.itemMoved.slice(i, i + 12)), state.gatewayId);
+      }
     }
-    log(`[BAG ARRANGE #${state.id}] Bolsa organizada:${result.count} itens empilhados e ordenados. Opcode 115 enviado (${result.itemMoved.length} operacoes).`);
+    log(`[BAG ARRANGE #${state.id}] Bolsa organizada: ${result.count} itens empilhados e ordenados. Opcode 115 enviado (${result.itemMoved.length} operacoes em ${Math.ceil(result.itemMoved.length / 12)} pacotes).`);
   } catch (err) {
     log(`[BAG ARRANGE #${state.id}] Falha ao organizar bolsa:${err.message}`);
   }
@@ -1568,8 +1627,8 @@ async function handleItemMove(state,body) {
           const son = Number(tpl.SonType);
           if (son === 109) equipped.state.fashionDisplay.wingAvata = source.templateId;
           if (son === 110) equipped.state.fashionDisplay.hatAvata = source.templateId;
-          if (son === 111) equipped.state.fashionDisplay.clothAvata = source.templateId;
-          if (son === 112) equipped.state.fashionDisplay.armAvata = source.templateId;
+          if (son === 111) equipped.state.fashionDisplay.armAvata = source.templateId;
+          if (son === 112) equipped.state.fashionDisplay.clothAvata = source.templateId;
           equipped.state.fashion = equipped.state.fashion || { unlocked: [] };
           let u = equipped.state.fashion.unlocked.find(x => Number(x.templateId || x.tempId) === source.templateId);
           if (!u) {
@@ -1605,8 +1664,8 @@ async function handleItemMove(state,body) {
           const son = Number(unequippedTpl.SonType);
           if (son === 109 && removed.state.fashionDisplay.wingAvata === source.templateId) delete removed.state.fashionDisplay.wingAvata;
           if (son === 110 && removed.state.fashionDisplay.hatAvata === source.templateId) delete removed.state.fashionDisplay.hatAvata;
-          if (son === 111 && removed.state.fashionDisplay.clothAvata === source.templateId) delete removed.state.fashionDisplay.clothAvata;
-          if (son === 112 && removed.state.fashionDisplay.armAvata === source.templateId) delete removed.state.fashionDisplay.armAvata;
+          if (son === 111 && removed.state.fashionDisplay.armAvata === source.templateId) delete removed.state.fashionDisplay.armAvata;
+          if (son === 112 && removed.state.fashionDisplay.clothAvata === source.templateId) delete removed.state.fashionDisplay.clothAvata;
           if (removed.state.fashion?.unlocked) {
             const u = removed.state.fashion.unlocked.find(x => Number(x.templateId || x.tempId) === source.templateId);
             if (u) u.isSwitch = false;
@@ -2491,7 +2550,7 @@ async function handleOutCityGoldList(state, body) {
 
 async function handleArmyAttack(state, body) {
   if (!state.gatewayId || state.closed) return;
-  await outerCityState.handleArmyAttack(state, body, sendGameSession, originalPb, log, inventoryState, db);
+  await outerCityState.handleArmyAttack(state, body, sendGameSession, originalPb, log, inventoryState, db, battleEngine, makeBasicPlayerInfo);
 }
 
 async function handleUnoccupyWildLand(state, body) {
@@ -2656,20 +2715,21 @@ async function handleNavigationReq(state, body) {
 
 async function handleTransferReq(state, body) {
   if (!state.gatewayId || state.closed) return;
-  let req = { op: 1, type: 1 };
   try {
-    if (body && body.length) {
-      req = originalPb.decode('recover.TransferOpReq', body);
+    if (!body?.length) throw Error('Pedido de evolução vazio');
+    const req=originalPb.decode('recover.TransferOpReq',body);
+    const op=Number(req.op);
+    const type=Number(req.type);
+    if(op===2){
+      const saved=inventoryState.parseState(state.character.state_json);
+      const campaignId=jobTransfer.entryCampaign(saved,Number(state.character.grade),type);
+      await enterCampaignById(state,campaignId);
+      log(`[AVANÇO CLASSE #${state.id}] Entrada na campanha ${campaignId} pelo opcode 8556.`);
+      return;
     }
-  } catch (_) {}
-
-  const op = Number(req.op || 1);
-  const type = Number(req.type || 1);
-
-  try {
     const result = await db.mutateCharacterState(state.gatewayId, saved => {
-      saved.numJobChange = type;
-      return { state: saved, type };
+      const result=jobTransfer.apply(saved,state.character.grade,op,type);
+      return {state:result.state,type:result.type,resources:{grade:result.grade,experience:Number(result.state.progression?.totalXp??state.character.experience),gold:Number(result.state.wallet?.gold??state.character.gold)}};
     });
 
     state.character.state_json = result.state;
@@ -2688,20 +2748,13 @@ async function handleTransferReq(state, body) {
     log(`[AVANÇO CLASSE #${state.id}] Avanço de Classe realizado op=${op}, type=${type} (Opcode 4974).`);
   } catch (err) {
     log(`[AVANÇO CLASSE #${state.id}] Erro: ${err.message}`);
+    sendGameSession(state,4974,originalPb.encode('recover.TransferInfoRes',{
+      type:Number(inventoryState.parseState(state.character?.state_json).numJobChange||0)
+    }));
   }
 }
 
-async function handleGameBoxReq(state, body) {
-  if (!state.gatewayId || state.closed) return;
-  try {
-    sendGameSession(state, 814, originalPb.encode('gamebox.GameBoxInfoRes', {
-      gameInfo: { '1': 3, '2': 3, '3': 3, '4': 3, '5': 3, '6': 3 }
-    }));
-    log(`[GAME BOX #${state.id}] Minijogos sincronizados (Opcode 814: 3 tentativas para Sudoku e Combinar Peças).`);
-  } catch (err) {
-    log(`[GAME BOX #${state.id}] Erro: ${err.message}`);
-  }
-}
+// GameBox request handler moved to main handlers section
 
 async function handleTalentGradeUp(state, body) {
   if (!state.gatewayId || state.closed) return;
@@ -2715,7 +2768,24 @@ async function handleTalentGradeUp(state, body) {
     const result = await db.mutateCharacterState(state.gatewayId, (saved, locked = {}) => {
       saved.talentGrade = Number(saved.talentGrade || 0);
       saved.talentPoint = Number(saved.talentPoint || 0);
-      const nextGrade = saved.talentGrade + upGrade;
+      const charGrade = Number(state.character?.grade || 50);
+
+      let targetGrade = saved.talentGrade;
+      for (let g = saved.talentGrade + 1; g <= saved.talentGrade + upGrade; g++) {
+        const row = talentUpgrades.get(g);
+        if (!row) break;
+        if (Number(row.ActiveObject) > charGrade) {
+          break; // Limite imposto pelo nível do personagem
+        }
+        targetGrade = g;
+      }
+
+      if (targetGrade <= saved.talentGrade) {
+        throw new Error(`Nível do personagem (${charGrade}) insuficiente para aprimorar talento além do Nv. ${saved.talentGrade}`);
+      }
+
+      const actualUpGrade = targetGrade - saved.talentGrade;
+      const nextGrade = targetGrade;
 
       let totalGoldCost = 0;
       let totalExpCost = 0;
@@ -2738,7 +2808,7 @@ async function handleTalentGradeUp(state, body) {
       }
 
       saved.talentGrade = nextGrade;
-      saved.talentPoint = saved.talentPoint + upGrade;
+      saved.talentPoint = saved.talentPoint + actualUpGrade;
       saved.sealOrder = Array.isArray(saved.sealOrder) && saved.sealOrder.length > 0 ? saved.sealOrder : [1, 2, 3];
 
       return {
@@ -2778,8 +2848,21 @@ async function handleTalentGradeUp(state, body) {
 async function handleGuardExpeditionary(state, body) {
   if (!state.gatewayId || state.closed) return;
   try {
-    sendGameSession(state, 4945, originalPb.encode('guardpatrol.GuardPatrolTaskTotalMsg', { task: [] }));
-    log(`[EXPEDIÇÃO GUARDIÃO #${state.id}] Expedição sincronizada (4945).`);
+    const req = body?.length ? originalPb.decode('carnival.GuardExpeditionReqInfoMsg', body) : {op:0};
+    const saved = inventoryState.parseState(state.character?.state_json);
+    const expedition = saved.guardExpedition || {};
+    const progress = expedition.areaInfo && typeof expedition.areaInfo === 'object'
+      ? Object.entries(expedition.areaInfo).map(([areaId, value]) => ({
+          areaId:Number(areaId), maxNodeId:Number(value.maxNodeId)||0,
+          finishNodeId:Number(value.finishNodeId)||0
+        })) : [];
+    sendGameSession(state, 4945, originalPb.encode('carnival.GuardExpeditionResInfoMsg', {
+      userId:state.gatewayId, rewardTimes:Number(expedition.rewardTimes)||0,
+      buyTimes:Number(expedition.buyTimes)||0, num:Number(expedition.num)||0,
+      areaInfo:progress, rewards:String(expedition.rewards||''),
+      payRewardTimes:Number(expedition.payRewardTimes)||0
+    }));
+    log(`[EXPEDIÇÃO GUARDIÃO #${state.id}] 9058 op=${req.op||0}; progresso persistido enviado. Combate/recompensa ainda indisponiveis.`);
   } catch (err) {
     log(`[EXPEDIÇÃO GUARDIÃO #${state.id}] Erro: ${err.message}`);
   }
@@ -2788,7 +2871,20 @@ async function handleGuardExpeditionary(state, body) {
 async function handleMarriageInfoReq(state, body) {
   if (!state.gatewayId || state.closed) return;
   try {
-    sendGameSession(state, 466, originalPb.encode('marriage.MarriageMsg', {}));
+    const saved=inventoryState.parseState(state.character?.state_json);
+    const marriage=saved.marriage||{};
+    const mateId=Math.max(0,Number(marriage.mateId)||0);
+    sendGameSession(state, 466, originalPb.encode('marriage.MarriageMsg', {
+      mateId, state:mateId>0?Math.max(0,Number(marriage.state)||0):0,
+      ringTemplateId:mateId>0?Math.max(0,Number(marriage.ringTemplateId)||0):0,
+      marriageTime:mateId>0?Math.max(0,Number(marriage.marriageTime)||0):0,
+      specTemplateId:mateId>0?Math.max(0,Number(marriage.specTemplateId)||0):0,
+      mateNick:mateId>0?String(marriage.mateNick||''):'',
+      answerNum:Math.max(0,Number(marriage.answerNum)||0),
+      mateLogoutDays:Math.max(0,Number(marriage.mateLogoutDays)||0),
+      marTimeId:mateId>0?Math.max(0,Number(marriage.marTimeId)||0):0,
+      mateHeadId:mateId>0?Math.max(0,Number(marriage.mateHeadId)||0):0
+    }));
     log(`[CASAMENTO #${state.id}] Informações de casamento sincronizadas (466).`);
   } catch (err) {
     log(`[CASAMENTO #${state.id}] Erro: ${err.message}`);
@@ -2808,8 +2904,16 @@ async function handleHomeHouseInfo(state, body) {
 async function handleConsortiaInfoReq(state, body) {
   if (!state.gatewayId || state.closed) return;
   try {
-    sendGameSession(state, 4157, originalPb.encode('consortia.ConsortiaInfoMsg', { site: 1, hiSkillList: [] }));
-    log(`[GUILDA #${state.id}] Guilda sincronizada (4157).`);
+    const req=originalPb.decode('consortia.ConsortiaLinkReqMsg',body);
+    const info=await guildState.getGuildInfo(db.ready(),Number(req.consortiaId));
+    if(!info)return;
+    sendGameSession(state,4267,originalPb.encode('consortia.ConsortiaLinkRspMsg',{
+      consortiaId:info.consortiaId,consortiaName:info.consortiaName,
+      creatorName:info.creatorName,levels:info.levels,Offer:info.offer,
+      currentCount:info.currentCount,honor:0,description:info.description,
+      materials:info.materials
+    }));
+    log(`[GUILDA #${state.id}] Link da guilda ${info.consortiaId} sincronizado (4267).`);
   } catch (err) {
     log(`[GUILDA #${state.id}] Erro: ${err.message}`);
   }
@@ -2818,20 +2922,59 @@ async function handleConsortiaInfoReq(state, body) {
 async function handleRareWeaponDrawReq(state, body) {
   if (!state.gatewayId || state.closed) return;
   try {
-    sendGameSession(state, 802, originalPb.encode('rareweapon.RareWeaponDrawMainInfo', { info: [] }));
-    log(`[ARMA RARA #${state.id}] Sorteio de arma rara sincronizado (802).`);
+    const rareWeapon=require('./rare-weapon-state');
+    const req=body?.length?originalPb.decode('rareweapon.RareWeaponDrawMainReq',body):{op:0};
+    let outcome={changed:false};
+    if (Number(req.op)!==0) {
+      const result=await db.mutateCharacterState(state.gatewayId,saved=>{
+        const value=rareWeapon.forge(saved,req);
+        return {state:saved,outcome:value};
+      });
+      outcome=result.outcome;
+      state.character=await db.characterById(state.gatewayId);
+    }
+    sendGameSession(state,802,originalPb.encode('rareweapon.RareWeaponDrawMainInfo',rareWeapon.drawInfo(state.character.state_json)));
+    if(outcome.rewards?.length){
+      sendGameSession(state,803,originalPb.encode('rareweapon.RareWeaponDrawShowInfo',{
+        tempId:outcome.poolId,showInfos:outcome.rewards
+      }));
+      sendInventorySnapshot(state);
+    }
+    if(outcome.changed)sendGameSession(state,3,makeBasicPlayerInfo(state.character));
+    log(`[ARMA RARA #${state.id}] Forja op=${req.op} sincronizada (802).`);
   } catch (err) {
     log(`[ARMA RARA #${state.id}] Erro: ${err.message}`);
+    const saved=state.character?.state_json;
+    if(saved)sendGameSession(state,802,originalPb.encode('rareweapon.RareWeaponDrawMainInfo',
+      require('./rare-weapon-state').drawInfo(saved)));
   }
 }
 
 async function handleRareWeaponMainReq(state, body) {
   if (!state.gatewayId || state.closed) return;
   try {
-    sendGameSession(state, 553, originalPb.encode('rareweapon.RareWeaponMainInfo', { info: [] }));
-    log(`[ARMA RARA #${state.id}] Informações principais sincronizadas (553).`);
+    const rareWeapon=require('./rare-weapon-state');
+    const req=body?.length?originalPb.decode('rareweapon.RareWeaponMainReq',body):{op:8};
+    if (![0,8].includes(Number(req.op))) {
+      await db.mutateCharacterState(state.gatewayId,saved=>{
+        rareWeapon.main(saved,req);
+        return {state:saved,resources:{gold:saved.wallet?.gold||0}};
+      });
+      state.character=await db.characterById(state.gatewayId);
+      sendInventorySnapshot(state);
+      sendGameSession(state,113,originalPb.encode('army.SimpleHeroInfoMsg',heroState.heroInfo(state.character)));
+      sendGameSession(state,3,makeBasicPlayerInfo(state.character));
+    }
+    sendGameSession(state,553,originalPb.encode('rareweapon.RareWeaponMainInfo',{
+      info:rareWeapon.weaponInfo(state.character.state_json)
+    }));
+    log(`[ARMA RARA #${state.id}] Operacao ${req.op} sincronizada (553).`);
   } catch (err) {
     log(`[ARMA RARA #${state.id}] Erro: ${err.message}`);
+    const saved=state.character?.state_json;
+    if(saved)sendGameSession(state,553,originalPb.encode('rareweapon.RareWeaponMainInfo',{
+      info:require('./rare-weapon-state').weaponInfo(saved)
+    }));
   }
 }
 
@@ -3075,15 +3218,54 @@ function getCharacterVip(char) {
   };
 }
 
-function formatVipInfoMsg(char) {
+function formatVipInfoMsg(char, savedState = null) {
   const vip = getCharacterVip(char);
+  let saved = savedState;
+  if (!saved) {
+    try {
+      saved = char?.state_json ? (typeof char.state_json === 'string' ? JSON.parse(char.state_json) : char.state_json) : {};
+    } catch (_) {
+      saved = {};
+    }
+  }
+  saved.vipPacks = saved.vipPacks || {};
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const claimedDailyDate = saved.vipPacks.dailyDate || '';
+  const claimedFreeGrades = Array.isArray(saved.vipPacks.claimedFreeGrades) ? saved.vipPacks.claimedFreeGrades : [];
+  const claimedPayGrades = Array.isArray(saved.vipPacks.claimedPayGrades) ? saved.vipPacks.claimedPayGrades : [];
+
+  const giftState = [];
+  const vipPackageGrades = (canonicalConfigs.getTable('t_s_vippackage') || [])
+    .map(pack => Number(pack.Grade))
+    .filter(grade => Number.isInteger(grade) && grade > 0);
+  const maxPackageGrade = vipPackageGrades.length ? Math.max(...vipPackageGrades) : 15;
+  for (let g = 1; g <= maxPackageGrade; g++) {
+    let dayGiftState = 0;
+    if (vip.vipLevel >= g) {
+      dayGiftState = (claimedDailyDate === todayStr) ? 2 : 1;
+    } else {
+      dayGiftState = 0;
+    }
+
+    const isFreeGift = (vip.vipLevel >= g && !claimedFreeGrades.includes(g));
+    const isPayGift = (vip.vipLevel >= g && !claimedPayGrades.includes(g));
+
+    giftState.push({
+      vipGrade: g,
+      dayGiftState,
+      dayGiftTime: 0,
+      isFreeGift,
+      isPayGift
+    });
+  }
+
   return {
     vipGp: vip.vipPoints,
     vipGrade: vip.vipLevel,
     isGainBuff: vip.isVip,
     buffGainTime: vip.buffGainTime,
     buffEndTime: vip.buffEndTime,
-    giftState: []
+    giftState
   };
 }
 
@@ -3092,9 +3274,108 @@ function sendVipInfo(state) {
   try {
     const vipPayload = formatVipInfoMsg(state.character);
     sendGameSession(state, 4410, originalPb.encode('vip.VipInfoMsg', vipPayload));
-    log(`[VIP #${state.id}] VipInfo enviado: Nv.${vipPayload.vipGrade} (Buff: ${vipPayload.isGainBuff}, GP:${vipPayload.vipGp})`);
+    log(`[VIP #${state.id}] VipInfo enviado: Nv.${vipPayload.vipGrade} (Buff: ${vipPayload.isGainBuff}, GP:${vipPayload.vipGp}, giftStates: ${vipPayload.giftState.length})`);
   } catch (err) {
     log(`[VIP #${state.id}] Falha ao enviar VipInfo:${err.message}`);
+  }
+}
+
+async function handleVipOpenGift(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    const req = originalPb.decode('vip.OpenGiftReq', body);
+    const giftType = Number(req.type);
+    const targetGrade = Number(req.grade || 1);
+    const vip = getCharacterVip(state.character);
+    const vipTable = canonicalConfigs.getTable('t_s_vippackage') || [];
+    const pack = vipTable.find(p => Number(p.Grade) === targetGrade && Number(p.PayQuality) === giftType);
+
+    if (!pack) {
+      log(`[VIP #${state.id}] Pacote nao encontrado para Grade ${targetGrade}, Type ${giftType}.`);
+      return;
+    }
+
+    if (vip.vipLevel < targetGrade) {
+      log(`[VIP #${state.id}] Nivel VIP insuficiente (${vip.vipLevel} < ${targetGrade}).`);
+      return;
+    }
+
+    const todayStr = new Date().toISOString().slice(0, 10);
+    let success = false;
+    let itemsGiven = [];
+
+    await db.mutateCharacterState(state.gatewayId, saved => {
+      saved.vipPacks = saved.vipPacks || {};
+      saved.vipPacks.claimedFreeGrades = Array.isArray(saved.vipPacks.claimedFreeGrades) ? saved.vipPacks.claimedFreeGrades : [];
+      saved.vipPacks.claimedPayGrades = Array.isArray(saved.vipPacks.claimedPayGrades) ? saved.vipPacks.claimedPayGrades : [];
+
+      if (giftType === -1) {
+        // Pacote diario
+        if (saved.vipPacks.dailyDate === todayStr) {
+          log(`[VIP #${state.id}] Pacote diario ja resgatado hoje (${todayStr}).`);
+          return { state: saved };
+        }
+        saved.vipPacks.dailyDate = todayStr;
+        itemsGiven = deliverRewardStringToCharacter(saved, state.character, pack.Item);
+        success = true;
+      } else if (giftType === 0) {
+        // Pacote de beneficios por nivel (gratis)
+        if (saved.vipPacks.claimedFreeGrades.includes(targetGrade)) {
+          log(`[VIP #${state.id}] Pacote de beneficios VIP ${targetGrade} ja resgatado.`);
+          return { state: saved };
+        }
+        saved.vipPacks.claimedFreeGrades.push(targetGrade);
+        itemsGiven = deliverRewardStringToCharacter(saved, state.character, pack.Item);
+        success = true;
+      } else if (giftType === 1) {
+        // Pacote pago com Balens
+        if (saved.vipPacks.claimedPayGrades.includes(targetGrade)) {
+          log(`[VIP #${state.id}] Pacote pago VIP ${targetGrade} ja comprado.`);
+          return { state: saved };
+        }
+        const cost = Number(pack.Price || 0);
+        const currentBalens = Number(state.character?.point ?? saved.wallet?.balens ?? 0);
+        if (currentBalens < cost) {
+          log(`[VIP #${state.id}] Balens insuficientes (${currentBalens} < ${cost}).`);
+          return { state: saved };
+        }
+        const newBalens = currentBalens - cost;
+        saved.wallet = saved.wallet || {};
+        saved.wallet.balens = newBalens;
+        saved.point = newBalens;
+        if (state.character) {
+          state.character.point = newBalens;
+          state.character.crystals = newBalens;
+        }
+        saved.vipPacks.claimedPayGrades.push(targetGrade);
+        itemsGiven = deliverRewardStringToCharacter(saved, state.character, pack.Item);
+        success = true;
+      }
+
+      return {
+        state: saved,
+        resources: {
+          gold: state.character?.gold || saved.gold || 0,
+          crystals: Number(saved.wallet?.balens ?? state.character?.point ?? 0),
+          bound_crystals: Number(saved.wallet?.boundBalens ?? state.character?.gift_token ?? 0)
+        }
+      };
+    });
+
+    if (success) {
+      state.character = await db.characterById(state.gatewayId);
+      sendGameSession(state, 4409, originalPb.encode('vip.OpenGiftRsp', {
+        type: giftType,
+        grade: targetGrade,
+        ret: 1
+      }));
+      sendVipInfo(state);
+      sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
+      sendInventorySnapshot(state);
+      log(`[VIP #${state.id}] Pacote VIP resgatado: Grade ${targetGrade}, Type ${giftType}. Itens: ${JSON.stringify(itemsGiven)}`);
+    }
+  } catch (err) {
+    log(`[VIP #${state.id}] Erro no handleVipOpenGift: ${err.message}`);
   }
 }
 
@@ -3231,12 +3512,31 @@ function runExperimentalInit(state) {
    secondarySystemsState.ensureSecondarySystemsState(saved);
    sendGameSession(state, 4540, originalPb.encode('pet.PlayerPetMsg', secondarySystemsState.formatPlayerPetMsg(saved, state.gatewayId, 0)));
    sendGameSession(state, 4873, originalPb.encode('combatguardian.CombatGuardianOpRes', secondarySystemsState.formatCombatGuardianOpRes(saved)));
+   guardState.ensureGuardians(saved);
+   sendGameSession(state, 4919, originalPb.encode('carnival.GuardTotalInfoMsg', guardState.formatGuardTotalInfoMsg(saved)));
+   // The client does not request rare-weapon state when opening its panel.
+   // Seed its global model during login so forged weapons survive relogin visually.
+   const rareWeaponState=require('./rare-weapon-state');
+   sendGameSession(state, 553, originalPb.encode('rareweapon.RareWeaponMainInfo', {
+     info:rareWeaponState.weaponInfo(saved)
+   }));
+   sendGameSession(state, 802, originalPb.encode('rareweapon.RareWeaponDrawMainInfo',
+     rareWeaponState.drawInfo(saved)));
+   sendGameSession(state, 4944, originalPb.encode('carnival.ChallengeGuardInfoMsg', {
+     fightIndex: saved.guardians?.fightIndex || '1,2,3',
+     chaPos: saved.guardians?.challengePos || '1,2,3'
+   }));
    sendGameSession(state, 4631, originalPb.encode('watch.HeroWatchMsg', secondarySystemsState.formatHeroWatchMsg(saved)));
    sendGameSession(state, 4964, originalPb.encode('remotepet.RemotePetMsg', secondarySystemsState.formatRemotePetMsg(saved, state.gatewayId)));
    sendGameSession(state, 4484, originalPb.encode('player.AppellsMsg', secondaryFeatures.formatAppellsMsg(saved)));
    sendGameSession(state, 4980, originalPb.encode('army.RuneHoleAllInfoMsg', secondaryFeatures.formatRuneHoleAllInfoMsg(saved)));
    sendGameSession(state, 555, originalPb.encode('dragonsoul.DragonSoulOpRes', secondaryFeatures.formatDragonSoulOpRes(saved)));
    sendGameSession(state, 4190, originalPb.encode('dailytarget.DailyTargetList', secondaryFeatures.formatDailyTargetList(saved)));
+   sendGameSession(state, 4360, originalPb.encode('player.RewardCountUpdateRspMsg', secondaryFeatures.formatRewardCountUpdateRspMsg(saved)));
+   sendGameSession(state, 4197, originalPb.encode('reward.RewardFreshRspMsg', secondaryFeatures.formatRewardFreshRspMsg(saved, state.character?.grades || 80)));
+   sendMonthCardSnapshot(state);
+   sendDevotionSnapshot(state);
+   sendGameBoxSnapshot(state);
    astralState.ensureAstralState(saved);
    const starMoves = astralState.formatAllAstralsMoveMsg(saved, state.gatewayId);
    if (starMoves.move.length > 0) {
@@ -3276,6 +3576,10 @@ function runExperimentalInit(state) {
      param1: Number(saved.tattoo?.coreStep || 1),
      param2: 0,
      param3: ''
+   }));
+   sendGameSession(state, 4544, originalPb.encode('fate.FateListMsg', {
+     fateInfo: Array.isArray(saved.fate?.fates) ? saved.fate.fates : [],
+     fateSkills: ''
    }));
    sendGameSession(state, 4980, originalPb.encode('army.RuneHoleAllInfoMsg', secondaryFeatures.formatRuneHoleAllInfoMsg(saved)));
    sendGameSession(state, 449, originalPb.encode('extrajob.ExtraJobMsg', {
@@ -3356,7 +3660,7 @@ function runExperimentalInit(state) {
 
    // 4. Avanço de Classe - Envia status de promoção de classe (Opcode 4974)
    sendGameSession(state, 4974, originalPb.encode('recover.TransferInfoRes', {
-     type: Number(saved.numJobChange || 1)
+     type: Number(saved.numJobChange || 0)
    }));
 
    // 5. Sala de Jogos / Mini-jogos - Envia 3 tentativas para Sudoku e Combinar Peças (Opcode 814)
@@ -3393,11 +3697,7 @@ function handleWorldRequest(state){
  if(!state.systemsSent){
   const charGrade = state.character?.grade || 1;
   const saved=inventoryState.parseState(state.character.state_json);
-  const gradeSystems = getSystemsOpenForGrade(charGrade);
-  let systems = Array.from(new Set([...(saved.systemsOpen || []), ...gradeSystems])).sort((a,b)=>a-b);
-  if (charGrade < 18) {
-    systems = systems.filter(id => id !== 109);
-  }
+  const systems = getSystemsOpenForGrade(charGrade, saved);
   sendGameSession(state,537,originalPb.encode('systemopen.SystemOpenHashOpenList',{sysId:systems}));
   state.systemsSent=true;
   log(`[MUNDO #${state.id}] Sincronizado pacote 537 systemsOpen: [${systems.join(', ')}]`);
@@ -3420,12 +3720,7 @@ async function handleCastleBuildingInit(state){
      castleState.ensureCastleState(saved, charGrade);
      campaignState.ensureCampaignState(saved, charGrade);
      questState.syncAutoQuests(saved, charGrade);
-     const gradeSystems = getSystemsOpenForGrade(charGrade);
-     let systems = Array.from(new Set([...(saved.systemsOpen || []), ...gradeSystems])).sort((a,b)=>a-b);
-     if (charGrade < 18) {
-       systems = systems.filter(id => id !== 109);
-     }
-     saved.systemsOpen = systems;
+     saved.systemsOpen = getSystemsOpenForGrade(charGrade, saved);
      astralState.ensureAstralState(saved);
      return {state:saved};
    });
@@ -3454,12 +3749,20 @@ async function handleCastleBuildingInit(state){
    secondarySystemsState.ensureSecondarySystemsState(saved);
    sendGameSession(state, 4540, originalPb.encode('pet.PlayerPetMsg', secondarySystemsState.formatPlayerPetMsg(saved, state.gatewayId, 0)));
    sendGameSession(state, 4873, originalPb.encode('combatguardian.CombatGuardianOpRes', secondarySystemsState.formatCombatGuardianOpRes(saved)));
+   guardState.ensureGuardians(saved);
+   sendGameSession(state, 4919, originalPb.encode('carnival.GuardTotalInfoMsg', guardState.formatGuardTotalInfoMsg(saved)));
+   sendGameSession(state, 4944, originalPb.encode('carnival.ChallengeGuardInfoMsg', {
+     fightIndex: saved.guardians?.fightIndex || '1,2,3',
+     chaPos: saved.guardians?.challengePos || '1,2,3'
+   }));
    sendGameSession(state, 4631, originalPb.encode('watch.HeroWatchMsg', secondarySystemsState.formatHeroWatchMsg(saved)));
    sendGameSession(state, 4964, originalPb.encode('remotepet.RemotePetMsg', secondarySystemsState.formatRemotePetMsg(saved, state.gatewayId)));
    sendGameSession(state, 4484, originalPb.encode('player.AppellsMsg', secondaryFeatures.formatAppellsMsg(saved)));
    sendGameSession(state, 4980, originalPb.encode('army.RuneHoleAllInfoMsg', secondaryFeatures.formatRuneHoleAllInfoMsg(saved)));
    sendGameSession(state, 555, originalPb.encode('dragonsoul.DragonSoulOpRes', secondaryFeatures.formatDragonSoulOpRes(saved)));
    sendGameSession(state, 4190, originalPb.encode('dailytarget.DailyTargetList', secondaryFeatures.formatDailyTargetList(saved)));
+   sendGameSession(state, 4360, originalPb.encode('player.RewardCountUpdateRspMsg', secondaryFeatures.formatRewardCountUpdateRspMsg(saved)));
+   sendGameSession(state, 4197, originalPb.encode('reward.RewardFreshRspMsg', secondaryFeatures.formatRewardFreshRspMsg(saved, state.character?.grades || 80)));
    if(state.character && !state.heroArmySent){
     sendGameSession(state,169,originalPb.encode('army.ArmyUpdatedGridMsg',{updatedArmy:[heroState.armyInfo(state.character)]}));
     state.heroArmySent=true;
@@ -3559,7 +3862,7 @@ async function handleNoviceProcess(state, body) {
   if (step === 150) {
     sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
     sendGameSession(state, 6, buildLoginStateBody(state.gatewayId, 2));
-    sendGameSession(state, 537, originalPb.encode('systemopen.SystemOpenHashOpenList', { sysId: result.state.systemsOpen || [] }));
+    sendGameSession(state, 537, originalPb.encode('systemopen.SystemOpenHashOpenList', { sysId: getSystemsOpenForGrade(state.character.grade, result.state) }));
     state.systemsSent = true;
     state.worldRequested = true;
     sendInventorySnapshot(state);
@@ -3727,7 +4030,7 @@ async function handleCampaignSweep(state, body) {
 
       if (!saved.progression) saved.progression = { currentXp: 0, totalXp: 0 };
       saved.progression.totalXp = (saved.progression.totalXp || 0) + earnedXp;
-      const newGrade = resourceState.calcGradeFromXp(saved.progression.totalXp, locked.grade || state.character.grade);
+      const newGrade = resourceState.calcGradeFromXp(saved.progression.totalXp, locked.grade || state.character.grade,saved);
       const atLevel = resourceState.totalAtLevel(newGrade);
       saved.progression.currentXp = Math.max(0, saved.progression.totalXp - atLevel);
 
@@ -3871,7 +4174,7 @@ async function handleCampaignSweep(state, body) {
 
     if (!saved.progression) saved.progression = { currentXp: 0, totalXp: 0 };
     saved.progression.totalXp = (saved.progression.totalXp || 0) + totalGpEarned;
-    newGrade = resourceState.calcGradeFromXp(saved.progression.totalXp, state.character.grade);
+    newGrade = resourceState.calcGradeFromXp(saved.progression.totalXp, state.character.grade,saved);
     const atLevel = resourceState.totalAtLevel(newGrade);
     saved.progression.currentXp = Math.max(0, saved.progression.totalXp - atLevel);
 
@@ -4180,6 +4483,28 @@ async function handleCampaignArrive(state, body) {
 
   // Processamento de nó de campanha pós-tutorial
   const campaignNode = campaignState.nodeById.get(Number(nodeId));
+  if (campaignState.isTrialGuard(campaignNode)) {
+    const started = await db.mutateCharacterState(state.gatewayId, saved => {
+      const current = saved.campaigns?.current;
+      if (Number(current?.mapId) !== Number(campaignNode.CampaignId))
+        throw Error('Guarda do Pináculo fora da instância atual');
+      current.trialStarted = true;
+      const next = campaignState.nextTrialChallenge(current.mapId, current.runWonNodes || []);
+      return { state: saved, nextNodeId: Number(next?.Id) || 0 };
+    });
+    state.character.state_json = started.state;
+    // O Guarda continua disponível entre as etapas; concluir o nó NPC o
+    // remove da cena e impede que o jogador inicie o próximo adversário.
+    if (started.nextNodeId) {
+      sendGameSession(state, 128, originalPb.encode('campaign.CampaignNodeUpdateMsg',
+        { nodeId: started.nextNodeId, nodeState: 1, userId: Number(state.gatewayId), sonType: 2174 }));
+      sendGameSession(state, 128, originalPb.encode('campaign.CampaignNodeSuccMsg',
+        { nodeId: started.nextNodeId, isMonster: true }));
+      battleEngine.initiateBattle(state, started.nextNodeId);
+    }
+    log(`[PINACULO #${state.id}] Guarda ${nodeId} iniciou desafio; proximo oponente=${started.nextNodeId || 'concluido'}.`);
+    return;
+  }
   const mType = campaignNode ? Number(campaignNode.MasterType) : 0;
   const isMonsterNode = (mType === 41 || mType === 42 || atollEncounters.hostile(campaignNode) ||
     campaignNode?.AI === 'com.road.yishi.mapphysics.node.ai.CNKingTowerBossAi' ||
@@ -4194,6 +4519,9 @@ async function handleCampaignArrive(state, body) {
       return;
     }
     const wonNodes=Array.isArray(current.runWonNodes)?current.runWonNodes:[];
+    if (campaignState.trialChallengeNodes(campaignNode.CampaignId).some(row => Number(row.Id) === nodeId) &&
+        (!current.trialStarted || Number(campaignState.nextTrialChallenge(current.mapId, wonNodes)?.Id) !== nodeId))
+      throw Error('Oponente do Pináculo ainda bloqueado');
     if (!atollEnemy && wonNodes.includes(nodeId)) {
       log(`[CAMPAIGN #${state.id}] Monstro ${nodeId} ja derrotado nesta campanha.`);
       sendGameSession(state, 128, originalPb.encode('campaign.CampaignNodeSuccMsg', { nodeId, isMonster: false }));
@@ -4372,7 +4700,7 @@ async function handleCampaignFinish(state, body) {
     // Preserve earned character grade.
     sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
     sendGameSession(state, 6, buildLoginStateBody(state.gatewayId, 2));
-    sendGameSession(state, 537, originalPb.encode('systemopen.SystemOpenHashOpenList', { sysId: result.state.systemsOpen || [] }));
+    sendGameSession(state, 537, originalPb.encode('systemopen.SystemOpenHashOpenList', { sysId: getSystemsOpenForGrade(state.character.grade, result.state) }));
     state.systemsSent = true;
     state.worldRequested = true;
     sendInventorySnapshot(state);
@@ -4411,7 +4739,7 @@ async function handleCampaignFinish(state, body) {
       try {
         sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
         sendGameSession(state, 6, buildLoginStateBody(state.gatewayId, 2));
-        sendGameSession(state, 537, originalPb.encode('systemopen.SystemOpenHashOpenList', { sysId: result.state.systemsOpen || [] }));
+        sendGameSession(state, 537, originalPb.encode('systemopen.SystemOpenHashOpenList', { sysId: getSystemsOpenForGrade(state.character.grade, result.state) }));
         state.systemsSent = true;
         state.worldRequested = true;
         sendInventorySnapshot(state);
@@ -4473,6 +4801,10 @@ async function handleCampaignMovement(state, body) {
           : (currentSaved.campaigns?.current?.runWonNodes || []);
         const mapNodes = campaignState.getNodesForMap(result.mapId);
         for (const n of mapNodes) {
+          if (campaignState.isTrialGuard(n)) continue;
+          if (campaignState.trialChallengeNodes(result.mapId).some(row => Number(row.Id) === Number(n.Id)) &&
+              (!currentSaved.campaigns?.current?.trialStarted ||
+                Number(campaignState.nextTrialChallenge(result.mapId, runWon)?.Id) !== Number(n.Id))) continue;
           const isAtollHostile=atollEncounters.hostile(n);
           if (([41,42].includes(Number(n.MasterType))||isAtollHostile)&&!runWon.includes(Number(n.Id))) {
             if(isAtollHostile&&!atollEncounters.canFight(currentSaved,n))continue;
@@ -4539,6 +4871,18 @@ async function handleCampaignSystemArmy(state, body) {
   const soldierTemplated = [];
 
   for (const n of nodes) {
+    if (n.Heros) {
+      for (const h of String(n.Heros).split('|')) {
+        const hId = Number(h.split(',')[0]);
+        if (hId > 0 && !heroTemplated.includes(hId)) heroTemplated.push(hId);
+      }
+    }
+    if (n.Soldiers) {
+      for (const s of String(n.Soldiers).split('|')) {
+        const pId = Number(s.split(',')[0]);
+        if (pId > 0 && !soldierTemplated.includes(pId)) soldierTemplated.push(pId);
+      }
+    }
     if (n.MonsterId) {
       const mId = Number(n.MonsterId);
       if (mId > 0 && !heroTemplated.includes(mId)) heroTemplated.push(mId);
@@ -4548,9 +4892,6 @@ async function handleCampaignSystemArmy(state, body) {
       if (pId > 0 && !soldierTemplated.includes(pId)) soldierTemplated.push(pId);
     }
   }
-
-  if (heroTemplated.length === 0) heroTemplated.push(1001);
-  if (soldierTemplated.length === 0) soldierTemplated.push(101);
 
   const payload = originalPb.encode('campaign.SystemArmyMsg', {
     heroTemplated,
@@ -4659,16 +5000,20 @@ async function handleAppellExchangeCmd(state, body) {
   if (!state.gatewayId || state.closed) return;
   try {
     const req = originalPb.decode('player.AppellExchangeMsg', body);
+    const targetId = Number(req.appellId || 0);
     const result = await db.mutateCharacterState(state.gatewayId, saved => {
-      const res = secondaryFeatures.handleAppellExchange(saved, req.appellId, req.look);
+      const res = secondaryFeatures.handleAppellExchange(saved, targetId, req.look);
       return { state: saved, res };
     });
     state.character = await db.characterById(state.gatewayId);
     const appellsMsg = secondaryFeatures.formatAppellsMsg(result.state);
     sendGameSession(state, 4484, originalPb.encode('player.AppellsMsg', appellsMsg));
-    sendGameSession(state, 4491, originalPb.encode('player.AppellsMsg', appellsMsg));
-    sendGameSession(state, 113, originalPb.encode('army.SimpleHeroInfoMsg', heroState.heroInfo(state.character)));
-    log(`[APPELL #${state.id}] Titulo atualizado: id=${req.appellId}, look=${req.look}.`);
+
+    const army = heroState.armyInfo(state.character);
+    sendGameSession(state, 150, originalPb.encode('army.ArmyMsg', army));
+    sendGameSession(state, 113, originalPb.encode('army.SimpleHeroInfoMsg', army.simpleHeroInfo));
+    sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
+    log(`[APPELL #${state.id}] Titulo atualizado: id=${targetId}, cur=${result.res.curAppell}, look=${req.look}.`);
   } catch(e) {
     log(`[APPELL #${state.id}] Falha: ${e.message}`);
   }
@@ -5038,32 +5383,120 @@ async function handleExtraJobEquipReq(state, body) {
 async function handleBountyRefreshCmd(state, body) {
   if (!state.gatewayId || state.closed) return;
   try {
+    let req = { isButton: false, payType: 0 };
+    try {
+      if (body && body.length > 0) req = originalPb.decode('reward.RewardFreshReqMsg', body);
+    } catch (_) {}
+
+    const playerGrade = state.character?.grades || 80;
     const result = await db.mutateCharacterState(state.gatewayId, saved => {
-      const res = secondaryFeatures.refreshBounties(saved);
+      const res = secondaryFeatures.refreshBounties(saved, req.isButton, req.payType, playerGrade);
       return { state: saved, res };
     });
     state.character = await db.characterById(state.gatewayId);
-    log(`[BOUNTY REFRESH #${state.id}] Missoes de recompensa atualizadas.`);
+
+    const freshMsg = secondaryFeatures.formatRewardFreshRspMsg(result.state, playerGrade);
+    sendGameSession(state, 4197, originalPb.encode('reward.RewardFreshRspMsg', freshMsg));
+    sendGameSession(state, 4360, originalPb.encode('player.RewardCountUpdateRspMsg', secondaryFeatures.formatRewardCountUpdateRspMsg(result.state)));
+
+    log(`[BOUNTY REFRESH #${state.id}] Quadro de missoes atualizado (4197). FreeTimes=${freshMsg.freeTimes}, Tarefas: ${freshMsg.templateId.join(',')}`);
   } catch(e) {
     log(`[BOUNTY REFRESH #${state.id}] Falha: ${e.message}`);
+  }
+}
+
+async function handleBountyArrestCmd(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    let req = { param1: 506, condictionType: 0 };
+    try {
+      if (body && body.length > 0) req = originalPb.decode('reward.RewardArrestMsg', body);
+    } catch (_) {}
+
+    const templateId = Number(req.param1 || 506);
+    const playerGrade = state.character?.grades || 80;
+
+    const result = await db.mutateCharacterState(state.gatewayId, saved => {
+      const res = secondaryFeatures.acceptBounty(saved, templateId, playerGrade);
+      return { state: saved, res };
+    });
+    state.character = await db.characterById(state.gatewayId);
+
+    // Opcode 4198: U_C_REWARD_UPDATE
+    sendGameSession(state, 4198, originalPb.encode('reward.RewardUpdatedRspMsg', {
+      reward: [
+        {
+          templateId,
+          isComplete: false,
+          condition_1: 0,
+          condition_2: 0,
+          condition_3: 0,
+          condition_4: 0,
+          completedDate: ''
+        }
+      ]
+    }));
+
+    // Opcode 4197: U_C_REWARD_FRESH
+    const freshMsg = secondaryFeatures.formatRewardFreshRspMsg(result.state, playerGrade);
+    sendGameSession(state, 4197, originalPb.encode('reward.RewardFreshRspMsg', freshMsg));
+
+    log(`[BOUNTY ARREST #${state.id}] Missao ${templateId} aceita com sucesso (4198/4197).`);
+  } catch(e) {
+    log(`[BOUNTY ARREST #${state.id}] Falha: ${e.message}`);
   }
 }
 
 async function handleBountyFinishCmd(state, body) {
   if (!state.gatewayId || state.closed) return;
   try {
-    const req = originalPb.decode('reward.RewardFinishedReqMsg', body);
+    let req = { templateId: 506, isPass: false };
+    try {
+      if (body && body.length > 0) req = originalPb.decode('reward.RewardFinishedReqMsg', body);
+    } catch (_) {}
+
+    const templateId = Number(req.templateId || 506);
+    const playerGrade = state.character?.grades || 80;
+
     const result = await db.mutateCharacterState(state.gatewayId, saved => {
-      const res = secondaryFeatures.finishBounty(saved, req.rewardId || 1);
+      const res = secondaryFeatures.finishBounty(saved, templateId, req.isPass, playerGrade);
       return { state: saved, res };
     });
     state.character = await db.characterById(state.gatewayId);
-    sendGameSession(state, 52, originalPb.encode('reward.RewardFinishedRspMsg', { rewardId: req.rewardId || 1 }));
+
+    // Opcode 4198: U_C_REWARD_UPDATE
+    sendGameSession(state, 4198, originalPb.encode('reward.RewardUpdatedRspMsg', {
+      reward: [
+        {
+          templateId,
+          isComplete: true,
+          condition_1: 1,
+          condition_2: 0,
+          condition_3: 0,
+          condition_4: 0,
+          completedDate: new Date().toISOString()
+        }
+      ]
+    }));
+
+    // Opcode 4197: U_C_REWARD_FRESH
+    const freshMsg = secondaryFeatures.formatRewardFreshRspMsg(result.state, playerGrade);
+    sendGameSession(state, 4197, originalPb.encode('reward.RewardFreshRspMsg', freshMsg));
+    sendGameSession(state, 4360, originalPb.encode('player.RewardCountUpdateRspMsg', secondaryFeatures.formatRewardCountUpdateRspMsg(result.state)));
+
     sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
-    log(`[BOUNTY FINISH #${state.id}] Missao de recompensa ${req.rewardId} concluida com sucesso.`);
+    log(`[BOUNTY FINISH #${state.id}] Missao ${templateId} concluida com sucesso. Recompensas entregues.`);
   } catch(e) {
     log(`[BOUNTY FINISH #${state.id}] Falha: ${e.message}`);
   }
+}
+
+async function handleBountyAddCmd(state, body) {
+  await handleBountyRefreshCmd(state, body);
+}
+
+async function handleBountyRemoveCmd(state, body) {
+  await handleBountyRefreshCmd(state, body);
 }
 
 async function handleLotteryRune(state, body) {
@@ -5143,6 +5576,7 @@ async function handleLordsMainBoard(state, body) {
 function deliverRewardStringToCharacter(saved, character, rewardStr) {
   if (!rewardStr || typeof rewardStr !== 'string') return [];
   const itemsGiven = [];
+  saved.wallet = saved.wallet || {};
   const entries = rewardStr.split('|');
   for (const entry of entries) {
     if (!entry.trim()) continue;
@@ -5152,20 +5586,31 @@ function deliverRewardStringToCharacter(saved, character, rewardStr) {
     if (!rawId || !rawQty) continue;
     if (rawId === -100) {
       saved.gold = (Number(saved.gold) || 0) + rawQty;
+      saved.wallet.gold = saved.gold;
       if (character) character.gold = saved.gold;
       itemsGiven.push({ type: 'gold', count: rawQty });
     } else if (rawId === -200) {
       saved.daru = (Number(saved.daru) || 0) + rawQty;
+      saved.wallet.daru = saved.daru;
       if (character) character.daru = saved.daru;
       itemsGiven.push({ type: 'daru', count: rawQty });
     } else if (rawId === -500) {
-      saved.point = (Number(saved.point) || 0) + rawQty;
-      if (character) character.point = saved.point;
+      const b = (Number(saved.wallet.balens ?? saved.point ?? 0)) + rawQty;
+      saved.wallet.balens = b;
+      saved.point = b;
+      if (character) { character.point = b; character.crystals = b; }
       itemsGiven.push({ type: 'balens', count: rawQty });
     } else if (rawId === -5500) {
-      saved.gift_token = (Number(saved.gift_token) || 0) + rawQty;
-      if (character) character.gift_token = saved.gift_token;
+      const bb = (Number(saved.wallet.boundBalens ?? saved.gift_token ?? 0)) + rawQty;
+      saved.wallet.boundBalens = bb;
+      saved.gift_token = bb;
+      if (character) { character.gift_token = bb; character.bound_crystals = bb; }
       itemsGiven.push({ type: 'bound_balens', count: rawQty });
+    } else if (rawId === -910) {
+      const h = (Number(saved.wallet.honor ?? saved.honor ?? 0)) + rawQty;
+      saved.wallet.honor = h;
+      saved.honor = h;
+      itemsGiven.push({ type: 'honor', count: rawQty });
     } else if (rawId > 0) {
       inventoryState.addItem(saved, rawId, rawQty);
       itemsGiven.push({ type: 'item', id: rawId, count: rawQty });
@@ -5187,18 +5632,24 @@ async function handleGrowthFundLevel(state, body) {
 
     let resBuyIds = [];
     let resReceiveIds = [];
+    let updatedBalens = 0;
+    let updatedBoundBalens = 0;
 
-    await db.mutateCharacterState(state.gatewayId, (saved) => {
+    await db.mutateCharacterState(state.gatewayId, (saved, locked = {}) => {
       saved.growthFund = saved.growthFund || { buyIds: [], receiveIds: [] };
       if (!Array.isArray(saved.growthFund.receiveIds)) saved.growthFund.receiveIds = [];
       if (!Array.isArray(saved.growthFund.buyIds)) saved.growthFund.buyIds = [];
+      saved.wallet = saved.wallet || {};
 
-      const playerGrade = Number(state.character?.grade || 1);
+      const playerGrade = Number(state.character?.grade || saved.grade || locked.grade || 1);
       const vipObj = getCharacterVip(state.character);
       const playerVip = Number(vipObj.vipLevel || state.character?.vip_level || saved.vip?.level || 0);
 
+      let currentBalens = Number(saved.wallet.balens ?? state.character?.crystals ?? state.character?.point ?? saved.point ?? 0);
+      let newBalens = currentBalens;
+
       if (op === 2 && giftId > 0) {
-        // Coleta de pacote de crescimento ou VIP
+        // Coleta de pacote de crescimento (Tipo 1) ou VIP (Tipo 3) ou Reivindicacao Especial
         const pack = growthFundConfig.find(p => Number(p.Id) === giftId);
         if (pack && !saved.growthFund.receiveIds.includes(giftId)) {
           const reqGrade = Number(pack.Para1 || 0);
@@ -5212,14 +5663,19 @@ async function handleGrowthFundLevel(state, body) {
           }
         }
       } else if (op === 1 && giftId > 0) {
-        // Compra de pacote especial
+        // Compra de pacote especial (Tipo 2)
         const pack = growthFundConfig.find(p => Number(p.Id) === giftId && Number(p.Type) === 2);
         if (pack && !saved.growthFund.buyIds.includes(giftId)) {
+          const reqGrade = Number(pack.Para1 || 0);
           const cost = Number(pack.Discount || pack.Price || 0);
-          const currentBalens = Number(state.character?.point || saved.point || 0);
-          if (currentBalens >= cost) {
-            saved.point = currentBalens - cost;
-            if (state.character) state.character.point = saved.point;
+          if (playerGrade >= reqGrade && currentBalens >= cost) {
+            newBalens = currentBalens - cost;
+            saved.wallet.balens = newBalens;
+            saved.point = newBalens;
+            if (state.character) {
+              state.character.point = newBalens;
+              state.character.crystals = newBalens;
+            }
             saved.growthFund.buyIds.push(giftId);
             deliverRewardStringToCharacter(saved, state.character, pack.Reward);
           }
@@ -5228,13 +5684,15 @@ async function handleGrowthFundLevel(state, body) {
 
       resBuyIds = [...saved.growthFund.buyIds];
       resReceiveIds = [...saved.growthFund.receiveIds];
+      updatedBalens = Number(saved.wallet.balens ?? newBalens);
+      updatedBoundBalens = Number(saved.wallet.boundBalens ?? state.character?.bound_crystals ?? 0);
 
       return {
         state: saved,
         resources: {
           gold: state.character?.gold || saved.gold || 0,
-          crystals: state.character?.point || saved.point || 0,
-          bound_crystals: state.character?.gift_token || saved.gift_token || 0
+          crystals: updatedBalens,
+          bound_crystals: updatedBoundBalens
         }
       };
     });
@@ -5303,6 +5761,798 @@ async function handleGrowthFundReceive(state, body) {
     await handleGrowthFundInfo(state, Buffer.alloc(0));
   } catch (e) {
     log(`[GROWTH FUND RECEIVE #${state.id}] Falha: ${e.message}`);
+  }
+}
+
+function sendMonthCardSnapshot(state) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    const saved = inventoryState.parseState(state.character?.state_json || {});
+    saved.monthCard = saved.monthCard || {};
+    saved.monthCard.basic = saved.monthCard.basic || { isPay: false, isReceive: false, leftDays: 30, buyTime: 0, lastReceiveDay: 0 };
+    saved.monthCard.premium = saved.monthCard.premium || { isPay: false, isReceive: false, leftDays: 30, buyTime: 0, lastReceiveDay: 0 };
+    const todayEpochDays = Math.floor(Date.now() / 86400000);
+
+    if (saved.monthCard.basic.lastReceiveDay !== todayEpochDays) {
+      saved.monthCard.basic.isReceive = false;
+    }
+    if (saved.monthCard.premium.lastReceiveDay !== todayEpochDays) {
+      saved.monthCard.premium.isReceive = false;
+    }
+
+    if (saved.monthCard.basic.isPay && saved.monthCard.basic.buyTime > 0) {
+      const days = Math.floor((Date.now() - saved.monthCard.basic.buyTime) / 86400000);
+      saved.monthCard.basic.leftDays = Math.max(0, 30 - days);
+      if (saved.monthCard.basic.leftDays === 0) saved.monthCard.basic.isPay = false;
+    }
+    if (saved.monthCard.premium.isPay && saved.monthCard.premium.buyTime > 0) {
+      const days = Math.floor((Date.now() - saved.monthCard.premium.buyTime) / 86400000);
+      saved.monthCard.premium.leftDays = Math.max(0, 30 - days);
+      if (saved.monthCard.premium.leftDays === 0) saved.monthCard.premium.isPay = false;
+    }
+
+    sendGameSession(state, 4698, originalPb.encode('active.MonthCardRsp', {
+      mainType: 1,
+      info: [
+        {
+          cardType: 1,
+          isPay: Boolean(saved.monthCard.basic.isPay),
+          isReceive: Boolean(saved.monthCard.basic.isReceive),
+          leftDays: Number(saved.monthCard.basic.leftDays ?? 30)
+        },
+        {
+          cardType: 2,
+          isPay: Boolean(saved.monthCard.premium.isPay),
+          isReceive: Boolean(saved.monthCard.premium.isReceive),
+          leftDays: Number(saved.monthCard.premium.leftDays ?? 30)
+        }
+      ]
+    }));
+  } catch (e) {
+    log(`[MONTH CARD SNAPSHOT #${state.id}] ${e.message}`);
+  }
+}
+
+async function handleMonthCard(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    let req = { op: 1, cardType: 1 };
+    if (body && body.length > 0) {
+      try { req = originalPb.decode('active.MonthCardReqMsg', body); } catch (_) {}
+    }
+    const op = Number(req.op || 1);
+    const cardType = Number(req.cardType || 1);
+    const todayEpochDays = Math.floor(Date.now() / 86400000);
+
+    let resMainType = 1;
+    let resInfos = [];
+    let walletChanged = false;
+
+    if (op === 4) {
+      // Consulta do Passe Mensal de Arma Rara (mainType: 2)
+      resMainType = 2;
+      let rareCard = { cardType: 10, isPay: false, isReceive: false, leftDays: 30 };
+      await db.mutateCharacterState(state.gatewayId, (saved) => {
+        saved.monthCard = saved.monthCard || {};
+        saved.monthCard.rareWeapon = saved.monthCard.rareWeapon || { isPay: false, isReceive: false, leftDays: 30, buyTime: 0, lastReceiveDay: 0 };
+        if (saved.monthCard.rareWeapon.lastReceiveDay !== todayEpochDays) {
+          saved.monthCard.rareWeapon.isReceive = false;
+        }
+        if (saved.monthCard.rareWeapon.isPay && saved.monthCard.rareWeapon.buyTime > 0) {
+          const days = Math.floor((Date.now() - saved.monthCard.rareWeapon.buyTime) / 86400000);
+          saved.monthCard.rareWeapon.leftDays = Math.max(0, 30 - days);
+          if (saved.monthCard.rareWeapon.leftDays === 0) saved.monthCard.rareWeapon.isPay = false;
+        }
+        rareCard = {
+          cardType: 10,
+          isPay: Boolean(saved.monthCard.rareWeapon.isPay),
+          isReceive: Boolean(saved.monthCard.rareWeapon.isReceive),
+          leftDays: Number(saved.monthCard.rareWeapon.leftDays ?? 30)
+        };
+        return { state: saved };
+      });
+      resInfos = [rareCard];
+    } else {
+      // Passe Mensal Tradicional (mainType: 1)
+      resMainType = 1;
+      let basicCard = { cardType: 1, isPay: false, isReceive: false, leftDays: 30 };
+      let premiumCard = { cardType: 2, isPay: false, isReceive: false, leftDays: 30 };
+
+      await db.mutateCharacterState(state.gatewayId, (saved) => {
+        saved.monthCard = saved.monthCard || {};
+        saved.monthCard.basic = saved.monthCard.basic || { isPay: false, isReceive: false, leftDays: 30, buyTime: 0, lastReceiveDay: 0 };
+        saved.monthCard.premium = saved.monthCard.premium || { isPay: false, isReceive: false, leftDays: 30, buyTime: 0, lastReceiveDay: 0 };
+        saved.wallet = saved.wallet || {};
+
+        if (saved.monthCard.basic.lastReceiveDay !== todayEpochDays) {
+          saved.monthCard.basic.isReceive = false;
+        }
+        if (saved.monthCard.premium.lastReceiveDay !== todayEpochDays) {
+          saved.monthCard.premium.isReceive = false;
+        }
+
+        if (saved.monthCard.basic.isPay && saved.monthCard.basic.buyTime > 0) {
+          const days = Math.floor((Date.now() - saved.monthCard.basic.buyTime) / 86400000);
+          saved.monthCard.basic.leftDays = Math.max(0, 30 - days);
+          if (saved.monthCard.basic.leftDays === 0) saved.monthCard.basic.isPay = false;
+        }
+        if (saved.monthCard.premium.isPay && saved.monthCard.premium.buyTime > 0) {
+          const days = Math.floor((Date.now() - saved.monthCard.premium.buyTime) / 86400000);
+          saved.monthCard.premium.leftDays = Math.max(0, 30 - days);
+          if (saved.monthCard.premium.leftDays === 0) saved.monthCard.premium.isPay = false;
+        }
+
+        // Op 2: Coleta de recompensa diaria do Passe Basico (75 Balens Vinculados)
+        if (op === 2 && saved.monthCard.basic.isPay && !saved.monthCard.basic.isReceive) {
+          saved.monthCard.basic.isReceive = true;
+          saved.monthCard.basic.lastReceiveDay = todayEpochDays;
+          saved.wallet.boundBalens = (Number(saved.wallet.boundBalens || state.character?.bound_crystals || 0)) + 75;
+          if (state.character) state.character.bound_crystals = saved.wallet.boundBalens;
+          walletChanged = true;
+        }
+
+        // Op 3: Coleta de recompensa diaria do Passe Premium (300 Balens Vinculados)
+        if (op === 3 && saved.monthCard.premium.isPay && !saved.monthCard.premium.isReceive) {
+          saved.monthCard.premium.isReceive = true;
+          saved.monthCard.premium.lastReceiveDay = todayEpochDays;
+          saved.wallet.boundBalens = (Number(saved.wallet.boundBalens || state.character?.bound_crystals || 0)) + 300;
+          if (state.character) state.character.bound_crystals = saved.wallet.boundBalens;
+          walletChanged = true;
+        }
+
+        // Op 10: Ativar/Comprar Passe Basico
+        if (op === 10) {
+          saved.monthCard.basic.isPay = true;
+          saved.monthCard.basic.leftDays = 30;
+          saved.monthCard.basic.buyTime = Date.now();
+          saved.monthCard.basic.isReceive = false;
+          saved.wallet.balens = (Number(saved.wallet.balens || state.character?.crystals || 0)) + 500;
+          if (state.character) {
+            state.character.point = saved.wallet.balens;
+            state.character.crystals = saved.wallet.balens;
+          }
+          walletChanged = true;
+        }
+
+        // Op 11: Ativar/Comprar Passe Premium
+        if (op === 11) {
+          saved.monthCard.premium.isPay = true;
+          saved.monthCard.premium.leftDays = 30;
+          saved.monthCard.premium.buyTime = Date.now();
+          saved.monthCard.premium.isReceive = false;
+          saved.wallet.balens = (Number(saved.wallet.balens || state.character?.crystals || 0)) + 1500;
+          if (state.character) {
+            state.character.point = saved.wallet.balens;
+            state.character.crystals = saved.wallet.balens;
+          }
+          walletChanged = true;
+        }
+
+        basicCard = {
+          cardType: 1,
+          isPay: Boolean(saved.monthCard.basic.isPay),
+          isReceive: Boolean(saved.monthCard.basic.isReceive),
+          leftDays: Number(saved.monthCard.basic.leftDays ?? 30)
+        };
+
+        premiumCard = {
+          cardType: 2,
+          isPay: Boolean(saved.monthCard.premium.isPay),
+          isReceive: Boolean(saved.monthCard.premium.isReceive),
+          leftDays: Number(saved.monthCard.premium.leftDays ?? 30)
+        };
+
+        return {
+          state: saved,
+          resources: {
+            gold: state.character?.gold || saved.gold || 0,
+            crystals: Number(saved.wallet.balens ?? state.character?.crystals ?? 0),
+            bound_crystals: Number(saved.wallet.boundBalens ?? state.character?.bound_crystals ?? 0)
+          }
+        };
+      });
+
+      resInfos = [basicCard, premiumCard];
+    }
+
+    sendGameSession(state, 4698, originalPb.encode('active.MonthCardRsp', {
+      mainType: resMainType,
+      info: resInfos
+    }));
+
+    if (walletChanged) {
+      sendInventorySnapshot(state);
+      sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
+    }
+
+    log(`[MONTH CARD #${state.id}] Enviado 4698 (mainType: ${resMainType}, op: ${op}, cards: ${resInfos.length})`);
+  } catch (e) {
+    log(`[MONTH CARD #${state.id}] Falha: ${e.message}`);
+  }
+}
+
+async function handleTokenCharge(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    let req = { productId: '', count: 1, templateId: 0, activeType: 0 };
+    if (body && body.length > 0) {
+      try { req = originalPb.decode('mall.ChargeOrderReq', body); } catch (_) {}
+    }
+    const productId = String(req.productId || '');
+    log(`[TOKEN CHARGE #${state.id}] Requisicao de produto: ${productId}`);
+
+    if (productId === 'wartuneh5.monthlypass.pay4.99') {
+      await handleMonthCard(state, originalPb.encode('active.MonthCardReqMsg', { op: 10, cardType: 1 }));
+    } else if (productId === 'wartuneh5.monthlypass.pay14.99') {
+      await handleMonthCard(state, originalPb.encode('active.MonthCardReqMsg', { op: 11, cardType: 2 }));
+    }
+
+    sendGameSession(state, 4710, originalPb.encode('charge.ChargeOrderRsp', {
+      result: 0,
+      orderId: 'MC_' + Date.now()
+    }));
+  } catch (e) {
+    log(`[TOKEN CHARGE #${state.id}] Falha: ${e.message}`);
+  }
+}
+
+function deliverDropIdToCharacter(saved, character, dropId) {
+  const dropItemTable = canonicalConfigs.getTable('t_s_dropitem') || [];
+  const drops = dropItemTable.filter(x => Number(x.DropId) === Number(dropId));
+  if (!drops.length) return [];
+  const rewardParts = drops.map(d => `${d.ItemId},${d.Data || 1}`);
+  return deliverRewardStringToCharacter(saved, character, rewardParts.join('|'));
+}
+
+function getDevotionState(saved, playerGrade) {
+  saved.devotion = saved.devotion || {};
+  const todayEpochDays = Math.floor(Date.now() / 86400000);
+  const currentWeek = Math.floor((Date.now() + 3 * 86400000) / (7 * 86400000));
+
+  if (saved.devotion.lastDay !== todayEpochDays) {
+    saved.devotion.dailyPoints = 120;
+    saved.devotion.leedProcess = (Number(saved.devotion.leedProcess || 0)) & ~( (1 << 1) | (1 << 2) | (1 << 3) | (1 << 4) | (1 << 5) );
+    saved.devotion.lastDay = todayEpochDays;
+    saved.devotion.dailyTasks = { 10: 1, 20: 1, 30: 1, 40: 5, 80: 3, 90: 1 };
+  }
+
+  if (saved.devotion.lastWeek !== currentWeek) {
+    saved.devotion.weeklyPoints = 300;
+    saved.devotion.leedProcess = (Number(saved.devotion.leedProcess || 0)) & ~( (1 << 16) | (1 << 17) | (1 << 18) | (1 << 19) | (1 << 20) );
+    saved.devotion.lastWeek = currentWeek;
+    saved.devotion.weeklyTasks = { 281: 5, 291: 10, 301: 5 };
+  }
+
+  saved.devotion.dailyTasks = saved.devotion.dailyTasks || { 10: 1, 20: 1, 30: 1, 40: 5, 80: 3, 90: 1 };
+  saved.devotion.weeklyTasks = saved.devotion.weeklyTasks || { 281: 5, 291: 10, 301: 5 };
+  if (!saved.devotion.dailyPoints) saved.devotion.dailyPoints = 120;
+  if (!saved.devotion.weeklyPoints) saved.devotion.weeklyPoints = 300;
+
+  const leedTable = canonicalConfigs.getTable('t_s_leedtemplate') || [];
+  const matchingTasks = leedTable.filter(t => playerGrade >= Number(t.LevelMin || 0) && playerGrade <= Number(t.LevelMax || 999));
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const leedDataList = matchingTasks.map(t => {
+    const isWeekly = Number(t.Kind) === 1;
+    const taskStore = isWeekly ? saved.devotion.weeklyTasks : saved.devotion.dailyTasks;
+    const currentCount = Number(taskStore[t.TemplateId] || 0);
+    const passCount = Number(t.PassCount || 1);
+    const isComplete = currentCount >= passCount;
+    return {
+      templateId: Number(t.TemplateId),
+      userId: 0,
+      currentCount: Math.min(currentCount, passCount),
+      beginDate: todayStr,
+      isComplete: isComplete
+    };
+  });
+
+  return {
+    leed: leedDataList,
+    leedProcess: Number(saved.devotion.leedProcess || 0),
+    totalNum: Number(saved.devotion.dailyPoints || 120),
+    weekActive: Number(saved.devotion.weeklyPoints || 300),
+    state: 0,
+    opType: 1
+  };
+}
+
+function sendDevotionSnapshot(state) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    const saved = inventoryState.parseState(state.character?.state_json || {});
+    const playerGrade = Number(state.character?.grade || 1);
+    const devData = getDevotionState(saved, playerGrade);
+
+    sendGameSession(state, 4152, originalPb.encode('leed.LeedUpdatedRspMsg', devData));
+    log(`[DEVOCAO #${state.id}] Enviado 4152 com ${devData.leed.length} tarefas, pontos: diario=${devData.totalNum}, semanal=${devData.weekActive}, leedProcess=${devData.leedProcess}`);
+  } catch (e) {
+    log(`[DEVOCAO SNAPSHOT #${state.id}] ${e.message}`);
+  }
+}
+
+async function handleDevotionFinish(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    let req = { site: 1, kind: 0 };
+    if (body && body.length > 0) {
+      try { req = originalPb.decode('leed.LeedFinishedReqMsg', body); } catch (_) {}
+    }
+    const site = Number(req.site || 1);
+    const kind = Number(req.kind || 0);
+    const bitIndex = (kind === 1) ? (site + 15) : site;
+    const playerGrade = Number(state.character?.grade || 1);
+
+    log(`[DEVOCAO FINISH #${state.id}] Requisicao de bau: site ${site}, kind ${kind}, bitIndex ${bitIndex}`);
+
+    let updatedProcess = 0;
+    let devData = null;
+    let itemsReceived = [];
+
+    await db.mutateCharacterState(state.gatewayId, (saved) => {
+      devData = getDevotionState(saved, playerGrade);
+      const isPicked = Boolean((saved.devotion.leedProcess >> bitIndex) & 1);
+      if (!isPicked) {
+        saved.devotion.leedProcess |= (1 << bitIndex);
+        const dropId = (kind === 1) ? (13100 + site) : (13000 + site);
+        itemsReceived = deliverDropIdToCharacter(saved, state.character, dropId);
+      }
+      updatedProcess = saved.devotion.leedProcess;
+      devData.leedProcess = updatedProcess;
+      return {
+        state: saved,
+        resources: {
+          gold: state.character?.gold || saved.gold || 0,
+          crystals: Number(saved.wallet?.balens ?? state.character?.crystals ?? 0),
+          bound_crystals: Number(saved.wallet?.boundBalens ?? state.character?.bound_crystals ?? 0)
+        }
+      };
+    });
+
+    sendGameSession(state, 4150, originalPb.encode('leed.LeedFinishedRspMsg', {
+      leedProcess: updatedProcess
+    }));
+
+    sendGameSession(state, 4152, originalPb.encode('leed.LeedUpdatedRspMsg', devData));
+
+    sendInventorySnapshot(state);
+    sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
+
+    log(`[DEVOCAO FINISH #${state.id}] Bau coletado (site ${site}, kind ${kind}): leedProcess agora ${updatedProcess}`);
+  } catch (e) {
+    log(`[DEVOCAO FINISH #${state.id}] Falha: ${e.message}`);
+  }
+}
+
+async function handleDevotionAdd(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  sendDevotionSnapshot(state);
+}
+
+async function handleDevotionClient(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  sendDevotionSnapshot(state);
+}
+
+function sendGameBoxSnapshot(state) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    const saved = inventoryState.parseState(state.character?.state_json || {});
+    saved.gameBox = saved.gameBox || { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0 };
+
+    sendGameSession(state, 814, originalPb.encode('gamebox.GameBoxInfoRes', {
+      gameInfo: saved.gameBox
+    }));
+    log(`[GAME BOX #${state.id}] Snapshot enviado (814): ${JSON.stringify(saved.gameBox)}`);
+  } catch (e) {
+    log(`[GAME BOX SNAPSHOT #${state.id}] ${e.message}`);
+  }
+}
+
+async function handleGameBoxReq(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    let req = { gameType: 1 };
+    if (body && body.length > 0) {
+      try { req = originalPb.decode('gamebox.GameBoxStartReq', body); } catch (_) {}
+    }
+    const gameType = Number(req.gameType || 1);
+    log(`[GAME BOX #${state.id}] Iniciar minijogo: tipo ${gameType}`);
+
+    let updatedGameBox = {};
+    await db.mutateCharacterState(state.gatewayId, (saved) => {
+      saved.gameBox = saved.gameBox || { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0 };
+      const current = Number(saved.gameBox[String(gameType)] || 0);
+      saved.gameBox[String(gameType)] = current + 1;
+      updatedGameBox = { ...saved.gameBox };
+      return { state: saved };
+    });
+
+    sendGameSession(state, 381, originalPb.encode('player.CommonMsg', {
+      param1: Number(gameType)
+    }));
+
+    if (gameType === 1) {
+      // Memory card: 12 pairs of cards (24 cards total)
+      const cards = [];
+      for (let p = 1; p <= 12; p++) cards.push(p, p);
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+      state.memoryCardDeck = cards.map((type, index) => ({ index, type }));
+      state.memoryCardScore = 0;
+      state.memoryCardMatched = new Set();
+
+      sendGameSession(state, 194, originalPb.encode('carnival.MemoryCardMsg', {
+        op: 1,
+        curTurn: 1,
+        score: 0,
+        addScore: 0,
+        addScore2: 0,
+        duration: 180,
+        leftAutoChance: 3,
+        leftCheckChance: 3,
+        cards: state.memoryCardDeck
+      }));
+    } else if (gameType === 2) {
+      // LLK: 70 tiles (7 rows x 10 cols)
+      const tiles = [];
+      for (let p = 1; p <= 35; p++) tiles.push(p, p);
+      for (let i = tiles.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+      }
+      sendGameSession(state, 196, originalPb.encode('carnival.LinkGameMsg', {
+        time: 180,
+        score: 0,
+        strength: 100,
+        bombCount: 3,
+        resetCount: 3,
+        tollgate: 1,
+        points: tiles.join(',')
+      }));
+    }
+
+    sendGameSession(state, 814, originalPb.encode('gamebox.GameBoxInfoRes', {
+      gameInfo: updatedGameBox
+    }));
+
+    log(`[GAME BOX #${state.id}] Mini-jogo ${gameType} iniciado com sucesso.`);
+  } catch (e) {
+    log(`[GAME BOX #${state.id}] Falha: ${e.message}`);
+  }
+}
+
+async function handleMemoryCardOp(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    let req = { op: 1, cIndex1: 0, cIndex2: 0 };
+    if (body && body.length > 0) {
+      try { req = originalPb.decode('carnival.MemoryCardMsg', body); } catch (_) {}
+    }
+    const op = Number(req.op || 1);
+    const cIndex1 = Number(req.cIndex1 || 0);
+    const cIndex2 = Number(req.cIndex2 || 0);
+
+    log(`[MEMORY CARD #${state.id}] Op=${op}, idx1=${cIndex1}, idx2=${cIndex2}`);
+
+    if (op === 1) {
+      // Start Game: 12 pairs of cards, indices 1 to 24
+      const cardTypes = [];
+      for (let p = 1; p <= 12; p++) cardTypes.push(p, p);
+      for (let i = cardTypes.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cardTypes[i], cardTypes[j]] = [cardTypes[j], cardTypes[i]];
+      }
+      state.memoryCardDeck = {};
+      const cardList = [];
+      for (let i = 0; i < 24; i++) {
+        const cardObj = { index: i + 1, type: cardTypes[i] };
+        state.memoryCardDeck[i + 1] = cardObj;
+        cardList.push(cardObj);
+      }
+      state.memoryCardScore = 0;
+      state.memoryCardMatched = new Set();
+
+      sendGameSession(state, 194, originalPb.encode('carnival.MemoryCardMsg', {
+        op: 1,
+        curTurn: 1,
+        score: 0,
+        addScore: 0,
+        addScore2: 0,
+        duration: 180,
+        leftAutoChance: 3,
+        leftCheckChance: 3,
+        cards: cardList
+      }));
+      log(`[MEMORY CARD #${state.id}] Baralho de 24 cartas gerado e enviado (Opcode 194).`);
+    } else if (op === 2) {
+      // Flip cards
+      if (!state.memoryCardDeck) {
+        const cardTypes = [];
+        for (let p = 1; p <= 12; p++) cardTypes.push(p, p);
+        state.memoryCardDeck = {};
+        for (let i = 0; i < 24; i++) {
+          state.memoryCardDeck[i + 1] = { index: i + 1, type: cardTypes[i] };
+        }
+        state.memoryCardScore = 0;
+        state.memoryCardMatched = new Set();
+      }
+
+      const card1 = state.memoryCardDeck[cIndex1];
+      const card2 = state.memoryCardDeck[cIndex2];
+      const isMatch = Boolean(card1 && card2 && card1.type === card2.type && cIndex1 !== cIndex2);
+
+      if (isMatch) {
+        state.memoryCardMatched = state.memoryCardMatched || new Set();
+        state.memoryCardMatched.add(cIndex1);
+        state.memoryCardMatched.add(cIndex2);
+        state.memoryCardScore = (Number(state.memoryCardScore) || 0) + 100;
+      }
+
+      sendGameSession(state, 194, originalPb.encode('carnival.MemoryCardMsg', {
+        op: 2,
+        cIndex1,
+        cIndex2,
+        result: isMatch,
+        addScore: isMatch ? 100 : 0,
+        score: state.memoryCardScore,
+        duration: 180
+      }));
+
+      // Check if all matched
+      if (state.memoryCardMatched && state.memoryCardMatched.size >= 24) {
+        sendGameSession(state, 195, originalPb.encode('carnival.MemoryCardRewardMsg', {
+          score: state.memoryCardScore,
+          count: 5
+        }));
+        await db.mutateCharacterState(state.gatewayId, (saved) => {
+          saved.wallet = saved.wallet || {};
+          saved.wallet.gold = (Number(saved.wallet.gold) || 0) + 50000;
+          saved.gold = saved.wallet.gold;
+          inventoryState.addItem(saved, 208009, 10);
+          return { state: saved };
+        });
+        await synchronizeResources(state);
+        sendInventorySnapshot(state);
+      }
+    } else if (op === 5) {
+      // Close
+      state.memoryCardDeck = null;
+      state.memoryCardScore = 0;
+    }
+  } catch (err) {
+    log(`[MEMORY CARD #${state.id}] Erro: ${err.message}`);
+  }
+}
+
+function rollMysteryShop(grade = 80) {
+  const g = Number(grade) || 80;
+  let pool = outcityShopCatalog.filter(it => Number(it.Type) === 2 && Number(it.MinLevel) <= g && Number(it.MaxLevel) >= g);
+  if (pool.length < 6) pool = outcityShopCatalog.filter(it => Number(it.Type) === 2);
+  if (pool.length === 0) return [];
+
+  const selected = [];
+  const available = [...pool];
+  for (let i = 0; i < 6 && available.length > 0; i++) {
+    const totalWeight = available.reduce((sum, it) => sum + Math.max(1, Number(it.Random) || 1), 0);
+    let rand = Math.random() * totalWeight;
+    let chosenIdx = 0;
+    for (let j = 0; j < available.length; j++) {
+      rand -= Math.max(1, Number(available[j].Random) || 1);
+      if (rand <= 0) {
+        chosenIdx = j;
+        break;
+      }
+    }
+    const chosen = available.splice(chosenIdx, 1)[0];
+    selected.push({
+      mapshopitemid: Number(chosen.MapShopId),
+      mapshopcostid: Number(chosen.ItemId),
+      isbuy: false,
+      index: i,
+      count: Number(chosen.Count) || 1
+    });
+  }
+  return selected;
+}
+
+function getNextMysteryFreshTime() {
+  const now = new Date();
+  const hours = [1, 10, 15, 20];
+  let nextDate = null;
+  for (const h of hours) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, 0, 0);
+    if (d.getTime() > now.getTime()) {
+      nextDate = d;
+      break;
+    }
+  }
+  if (!nextDate) {
+    nextDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, hours[0], 0, 0);
+  }
+  const pad = n => String(n).padStart(2, '0');
+  return `${nextDate.getFullYear()}-${pad(nextDate.getMonth()+1)}-${pad(nextDate.getDate())} ${pad(nextDate.getHours())}:${pad(nextDate.getMinutes())}:${pad(nextDate.getSeconds())}`;
+}
+
+async function sendMapShopSnapshot(state) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    const char = state.character || await db.characterById(state.gatewayId);
+    if (!char) return;
+    const saved = inventoryState.parseState(char.state_json);
+    saved.mysteryShop = saved.mysteryShop || {};
+    const today = new Date().toISOString().slice(0, 10);
+    if (saved.mysteryShop.lastDate !== today) {
+      saved.mysteryShop.lastDate = today;
+      saved.mysteryShop.freshCount = 0;
+    }
+    const grade = Number(char.grade || state.playerGrade || 80);
+    if (!Array.isArray(saved.mysteryShop.items) || saved.mysteryShop.items.length === 0) {
+      saved.mysteryShop.items = rollMysteryShop(grade);
+      await db.mutateCharacterState(state.gatewayId, (s) => {
+        s.mysteryShop = saved.mysteryShop;
+        return { state: s };
+      });
+    }
+
+    const payload = {
+      userId: Number(char.id || state.gatewayId),
+      freshTime: getNextMysteryFreshTime(),
+      bless: Number(saved.mysteryShop.bless || 0),
+      freshCount: Number(saved.mysteryShop.freshCount || 0),
+      score: Number(saved.mysteryShop.score || 0),
+      items: saved.mysteryShop.items,
+      weeklyLimitItems: []
+    };
+
+    sendGameSession(state, 4946, originalPb.encode('mapshop.MapShopInfoMsg', payload));
+
+    sendGameSession(state, 294, originalPb.encode('item.BottlePassMsg', {
+      infos: [
+        "Guerreiro Mano obteve Cristal Espiritual*20 na Loja Misteriosa!",
+        "Mago Merlin obteve Gema de Ataque Lv. 7 na Loja Misteriosa!",
+        "Arqueira Robin obteve Alma da Besta na Loja Misteriosa!"
+      ]
+    }));
+
+    log(`[MAP SHOP #${state.id}] Loja Misteriosa sincronizada (Opcode 4946: ${saved.mysteryShop.items.length} itens, freshCount: ${saved.mysteryShop.freshCount}).`);
+  } catch (err) {
+    log(`[MAP SHOP SNAPSHOT #${state.id}] Erro: ${err.message}`);
+  }
+}
+
+async function handleMapShopInfo(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    let req = { op: 1, para1: 0, para2: 0, payType: 0, count: 1 };
+    if (body && body.length > 0) {
+      try { req = originalPb.decode('mapshop.MapShopquestMsg', body); } catch (_) {}
+    }
+    const op = Number(req.op || 1);
+    const para1 = Number(req.para1 || 0);
+    const para2 = Number(req.para2 || 0);
+    const payType = Number(req.payType || 0);
+    const count = Number(req.count || 1);
+
+    log(`[MAP SHOP #${state.id}] Requisição op=${op}, para1=${para1}, para2=${para2}, payType=${payType}, count=${count}`);
+
+    if (op === 1) {
+      await sendMapShopSnapshot(state);
+    } else if (op === 3) {
+      const char = state.character || await db.characterById(state.gatewayId);
+      if (!char) return;
+      const grade = Number(char.grade || state.playerGrade || 80);
+
+      await db.mutateCharacterState(state.gatewayId, (saved) => {
+        saved.mysteryShop = saved.mysteryShop || {};
+        saved.wallet = saved.wallet || {};
+
+        const isPaid = para2 === 2 || (saved.mysteryShop.freshCount || 0) >= 10;
+        if (isPaid) {
+          const cost = 10;
+          const bound = Number(saved.wallet.boundBalens ?? saved.gift_token ?? 0);
+          const unbound = Number(saved.wallet.balens ?? saved.point ?? 0);
+          if (bound >= cost) {
+            saved.wallet.boundBalens = bound - cost;
+            saved.gift_token = saved.wallet.boundBalens;
+          } else if (unbound >= cost) {
+            saved.wallet.balens = unbound - cost;
+            saved.point = saved.wallet.balens;
+          } else {
+            return { state: saved };
+          }
+        }
+
+        saved.mysteryShop.freshCount = (Number(saved.mysteryShop.freshCount) || 0) + 1;
+        saved.mysteryShop.items = rollMysteryShop(grade);
+        return { state: saved };
+      });
+
+      await synchronizeResources(state);
+      await sendMapShopSnapshot(state);
+      log(`[MAP SHOP #${state.id}] Itens atualizados com sucesso (freshCount incrementado).`);
+    } else if (op === 2) {
+      const shopType = para1;
+      const targetSlot = para2;
+
+      let boughtItemCfg = null;
+      let costDeducted = false;
+
+      await db.mutateCharacterState(state.gatewayId, (saved) => {
+        saved.mysteryShop = saved.mysteryShop || {};
+        saved.wallet = saved.wallet || {};
+        saved.inventory = saved.inventory || [];
+
+        if (shopType === 2) {
+          const items = saved.mysteryShop.items || [];
+          const slot = items.find(it => it.index === targetSlot);
+          if (!slot || slot.isbuy) {
+            log(`[MAP SHOP #${state.id}] Slot ${targetSlot} inválido ou já comprado.`);
+            return { state: saved };
+          }
+
+          const cfg = outcityShopCatalog.find(c => Number(c.MapShopId) === Number(slot.mapshopitemid));
+          if (!cfg) {
+            log(`[MAP SHOP #${state.id}] Configuração MapShopId ${slot.mapshopitemid} não encontrada.`);
+            return { state: saved };
+          }
+
+          const pointCost = Number(cfg.Point || 0);
+          const goldCost = Number(cfg.Strategy || 0);
+
+          if (pointCost > 0) {
+            const bound = Number(saved.wallet.boundBalens ?? saved.gift_token ?? 0);
+            const unbound = Number(saved.wallet.balens ?? saved.point ?? 0);
+            if (payType === 2 && bound >= pointCost) {
+              saved.wallet.boundBalens = bound - pointCost;
+              saved.gift_token = saved.wallet.boundBalens;
+            } else if (unbound >= pointCost) {
+              saved.wallet.balens = unbound - pointCost;
+              saved.point = saved.wallet.balens;
+            } else if (bound + unbound >= pointCost) {
+              const rem = pointCost - bound;
+              saved.wallet.boundBalens = 0;
+              saved.gift_token = 0;
+              saved.wallet.balens = unbound - rem;
+              saved.point = saved.wallet.balens;
+            } else {
+              log(`[MAP SHOP #${state.id}] Balens insuficientes para compra.`);
+              return { state: saved };
+            }
+          }
+
+          if (goldCost > 0) {
+            const gold = Number(saved.wallet.gold ?? saved.gold ?? 0);
+            if (gold < goldCost) return { state: saved };
+            saved.wallet.gold = gold - goldCost;
+            saved.gold = saved.wallet.gold;
+          }
+
+          slot.isbuy = true;
+          saved.mysteryShop.score = (Number(saved.mysteryShop.score) || 0) + Math.max(1, Math.floor(pointCost / 10));
+
+          const deliverCount = (Number(cfg.Count) || 1) * count;
+          inventoryState.addItem(saved, Number(cfg.ItemId), deliverCount);
+
+          boughtItemCfg = cfg;
+          costDeducted = true;
+        }
+
+        return { state: saved };
+      });
+
+      if (costDeducted) {
+        state.character = await db.characterById(state.gatewayId);
+        await synchronizeResources(state);
+        sendInventorySnapshot(state);
+        await sendMapShopSnapshot(state);
+        log(`[MAP SHOP #${state.id}] Compra realizada com sucesso: Item ${boughtItemCfg ? boughtItemCfg.ItemId : ''} adicionado ao inventário.`);
+      }
+    }
+  } catch (err) {
+    log(`[MAP SHOP #${state.id}] Erro: ${err.message}`);
   }
 }
 
@@ -5403,6 +6653,491 @@ async function handleOnlineRewardEnsure(state, body) {
     log(`[ONLINE REWARD ENSURE #${state.id}] Itens entregues ao jogador (Opcode 8788).`);
   } catch (e) {
     log(`[ONLINE REWARD ENSURE #${state.id}] Falha: ${e.message}`);
+  }
+}
+
+// ==========================================================================
+// GUILD / CONSORTIA HANDLERS
+// ==========================================================================
+
+async function handleConsortiaSearch(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    let nameFilter = '';
+    if (body && body.length > 0) {
+      try {
+        const req = originalPb.decode('consortia.SearchConditionMsg', body);
+        nameFilter = req.consortiaName || '';
+      } catch (_) {}
+    }
+    const rsp = await guildState.searchGuilds(db.ready(), nameFilter, 1);
+    sendGameSession(state, 4139, originalPb.encode('consortia.ConsortiaSearchRspMsg', rsp));
+    log(`[GUILDA SEARCH #${state.id}] Busca realizada (filtro: "${nameFilter}", total: ${rsp.consortiaInfo.length})`);
+  } catch (err) {
+    log(`[GUILDA SEARCH #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaCreate(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    let req = { consortiaName: '', isPay: false };
+    if (body && body.length > 0) {
+      req = originalPb.decode('consortia.ConsortiaMsg', body);
+    }
+    const guildName = (req.consortiaName || '').trim();
+    const isPay = Boolean(req.isPay);
+
+    state.character = await db.characterById(state.gatewayId);
+    let saved = inventoryState.parseState(state.character.state_json);
+
+    const result = await guildState.createGuild(db.ready(), state.character, saved, guildName, isPay);
+    if (!result.ok) {
+      log(`[GUILDA CREATE #${state.id}] Falha: ${result.message}`);
+      sendGameSession(state, 34, originalPb.encode('consortia.ConsortiaMsg', {
+        result: false,
+        consortiaName: guildName
+      }));
+      return;
+    }
+
+    state.character = await db.characterById(state.gatewayId);
+
+    // 1. Envia resposta de criação (Opcode 34)
+    sendGameSession(state, 34, originalPb.encode('consortia.ConsortiaMsg', {
+      result: true,
+      consortiaId: result.guildId,
+      consortiaName: result.guildName
+    }));
+
+    // 2. Envia U_C_CONSORTIA_STATIC (Opcode 117) para ativar estado no cliente
+    sendGameSession(state, 117, originalPb.encode('consortia.ConsortiaMsg', {
+      consortiaId: result.guildId,
+      consortiaName: result.guildName
+    }));
+
+    // 3. Sincroniza player.PlayerMsg (Opcode 3) e recursos
+    sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
+
+    // 4. Envia info da guilda (Opcode 4138)
+    const gInfo = await guildState.getGuildInfo(db.ready(), result.guildId);
+    if (gInfo) {
+      sendGameSession(state, 4138, originalPb.encode('consortia.ConsortiaInfoMsg', gInfo));
+    }
+
+    // 5. Envia cargos da guilda (Opcode 4137)
+    sendGameSession(state, 4137, originalPb.encode('consortia.ConsortiaDutyListRspMsg', guildState.getDutyList()));
+
+    // 6. Envia lista de membros (Opcode 4133)
+    const members = await guildState.getGuildMembers(db.ready(), result.guildId,
+      new Set([...sessions].filter(s=>s.gatewayId&&!s.closed).map(s=>Number(s.gatewayId))));
+    sendGameSession(state, 4133, originalPb.encode('simple.SimplePlayerListRspMsg', members));
+
+    // 7. Atualiza exército com o nome da guilda no mapa
+    const updatedHero = heroState.heroInfo(state.character);
+    sendGameSession(state, 113, originalPb.encode('army.SimpleHeroInfoMsg', updatedHero));
+    if (state.heroSent && state.worldRequested) {
+      sendGameSession(state, 169, originalPb.encode('army.ArmyUpdatedGridMsg', { updatedArmy: [heroState.armyInfo(state.character)] }));
+    }
+
+    log(`[GUILDA CREATE #${state.id}] Guilda "${result.guildName}" (ID ${result.guildId}) criada com sucesso pelo jogador ${state.character.nickname}!`);
+  } catch (err) {
+    log(`[GUILDA CREATE #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaInfo(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    let consortiaId = 0;
+    if (body && body.length > 0) {
+      try {
+        const req = originalPb.decode('consortia.ConsortiaMsg', body);
+        consortiaId = Number(req.consortiaId || 0);
+      } catch (_) {}
+    }
+    if (!consortiaId) {
+      const saved = inventoryState.parseState(state.character.state_json);
+      consortiaId = Number(saved.consortia?.id || 0);
+    }
+    if (consortiaId > 0) {
+      const gInfo = await guildState.getGuildInfo(db.ready(), consortiaId);
+      if (gInfo) {
+        sendGameSession(state, 4138, originalPb.encode('consortia.ConsortiaInfoMsg', gInfo));
+        log(`[GUILDA INFO #${state.id}] Info enviada para guilda ID ${consortiaId} ("${gInfo.consortiaName}")`);
+      }
+    }
+  } catch (err) {
+    log(`[GUILDA INFO #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaUpgrade(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  const req=originalPb.decode('consortia.ConsortiaMsg',body);
+  const researchType=Number(req.upgradeType);
+  const result=[...guildSkills.BASIC_TYPES,...guildSkills.HIGH_TYPES].includes(researchType)
+    ? await guildSkills.research(db.ready(),state.gatewayId,researchType)
+    : await guildState.upgradeGuild(db.ready(),state.gatewayId,researchType);
+  if (!result.ok) {
+    log(`[CONSORTIA UPGRADE #${state.id}] ${result.message}`);
+    const guildId=Number(result.guildId || inventoryState.parseState(state.character.state_json).consortia?.id || 0);
+    if (guildId) {
+      const info=await guildState.getGuildInfo(db.ready(),guildId);
+      if (info) sendGameSession(state,164,originalPb.encode('consortia.ConsortiaInfoMsg',info));
+    }
+    return;
+  }
+  const info=await guildState.getGuildInfo(db.ready(),result.guildId);
+  if (info) sendGameSession(state,164,originalPb.encode('consortia.ConsortiaInfoMsg',info));
+  log(`[CONSORTIA UPGRADE #${state.id}] guild=${result.guildId} type=${result.type} target=${result.targetLevel} offer=-${result.offerSpent}`);
+}
+
+async function handleConsortiaLearn(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  const req=originalPb.decode('consortia.ConsortiaMsg',body);
+  const result=await guildSkills.learn(db.ready(),state.gatewayId,req.studySkill);
+  if (!result.ok) {
+    log(`[CONSORTIA LEARN #${state.id}] ${result.message}`);
+    return;
+  }
+  state.character=await db.characterById(state.gatewayId);
+  sendGameSession(state,3,makeBasicPlayerInfo(state.character));
+  sendGameSession(state,113,originalPb.encode('army.SimpleHeroInfoMsg',heroState.heroInfo(state.character)));
+  log(`[CONSORTIA LEARN #${state.id}] guild=${result.guildId} type=${result.type} level=${result.level} offer=-${result.cost}`);
+}
+
+async function handleConsortiaQuick(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  const req=originalPb.decode('player.PayTypeMsg',body);
+  const result=await guildState.accelerateGuildUpgrade(db.ready(),state.gatewayId,req.payType);
+  if (!result.ok) {
+    log(`[CONSORTIA QUICK #${state.id}] ${result.message}`);
+    const guildId=Number(result.guildId || inventoryState.parseState(state.character.state_json).consortia?.id || 0);
+    if (guildId) {
+      const info=await guildState.getGuildInfo(db.ready(),guildId);
+      if (info) sendGameSession(state,164,originalPb.encode('consortia.ConsortiaInfoMsg',info));
+    }
+    return;
+  }
+  state.character=await db.characterById(state.gatewayId);
+  sendGameSession(state,3,makeBasicPlayerInfo(state.character));
+  const info=await guildState.getGuildInfo(db.ready(),result.guildId);
+  if (info) sendGameSession(state,164,originalPb.encode('consortia.ConsortiaInfoMsg',info));
+  log(`[CONSORTIA QUICK #${state.id}] guild=${result.guildId} cost=${result.cost}`);
+}
+
+async function handleConsortiaUserList(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    const saved = inventoryState.parseState(state.character.state_json);
+    const consortiaId = Number(saved.consortia?.id || 0);
+    if (consortiaId > 0) {
+      const members = await guildState.getGuildMembers(db.ready(), consortiaId,
+        new Set([...sessions].filter(s=>s.gatewayId&&!s.closed).map(s=>Number(s.gatewayId))));
+      sendGameSession(state, 4133, originalPb.encode('simple.SimplePlayerListRspMsg', members));
+      log(`[GUILDA MEMBERS #${state.id}] Lista de membros enviada (${members.totalRows} membros)`);
+    }
+  } catch (err) {
+    log(`[GUILDA MEMBERS #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaDutyList(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    const dutyList = guildState.getDutyList();
+    sendGameSession(state, 4137, originalPb.encode('consortia.ConsortiaDutyListRspMsg', dutyList));
+    log(`[GUILDA DUTY #${state.id}] Lista de cargos enviada`);
+  } catch (err) {
+    log(`[GUILDA DUTY #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaOffer(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    let req = { offerGold: 0, offerPoint: 0 };
+    if (body && body.length > 0) {
+      req = originalPb.decode('consortia.ConsortiaUserOfferReqMsg', body);
+    }
+    const offerGold = Math.max(0, Number(req.offerGold || 0));
+    const offerPoint = Math.max(0, Number(req.offerPoint || 0));
+
+    state.character = await db.characterById(state.gatewayId);
+    let saved = inventoryState.parseState(state.character.state_json);
+
+    const result = await guildState.contributeGuild(db.ready(), state.character, saved, offerGold, offerPoint);
+    if (!result.ok) {
+      log(`[GUILDA OFFER #${state.id}] Falha: ${result.message}`);
+      sendGameSession(state, 42, originalPb.encode('consortia.ConsortiaMsg', { result: false }));
+      return;
+    }
+
+    state.character = await db.characterById(state.gatewayId);
+
+    // 1. Responde sucesso (Opcode 42)
+    sendGameSession(state, 42, originalPb.encode('consortia.ConsortiaMsg', { result: true }));
+
+    // 2. Atualiza PlayerMsg (Opcode 3)
+    sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
+
+    // 3. Atualiza ConsortiaInfo (Opcode 4138)
+    const gInfo = await guildState.getGuildInfo(db.ready(), saved.consortia.id);
+    if (gInfo) {
+      sendGameSession(state, 4138, originalPb.encode('consortia.ConsortiaInfoMsg', gInfo));
+    }
+
+    // 4. Atualiza Membros (Opcode 4133)
+    const members = await guildState.getGuildMembers(db.ready(), saved.consortia.id,
+      new Set([...sessions].filter(s=>s.gatewayId&&!s.closed).map(s=>Number(s.gatewayId))));
+    sendGameSession(state, 4133, originalPb.encode('simple.SimplePlayerListRspMsg', members));
+
+    log(`[GUILDA OFFER #${state.id}] Doação realizada com sucesso (+${result.playerOfferAdded} contribuição, fundos guilda +${result.guildFundsAdded})`);
+  } catch (err) {
+    log(`[GUILDA OFFER #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaOfferList(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    const saved = inventoryState.parseState(state.character.state_json);
+    const consortiaId = Number(saved.consortia?.id || 0);
+    let pageIndex = 1;
+    let isHistory = false;
+    if (body && body.length > 0) {
+      try {
+        const req = originalPb.decode('consortia.ConsortiaOfferReqMsg', body);
+        pageIndex = Number(req.pageIndex || 1);
+        isHistory = Boolean(req.isHistory);
+      } catch (_) {}
+    }
+    const rsp = await guildState.getContributionList(db.ready(), consortiaId, pageIndex, isHistory);
+    sendGameSession(state, 4134, originalPb.encode('consortia.ConsortiaContributeRspMsg', rsp));
+    log(`[GUILDA OFFER LIST #${state.id}] Histórico de doações enviado (${rsp.contributeInfo.length} registros)`);
+  } catch (err) {
+    log(`[GUILDA OFFER LIST #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaModifyDesc(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    let req = { description: '' };
+    if (body && body.length > 0) {
+      req = originalPb.decode('consortia.ConsortiaMsg', body);
+    }
+    const saved = inventoryState.parseState(state.character.state_json);
+    if (saved.consortia?.id && await guildState.mayManageGuild(db.ready(),state.gatewayId,saved.consortia.id)) {
+      await db.ready().query('UPDATE consortia SET description = ? WHERE id = ?', [req.description || '', saved.consortia.id]);
+      sendGameSession(state, 39, originalPb.encode('consortia.ConsortiaMsg', { result: true, description: req.description }));
+      const gInfo = await guildState.getGuildInfo(db.ready(), saved.consortia.id);
+      if (gInfo) sendGameSession(state, 4138, originalPb.encode('consortia.ConsortiaInfoMsg', gInfo));
+    } else {
+      sendGameSession(state,39,originalPb.encode('consortia.ConsortiaMsg',{result:false}));
+    }
+  } catch (err) {
+    log(`[GUILDA DESC #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaModifyBbs(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    let req = { placard: '' };
+    if (body && body.length > 0) {
+      req = originalPb.decode('consortia.ConsortiaMsg', body);
+    }
+    const saved = inventoryState.parseState(state.character.state_json);
+    if (saved.consortia?.id && await guildState.mayManageGuild(db.ready(),state.gatewayId,saved.consortia.id)) {
+      await db.ready().query('UPDATE consortia SET placard = ? WHERE id = ?', [req.placard || '', saved.consortia.id]);
+      sendGameSession(state, 38, originalPb.encode('consortia.ConsortiaMsg', { result: true, placard: req.placard }));
+      const gInfo = await guildState.getGuildInfo(db.ready(), saved.consortia.id);
+      if (gInfo) sendGameSession(state, 4138, originalPb.encode('consortia.ConsortiaInfoMsg', gInfo));
+    } else {
+      sendGameSession(state,38,originalPb.encode('consortia.ConsortiaMsg',{result:false}));
+    }
+  } catch (err) {
+    log(`[GUILDA BBS #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaQuit(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    const result=await guildState.quitGuild(db.ready(),state.gatewayId);
+    if (result.ok) {
+      state.character = await db.characterById(state.gatewayId);
+      sendGameSession(state, 117, originalPb.encode('consortia.ConsortiaMsg', { consortiaId: 0 }));
+      sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
+      log(`[GUILDA QUIT #${state.id}] Jogador saiu da guilda ID ${result.guildId}`);
+    } else {
+      log(`[GUILDA QUIT #${state.id}] Recusado: ${result.message}`);
+      state.character=await db.characterById(state.gatewayId);
+      const saved=inventoryState.parseState(state.character.state_json);
+      sendGameSession(state,117,originalPb.encode('consortia.ConsortiaMsg',{
+        consortiaId:Number(saved.consortia?.id||0)}));
+    }
+  } catch (err) {
+    log(`[GUILDA QUIT #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaApply(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    let req = { consortiaId: 0 };
+    if (body && body.length > 0) {
+      try { req = originalPb.decode('consortia.ConsortiaMsg', body); } catch (_) {}
+    }
+    const consortiaId = Number(req.consortiaId || 0);
+    if (!consortiaId) return;
+
+    state.character = await db.characterById(state.gatewayId);
+    const result = await guildState.applyToGuild(db.ready(), state.character, consortiaId);
+    if (!result.ok) {
+      log(`[GUILDA APPLY #${state.id}] Falha: ${result.message}`);
+      sendGameSession(state, 35, originalPb.encode('consortia.ConsortiaMsg', { result: false, consortiaId }));
+      return;
+    }
+
+    sendGameSession(state, 35, originalPb.encode('consortia.ConsortiaMsg', {
+      result: true,
+      consortiaId,
+      consortiaName: result.consortiaName,
+      applyId: result.applyId
+    }));
+    log(`[GUILDA APPLY #${state.id}] Jogador ${state.character.nickname} candidatou-se à guilda "${result.consortiaName}" (ID ${consortiaId})`);
+  } catch (err) {
+    log(`[GUILDA APPLY #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaInviteList(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    state.character = await db.characterById(state.gatewayId);
+    const saved = inventoryState.parseState(state.character.state_json);
+    const consortiaId = Number(saved.consortia?.id || 0);
+    const applyList = await guildState.getApplyList(db.ready(),
+      await guildState.mayManageGuild(db.ready(),state.gatewayId,consortiaId)?consortiaId:0);
+    sendGameSession(state, 4140, originalPb.encode('consortia.ConsortiaInviteInfoListRspMsg', {
+      info: applyList.info
+    }));
+    log(`[GUILDA INVITE LIST #${state.id}] Lista de candidaturas enviada (${applyList.info.length} candidaturas)`);
+  } catch (err) {
+    log(`[GUILDA INVITE LIST #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleConsortiaPass(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  try {
+    let req = { applyId: 0, result: true };
+    if (body && body.length > 0) {
+      try { req = originalPb.decode('consortia.ConsortiaMsg', body); } catch (_) {}
+    }
+    const applyId = Number(req.applyId || 0);
+    const isPass = Boolean(req.result);
+    if (!applyId) return;
+
+    const opRes = await guildState.operateApply(db.ready(), state.gatewayId, applyId, isPass);
+    if (!opRes.ok) {
+      log(`[GUILDA PASS #${state.id}] Falha: ${opRes.message}`);
+      sendGameSession(state, 40, originalPb.encode('consortia.ConsortiaMsg', { result: false, applyId }));
+      return;
+    }
+
+    sendGameSession(state, 40, originalPb.encode('consortia.ConsortiaMsg', {
+      result: isPass,
+      applyId
+    }));
+    sendGameSession(state, 37, originalPb.encode('consortia.ConsortiaMsg', {
+      result: isPass,
+      applyId
+    }));
+
+    if (isPass) {
+      const members = await guildState.getGuildMembers(db.ready(), opRes.consortiaId,
+        new Set([...sessions].filter(s=>s.gatewayId&&!s.closed).map(s=>Number(s.gatewayId))));
+      sendGameSession(state, 4133, originalPb.encode('simple.SimplePlayerListRspMsg', members));
+      
+      for (const s of sessions) {
+        if (s.character && s.character.id === opRes.characterId && !s.closed) {
+          s.character = await db.characterById(s.gatewayId);
+          sendGameSession(s, 117, originalPb.encode('consortia.ConsortiaMsg', {
+            consortiaId: opRes.consortiaId
+          }));
+          sendGameSession(s, 3, makeBasicPlayerInfo(s.character));
+          const gInfo = await guildState.getGuildInfo(db.ready(), opRes.consortiaId);
+          if (gInfo) sendGameSession(s, 4138, originalPb.encode('consortia.ConsortiaInfoMsg', gInfo));
+          log(`[GUILDA PASS #${state.id}] Candidato online (Sessão #${s.id}) sincronizado com a guilda!`);
+        }
+      }
+    }
+
+    log(`[GUILDA PASS #${state.id}] Candidatura ID ${applyId} ${isPass ? 'APROVADA' : 'RECUSADA'} com sucesso!`);
+  } catch (err) {
+    log(`[GUILDA PASS #${state.id}] Erro:`, err.message);
+  }
+}
+
+async function handleGuardReqCmd(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  try {
+    let req = { op: 0, guardId: 1 };
+    if (body && body.length > 0) {
+      try { req = originalPb.decode('carnival.GuardReqInfoMsg', body); } catch (_) {}
+    }
+    const result = await db.mutateCharacterState(state.gatewayId, saved => {
+      const res = guardState.handleGuardReq(saved, req);
+      return { state: saved, res, ...(res.changed ? {resources:{gold:saved.wallet.gold}} : {}) };
+    });
+    state.character = await db.characterById(state.gatewayId);
+    const res = result.res;
+    if (res.formation) {
+      sendGameSession(state, 4944, originalPb.encode('carnival.ChallengeGuardInfoMsg', {
+        fightIndex: req.fightIndex || '1,2,3',
+        chaPos: req.challengePos || '1,2,3'
+      }));
+    } else {
+      sendGameSession(state, 4918, originalPb.encode('carnival.GuardInfoMsg', guardState.formatSingleGuardInfoMsg(res.guard, res.op, result.state)));
+    }
+    if (res.changed) {
+      sendInventorySnapshot(state);
+      sendGameSession(state, 113, originalPb.encode('army.SimpleHeroInfoMsg', heroState.heroInfo(state.character)));
+      sendGameSession(state,3,makeBasicPlayerInfo(state.character));
+    }
+    log(`[GUARD REQ #${state.id}] Op=${req.op}, GuardId=${req.guardId} processado com sucesso.`);
+  } catch (err) {
+    log(`[GUARD REQ #${state.id}] Erro: ${err.message}`);
+  }
+}
+
+async function handleGuardDrawCmd(state, body) {
+  if (!state.gatewayId || state.closed) return;
+  let req = { op: 0, templateId: 1, drawTimes: 1 };
+  try {
+    if (body && body.length > 0) {
+      try { req = originalPb.decode('carnival.GuardDrawInfoReq', body); } catch (_) {}
+    }
+    const result = await db.mutateCharacterState(state.gatewayId, saved => {
+      const res = guardState.handleGuardDraw(saved, req);
+      return { state: saved, res };
+    });
+    state.character = await db.characterById(state.gatewayId);
+    const { infoRes, awardRes, recordRes, op, changed, cost, ticketId } = result.res;
+    if (op === 2) sendGameSession(state, 4949, originalPb.encode('carnival.GuardDrawRecordRes', recordRes));
+    else if (op === 1) {
+      if (changed) sendInventorySnapshot(state);
+      sendGameSession(state, 4947, originalPb.encode('carnival.GuardDrawAwardRes', awardRes));
+    }
+    sendGameSession(state, 4948, originalPb.encode('carnival.GuardDrawInfoRes', infoRes));
+    if (changed) log(`[GUARD DRAW #${state.id}] pool=${req.templateId} draws=${req.drawTimes} ticket=${ticketId} cost=${cost} awards=${JSON.stringify(awardRes.awards)}`);
+  } catch (err) {
+    log(`[GUARD DRAW #${state.id}] Erro: ${err.message}`);
+    if (Number(req?.op) === 1) sendGameSession(state, 4947, originalPb.encode('carnival.GuardDrawAwardRes', {awards:[]}));
   }
 }
 
@@ -6010,7 +7745,7 @@ async function handleChallenge(state, body) {
 
     if (!saved.progression) saved.progression = { currentXp: 0, totalXp: 0 };
     saved.progression.totalXp = (saved.progression.totalXp || 0) + arenaXp;
-    const newGrade = resourceState.calcGradeFromXp(saved.progression.totalXp, locked.grade || 16);
+    const newGrade = resourceState.calcGradeFromXp(saved.progression.totalXp, locked.grade || 16,saved);
     const atLevel = resourceState.totalAtLevel(newGrade);
     saved.progression.currentXp = Math.max(0, saved.progression.totalXp - atLevel);
 
@@ -6520,10 +8255,11 @@ async function handlePlayerSpaceNodeTrigger(state,body){
 async function handleWildBossInfo(state, body) {
   await handleMapBossDatas(state, body);
 }
-function handleShopData(state){
+async function handleShopData(state){
   if(!state.gatewayId||state.closed)return;
   const saved=inventoryState.parseState(state.character.state_json);
-  sendGameSession(state,4238,originalPb.encode('shop.ShopMainRspMsg',shopP0.shopMainPayload(saved)));
+  const live=await shopDbLive.livePayload(db.ready(),saved);
+  sendGameSession(state,4238,originalPb.encode('shop.ShopMainRspMsg',live));
   const today=new Date().toISOString().slice(0,10);
   const hasDataInfo=shopP0.limited.filter(good=>shopP0.limitedCount(saved,good.id)>0)
     .map(good=>({userId:state.gatewayId,itemId:good.id,
@@ -6551,13 +8287,13 @@ async function handleShopBuy(state, body, fashion=false) {
     const payType = req.payType || 0;
     if(fashion&&!shopP0.fashionIds.has(Number(goodId)))throw Error('Item fora da área de moda P0');
 
-    const result = await db.mutateCharacterState(state.gatewayId, (saved, locked = {}) => {
-      const buyRes = shopState.buyShopItem(saved, goodId, count, payType);
+    const result = await db.mutateCharacterState(state.gatewayId, async (saved, locked = {}, cx) => {
+      const buyRes = await shopState.buyShopItemInTransaction(cx, state.gatewayId, saved, goodId, count, payType);
       return {
         state: saved,
         buy: buyRes,
         resources: {
-          gold: Number(saved.wallet?.gold || locked.gold || 0),
+          gold: Number(saved.wallet?.gold ?? locked.gold ?? 0),
           grade: Number(locked.grade || state.character?.grade || 5),
           experience: Number(locked.experience || 0)
         }
@@ -6575,7 +8311,7 @@ async function handleShopBuy(state, body, fashion=false) {
       sendInventorySnapshot(state);
     }
     sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
-    if(shopP0.limitedIds.has(Number(goodId)))handleShopData(state);
+    await handleShopData(state);
 
     recorder.recordServerOutcome({
       category: 'shop',
@@ -6738,6 +8474,8 @@ async function handleStarRand(state, body) {
       }
 
       const outcome = astralState.rollSphereCapture(saved, targetSite, currentGold);
+      const astroQuest=saved.quests?.active?.[3];
+      const questUpdated=astroQuest ? questState.evaluateQuest(saved,astroQuest) : false;
       const newGold = Math.max(0, currentGold - outcome.goldCost);
       if (saved.wallet) saved.wallet.gold = newGold;
       saved.gold = newGold;
@@ -6745,7 +8483,8 @@ async function handleStarRand(state, body) {
       const resObj = {
         state: saved,
         outcome,
-        newGold
+        newGold,
+        questUpdated
       };
       if (['v095', 'v096', 'v097'].includes(saved.creation?.version)) {
         resObj.resources = {
@@ -6767,6 +8506,8 @@ async function handleStarRand(state, body) {
     );
     sendGameSession(state, 4180, originalPb.encode('star.StarRandRspMsg', starRandPayload));
     sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
+    if(result.questUpdated)sendGameSession(state,112,originalPb.encode('quest.QuestUpdatedRspMsg',
+      questState.formatQuestUpdatedProtocol(result.state,result.state.quests.active[3])));
 
     log(`[STAR RAND #${state.id}] Esfera ${site} -> Astral ${result.outcome.astral.templateId} slot ${result.outcome.dropSite}. Ouro: ${result.newGold}`);
   } catch (err) {
@@ -7192,11 +8933,14 @@ async function handleStarSpecial(state, body) {
         golden: req.golden,
         maxCapture: 16
       });
+      const astroQuest=saved.quests?.active?.[3];
+      const questUpdated=Number(outcome.earnedPoints||0)>0 && astroQuest
+        ? questState.evaluateQuest(saved,astroQuest) : false;
       const newGold = outcome.remainingGold;
       if (saved.wallet) saved.wallet.gold = newGold;
       saved.gold = newGold;
 
-      const resObj = { state: saved, outcome, newGold };
+      const resObj = { state: saved, outcome, newGold, questUpdated };
       if (['v095', 'v096', 'v097'].includes(saved.creation?.version)) {
         resObj.resources = {
           gold: newGold,
@@ -7218,6 +8962,8 @@ async function handleStarSpecial(state, body) {
     );
     sendGameSession(state, 4180, originalPb.encode('star.StarRandRspMsg', starRandPayload));
     sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
+    if(result.questUpdated)sendGameSession(state,112,originalPb.encode('quest.QuestUpdatedRspMsg',
+      questState.formatQuestUpdatedProtocol(result.state,result.state.quests.active[3])));
 
     log(`[STAR AUTO #${state.id}] Auto-captura (sellMax=${req.sellMaxQuality}, composeMax=${req.composeMaxQuality}, golden=${req.golden}): ${result.state.astrals.temp.length} no temp, ${result.outcome.soldCount} vendidos. Ouro: ${result.newGold}`);
   } catch (err) {
@@ -7661,13 +9407,13 @@ async function handleFashionSwitch(state, body) {
     if (u.isSwitch) {
       if (son === 109) saved.fashionDisplay.wingAvata = templateId;
       if (son === 110) saved.fashionDisplay.hatAvata = templateId;
-      if (son === 111) saved.fashionDisplay.clothAvata = templateId;
-      if (son === 112) saved.fashionDisplay.armAvata = templateId;
+      if (son === 111) saved.fashionDisplay.armAvata = templateId;
+      if (son === 112) saved.fashionDisplay.clothAvata = templateId;
     } else {
       if (son === 109 && saved.fashionDisplay.wingAvata === templateId) delete saved.fashionDisplay.wingAvata;
       if (son === 110 && saved.fashionDisplay.hatAvata === templateId) delete saved.fashionDisplay.hatAvata;
-      if (son === 111 && saved.fashionDisplay.clothAvata === templateId) delete saved.fashionDisplay.clothAvata;
-      if (son === 112 && saved.fashionDisplay.armAvata === templateId) delete saved.fashionDisplay.armAvata;
+      if (son === 111 && saved.fashionDisplay.armAvata === templateId) delete saved.fashionDisplay.armAvata;
+      if (son === 112 && saved.fashionDisplay.clothAvata === templateId) delete saved.fashionDisplay.clothAvata;
     }
 
     return { state: saved, u };
@@ -7686,11 +9432,8 @@ async function handleFashionSwitch(state, body) {
   log(`[FASHION SWITCH #${state.id}] Moda ${templateId} alternada (ativo=${result.u.isSwitch}). Opcodes 4542, 301, 113, 169 enviados.`);
 }
 
-async function handleFashionExchange(state, body) {
-  if (!state.gatewayId || !state.character || state.closed) return;
-  const request = originalPb.decode('simple.FashionInfoMsg', body);
-  const slots = { wingAvata: 109, hatAvata: 110, clothAvata: 111, armAvata: 112 };
-  const result = await db.mutateCharacterState(state.gatewayId, saved => {
+function applyFashionExchange(saved, request) {
+  const slots = { wingAvata: 109, hatAvata: 110, armAvata: 111, clothAvata: 112 };
     const display = saved.fashionDisplay || { status: '0,0,0,0' };
     const unlocked = Array.isArray(saved.fashion?.unlocked) ? saved.fashion.unlocked : [];
     const bag = inventoryState.inventory(saved).items;
@@ -7701,12 +9444,21 @@ async function handleFashionExchange(state, body) {
         if (!Number.isSafeInteger(id) || id < 0) throw Error(`Moda invalida em ${field}`);
         if (id) {
           const tpl = itemTemplates.get(id);
-          if (Number(tpl?.SonType) !== sonType) throw Error(`Tipo de moda invalido em ${field}`);
+          // The client may include ordinary equipped gear in the same appearance packet.
+          // It is not a fashion choice and must not cancel valid fashion slots.
+          if (Number(tpl?.SonType) !== sonType) {
+            if (Number(tpl?.MasterType) === 1) continue;
+            throw Error(`Tipo de moda invalido em ${field}`);
+          }
           const owned = unlocked.some(u => Number(u.templateId || u.tempId) === id) ||
             bag.some(item => Number(item.templateId) === id && Number(item.bagType) === 4);
           if (!owned) throw Error(`Moda ${id} nao desbloqueada`);
           display[field] = id;
         } else delete display[field];
+        for (const entry of unlocked) {
+          if (Number(itemTemplates.get(Number(entry.templateId || entry.tempId))?.SonType) === sonType)
+            entry.isSwitch = Number(entry.templateId || entry.tempId) === id;
+        }
       }
     }
     for (const field of ['isHidenWingAvata', 'isHidenHatAvat', 'isHidenClothAvata', 'isHidenArmAvata']) {
@@ -7717,12 +9469,17 @@ async function handleFashionExchange(state, body) {
       display.status = request.status;
     }
     saved.fashionDisplay = display;
-    return { state: saved };
-  });
+    return saved;
+}
+
+async function handleFashionExchange(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  const request = originalPb.decode('simple.FashionInfoMsg', body);
+  const result = await db.mutateCharacterState(state.gatewayId, saved => ({state:applyFashionExchange(saved,request)}));
   state.character = await db.characterById(state.gatewayId);
   sendGameSession(state, 301, originalPb.encode('simple.FashionInfoMsg', result.state.fashionDisplay));
   sendGameSession(state, 113, originalPb.encode('army.SimpleHeroInfoMsg', heroState.heroInfo(state.character)));
-  log(`[FASHION EXCHANGE #${state.id}] Aparencia salva: ${JSON.stringify(Object.fromEntries(Object.keys(slots).map(k => [k, result.state.fashionDisplay[k] || 0])))}; 301/113.`);
+  log(`[FASHION EXCHANGE #${state.id}] Aparencia salva: ${JSON.stringify(Object.fromEntries(['wingAvata','hatAvata','clothAvata','armAvata'].map(k => [k, result.state.fashionDisplay[k] || 0])))}; 301/113.`);
 }
 
 async function handleFashionAppraisal(state, body) {
@@ -8062,10 +9819,8 @@ async function handleSoulStoreUse(state, body) {
         item.count -= used;
         left -= used;
         itemMoved.push({ bagType: 1, objectId: 0, ownerId: state.gatewayId, pos: item.pos, item: item.count > 0 ? item : null });
-        if (item.count <= 0) {
-          bag.items.splice(bag.items.indexOf(item), 1);
-        }
       }
+      bag.items = bag.items.filter(i => i.count > 0);
 
       saved.jewelGp = (saved.jewelGp || 0) + actualUsed;
       saved.jewelGrades = Number(saved.jewelGrades) || 0;
@@ -8148,13 +9903,8 @@ function syncHeroAfterSylph(state){
             // Include the real fields that the client Fy.createWithMsg consumes.
             const wireState = secondarySystemsState.formatPlayerPetMsg(saved, state.gatewayId, 0);
             wireState.op = 0;
-            const fresh = new Map((saved.sylphs?.list || []).filter(p => p && !p.isDel).map(p => [Number(p.petId), p]));
-            wireState.petInfo = (wireState.petInfo || []).map(p => ({
-              ...p, ...(fresh.get(Number(p.petId)) || {}),
-              petName: String(fresh.get(Number(p.petId))?.petName || p.petName || ''),
-              curQualityGp: Number(fresh.get(Number(p.petId))?.curQualityGp ?? p.curQualityGp ?? 0),
-              totalQualityGp: Number(fresh.get(Number(p.petId))?.totalQualityGp ?? p.totalQualityGp ?? 0)
-            }));
+            // The formatter adds equipment, guild bonuses and recomputed FC.
+            // Spreading the raw DB pet over it erased those values until relogin.
             // Validate ALL response serialization before committing the DB transaction.
             applied.petWire = originalPb.encode('pet.PlayerPetMsg', wireState);
             applied.bagWire = makeBagMoveUpdate(applied.moved.map(item => ({...item, ownerId: state.gatewayId})));
@@ -8922,8 +10672,8 @@ async function handleItemUse(state, body) {
           const son = Number(template.SonType);
           if (son === 109) equipped.state.fashionDisplay.wingAvata = template.TemplateId;
           if (son === 110) equipped.state.fashionDisplay.hatAvata = template.TemplateId;
-          if (son === 111) equipped.state.fashionDisplay.clothAvata = template.TemplateId;
-          if (son === 112) equipped.state.fashionDisplay.armAvata = template.TemplateId;
+          if (son === 111) equipped.state.fashionDisplay.armAvata = template.TemplateId;
+          if (son === 112) equipped.state.fashionDisplay.clothAvata = template.TemplateId;
           equipped.state.fashion = equipped.state.fashion || { unlocked: [] };
           let u = equipped.state.fashion.unlocked.find(x => Number(x.templateId || x.tempId) === template.TemplateId);
           if (!u) {
@@ -8953,10 +10703,11 @@ async function handleItemUse(state, body) {
         ...used,
         moved:used.moved.map(change=>({...change,ownerId:state.gatewayId})),
         changed:true,
+        levelUp:Number(original.grade||locked.grade)>Number(locked.grade),
         resources:{
           gold:Number(original.wallet?.gold??locked.gold??0),
-          grade:Number(locked.grade??state.character.grade),
-          experience:Number(locked.experience??0)
+          grade:Number(original.grade??locked.grade??state.character.grade),
+          experience:Number(original.progression?.totalXp??locked.experience??0)
         }
       };
     });
@@ -9025,9 +10776,17 @@ async function handleItemUse(state, body) {
           log(`[USO_ITEM #${state.id}] Selo ativado: novo Silfo ${result.sylph.templateId}, petId=${result.sylph.petId}.`);
         }
       }
+      if(result.frame){
+        sendGameSession(state,4729,originalPb.encode('frame.FrameInfoMsgList',
+          require('./avatar-frame-state').formatList(inventoryState.parseState(state.character.state_json))));
+        log(`[FRAME #${state.id}] Moldura ${result.frame.frameId} ativada e persistida.`);
+      }
       if(result.energy){
         sendGameSession(state,113,originalPb.encode('army.SimpleHeroInfoMsg',heroState.heroInfo(state.character)));
         log(`[USO_ITEM #${state.id}] Estamina ${result.energy.before}->${result.energy.after}.`);
+      }
+      if(result.levelUp){
+        sendGameSession(state,113,originalPb.encode('army.SimpleHeroInfoMsg',heroState.heroInfo(state.character)));
       }
 
       sendGameSession(state, 3, makeBasicPlayerInfo(state.character));
@@ -9052,6 +10811,35 @@ async function handleItemUse(state, body) {
       error: err.message,
       finalState: 'REJECTED'
     });
+  }
+}
+
+async function handleFrameList(state) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  const saved=inventoryState.parseState(state.character.state_json);
+  sendGameSession(state,4729,originalPb.encode('frame.FrameInfoMsgList',require('./avatar-frame-state').formatList(saved)));
+}
+
+async function handleFrameChange(state, body) {
+  if (!state.gatewayId || !state.character || state.closed) return;
+  let req;
+  try { req=originalPb.decode('frame.ChangeFrameReq',body); }
+  catch(err) { log(`[FRAME #${state.id}] Pedido de equipamento invalido: ${err.message}`); return; }
+  const frameId=Number(req.frameId||0);
+  try {
+    await db.mutateCharacterState(state.gatewayId, saved=>{
+      require('./avatar-frame-state').equip(saved,frameId);
+      return {state:saved};
+    });
+    state.character=await db.characterById(state.gatewayId);
+    sendGameSession(state,4728,originalPb.encode('frame.ChangeFrameResp',{frameId,ret:true}));
+    sendGameSession(state,4729,originalPb.encode('frame.FrameInfoMsgList',require('./avatar-frame-state').formatList(
+      inventoryState.parseState(state.character.state_json))));
+    sendGameSession(state,3,makeBasicPlayerInfo(state.character));
+    log(`[FRAME #${state.id}] Moldura equipada: ${frameId||'nenhuma'}; persistida.`);
+  } catch(err) {
+    sendGameSession(state,4728,originalPb.encode('frame.ChangeFrameResp',{frameId,ret:false}));
+    log(`[FRAME #${state.id}] Equipamento recusado: ${err.message}`);
   }
 }
 
@@ -9176,6 +10964,21 @@ async function handleCampaignRoomCreate(state, body) {
       throw Error(`DungeonId ${clientDungeonId} incompativel com campanha ${campaignId}`);
     }
     if (!pendingSelection) campaignState.resolveMapForCampaign(campaignId);
+  }
+  const previousRoomId = mpdRooms.memberRooms.get(Number(state.gatewayId));
+  if (previousRoomId) {
+    const previousRoom = mpdRooms.get(previousRoomId);
+    const currentSaved = inventoryState.parseState(state.character.state_json);
+    const activeCampaignId = Number(currentSaved.campaigns?.current?.campaignId || 0);
+    // A tela da sala pode ter sido fechada sem o 5025. Fora da instancia,
+    // liberar o vinculo anterior antes de criar uma nova sala autentica.
+    if (previousRoom.state === 'forming' || activeCampaignId !== previousRoom.campaignId) {
+      mpdRooms.leave(previousRoomId, state.gatewayId);
+      state.mpdEnteredRoomId = null;
+      log(`[MPD STALE #${state.id}] Sala anterior ${previousRoomId} liberada antes de 5023.`);
+    } else {
+      throw Error('Saia da masmorra atual antes de criar outra sala');
+    }
   }
   log(`[MPD DIAGNOSTICO #${state.id}] backend=${__filename}, build=${BUILD_ID}, roomTypeRecebido=${receivedRoomType}, roomTypeTratado=${roomType}, req.campaignId=${clientCampaignId}, req.dungeonId=${clientDungeonId}, areaId=${campaignTemplate.AreaId || 0}, pendente_5034=${pendingSelection}`);
   const roomData = mpdRooms.create({
@@ -9479,6 +11282,16 @@ function decodeGameBytes(state,chunk) {
           .catch(e=>log(`[GAME BOX #${state.id}] Falha 9075:`,e.message));}
       else stats.badChecksums++;
     }
+    else if(parsed.code === 5444) {
+      if(parsed.checksumOK){state.work=state.work.then(()=>handleMemoryCardOp(state,decoded.subarray(20)))
+          .catch(e=>log(`[MEMORY CARD #${state.id}] Falha 5444:`,e.message));}
+      else stats.badChecksums++;
+    }
+    else if(parsed.code === 9528) {
+      if(parsed.checksumOK){state.work=state.work.then(()=>handleMapShopInfo(state,decoded.subarray(20)))
+          .catch(e=>log(`[MAP SHOP #${state.id}] Falha 9528:`,e.message));}
+      else stats.badChecksums++;
+    }
     else if([5187, 5188, 5189, 5190].includes(parsed.code)) {
       if(parsed.checksumOK){state.work=state.work.then(()=>handleTalentGradeUp(state,decoded.subarray(20)))
           .catch(e=>log(`[TALENTO GRADE UP #${state.id}] Falha ${parsed.code}:`,e.message));}
@@ -9545,7 +11358,7 @@ function decodeGameBytes(state,chunk) {
       else stats.badChecksums++;
     }
     else if(parsed.code === 9690) {
-      if(parsed.checksumOK){state.work=state.work.then(()=>extendedSubsystems.handleConsortiaTaskReward(state,decoded.subarray(20),db,sendGameSession,log))
+      if(parsed.checksumOK){state.work=state.work.then(()=>extendedSubsystems.handleConsortiaTaskReward(state,decoded.subarray(20),db,sendGameSession,log,makeBasicPlayerInfo))
           .catch(e=>log(`[GUILDA TAREFAS #${state.id}] Falha 9690:`,e.message));}
       else stats.badChecksums++;
     }
@@ -9560,7 +11373,7 @@ function decodeGameBytes(state,chunk) {
       else stats.badChecksums++;
     }
     else if(parsed.code === 9568) {
-      if(parsed.checksumOK){state.work=state.work.then(()=>extendedSubsystems.handleTattooReq(state,decoded.subarray(20),db,sendGameSession,log))
+      if(parsed.checksumOK){state.work=state.work.then(()=>extendedSubsystems.handleTattooReq(state,decoded.subarray(20),db,sendGameSession,log,makeBasicPlayerInfo))
           .catch(e=>log(`[TATUAGEM #${state.id}] Falha 9568:`,e.message));}
       else stats.badChecksums++;
     }
@@ -9569,8 +11382,13 @@ function decodeGameBytes(state,chunk) {
           .catch(e=>log(`[DESTINO #${state.id}] Falha 8628:`,e.message));}
       else stats.badChecksums++;
     }
+    else if(parsed.code === 8626) {
+      if(parsed.checksumOK){state.work=state.work.then(()=>extendedSubsystems.handleFateTrain(state,decoded.subarray(20),db,sendGameSession,log,makeBasicPlayerInfo))
+          .catch(e=>log(`[DESTINO TREINO #${state.id}] Falha 8626:`,e.message));}
+      else stats.badChecksums++;
+    }
     else if(parsed.code === 8627) {
-      if(parsed.checksumOK){state.work=state.work.then(()=>extendedSubsystems.handleFateTurn(state,decoded.subarray(20),db,sendGameSession,log))
+      if(parsed.checksumOK){state.work=state.work.then(()=>extendedSubsystems.handleFateTurn(state,decoded.subarray(20),db,sendGameSession,log,makeBasicPlayerInfo))
           .catch(e=>log(`[DESTINO #${state.id}] Falha 8627:`,e.message));}
       else stats.badChecksums++;
     }
@@ -9600,7 +11418,7 @@ function decodeGameBytes(state,chunk) {
       else stats.badChecksums++;
     }
     else if(parsed.code === 8877) {
-      if(parsed.checksumOK){state.work=state.work.then(()=>extendedSubsystems.handleHonorEquipLevelUp(state,decoded.subarray(20),db,sendGameSession,log))
+      if(parsed.checksumOK){state.work=state.work.then(()=>extendedSubsystems.handleHonorEquipLevelUp(state,decoded.subarray(20),db,sendGameSession,log,makeBasicPlayerInfo))
           .catch(e=>log(`[EQUIPAMENTO HONRA #${state.id}] Falha 8877:`,e.message));}
       else stats.badChecksums++;
     }
@@ -9776,7 +11594,7 @@ function decodeGameBytes(state,chunk) {
       else stats.badChecksums++;
     }
     else if(parsed.code === 8504) {
-      if(parsed.checksumOK){state.work=state.work.then(()=>extendedSubsystems.handleVipOpenGift(state,decoded.subarray(20),db,sendGameSession,sendInventorySnapshot,log))
+      if(parsed.checksumOK){state.work=state.work.then(()=>handleVipOpenGift(state,decoded.subarray(20)))
           .catch(e=>log(`[VIP #${state.id}] Falha 8504:`,e.message));}
       else stats.badChecksums++;
     }
@@ -9831,9 +11649,6 @@ function decodeGameBytes(state,chunk) {
     }
     else if(parsed.code===8692){
       if(parsed.checksumOK)state.work=state.work.then(()=>handlePlayerSpaceNodeTrigger(state,decoded.subarray(20))).catch(e=>log(`[SPACE NPC #${state.id}] ${e.message}`));
-    }
-    else if(parsed.code===9525){
-      if(parsed.checksumOK)state.work=state.work.then(()=>handleWildBossInfo(state,decoded.subarray(20))).catch(e=>log(`[WILD BOSS INFO #${state.id}] ${e.message}`));
     }
     else if([90, 5154].includes(parsed.code)){
       if(parsed.checksumOK)state.work=state.work.then(()=>handleShopBuy(state,decoded.subarray(20))).catch(e=>log(`[SHOP #${state.id}] ${e.message}`));
@@ -9953,7 +11768,7 @@ function decodeGameBytes(state,chunk) {
     else if([26,5122].includes(parsed.code)){
       if(parsed.checksumOK)state.work=state.work.then(()=>handleCampaignCard(state,decoded.subarray(20))).catch(e=>log(`[CARD #${state.id}] ${e.message}`));
     }
-    else if([10, 5123, 5124, 8201].includes(parsed.code)){
+    else if([10, 5123, 5124].includes(parsed.code)){
       if(parsed.checksumOK)state.work=state.work.then(()=>handleCampaignMovement(state,decoded.subarray(20))).catch(e=>log(`[CAMPAIGN MOVE #${state.id}] ${e.message}`));
     }
     else if(parsed.code===10007){
@@ -9962,11 +11777,20 @@ function decodeGameBytes(state,chunk) {
     else if(parsed.code===10008){
       if(parsed.checksumOK)state.work=state.work.then(()=>battleEngine.handleHeroOrder(state,decoded.subarray(20))).catch(e=>log(`[BATTLE HERO ORDER #${state.id}] ${e.message}`));
     }
+    else if(parsed.code===10499){
+      if(parsed.checksumOK)state.work=state.work.then(()=>battleEngine.handleBattleRuneItem(state,decoded.subarray(20))).catch(e=>log(`[BATTLE RUNE ITEM #${state.id}] ${e.message}`));
+    }
     else if(parsed.code===8196){
       if(parsed.checksumOK)state.work=state.work.then(()=>handleNodeLockState(state,decoded.subarray(20))).catch(e=>log(`[CAMPAIGN LOCK #${state.id}] ${e.message}`));
     }
     else if([55, 5006].includes(parsed.code)){
       if(parsed.checksumOK)state.work=state.work.then(()=>handleItemUse(state,decoded.subarray(20))).catch(e=>log(`[USO_ITEM #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8810){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleFrameList(state)).catch(e=>log(`[FRAME LIST #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8808){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleFrameChange(state,decoded.subarray(20))).catch(e=>log(`[FRAME CHANGE #${state.id}] ${e.message}`));
     }
     else if([12, 5023].includes(parsed.code)){
       if(parsed.checksumOK)state.work=state.work.then(()=>handleCampaignRoomCreate(state,decoded.subarray(20))).catch(e=>log(`[SALA #${state.id}] ${e.message}`));
@@ -10077,10 +11901,19 @@ function decodeGameBytes(state,chunk) {
       if(parsed.checksumOK)state.work=state.work.then(()=>handleRefiningSoulCmd(state,decoded.subarray(20))).catch(e=>log(`[SOUL REFINING #${state.id}] ${e.message}`));
     }
     else if(parsed.code===8288){
-      if(parsed.checksumOK)state.work=state.work.then(()=>handleBountyRefreshCmd(state,decoded.subarray(20))).catch(e=>log(`[BOUNTY REFRESH #${state.id}] ${e.message}`));
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleBountyAddCmd(state,decoded.subarray(20))).catch(e=>log(`[BOUNTY ADD #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8289){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleBountyRemoveCmd(state,decoded.subarray(20))).catch(e=>log(`[BOUNTY REMOVE #${state.id}] ${e.message}`));
     }
     else if(parsed.code===8290){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleBountyRefreshCmd(state,decoded.subarray(20))).catch(e=>log(`[BOUNTY REFRESH #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8291){
       if(parsed.checksumOK)state.work=state.work.then(()=>handleBountyFinishCmd(state,decoded.subarray(20))).catch(e=>log(`[BOUNTY FINISH #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8298){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleBountyArrestCmd(state,decoded.subarray(20))).catch(e=>log(`[BOUNTY ARREST #${state.id}] ${e.message}`));
     }
     else if(parsed.code===8857){
       if(parsed.checksumOK)state.work=state.work.then(()=>handleLotteryRune(state,decoded.subarray(20))).catch(e=>log(`[LOTTERY RUNE #${state.id}] ${e.message}`));
@@ -10106,8 +11939,86 @@ function decodeGameBytes(state,chunk) {
     else if(parsed.code===8788){
       if(parsed.checksumOK)state.work=state.work.then(()=>handleOnlineRewardEnsure(state,decoded.subarray(20))).catch(e=>log(`[ONLINE REWARD ENSURE #${state.id}] ${e.message}`));
     }
+    else if(parsed.code===8783){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleMonthCard(state,decoded.subarray(20))).catch(e=>log(`[MONTH CARD #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8806){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleTokenCharge(state,decoded.subarray(20))).catch(e=>log(`[TOKEN CHARGE #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8235){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleDevotionFinish(state,decoded.subarray(20))).catch(e=>log(`[DEVOCAO FINISH #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8234){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleDevotionAdd(state,decoded.subarray(20))).catch(e=>log(`[DEVOCAO ADD #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8322){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleDevotionClient(state,decoded.subarray(20))).catch(e=>log(`[DEVOCAO CLIENT #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===9075){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleGameBoxReq(state,decoded.subarray(20))).catch(e=>log(`[GAME BOX #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===5444){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleMemoryCardOp(state,decoded.subarray(20))).catch(e=>log(`[MEMORY CARD #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===9528){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleMapShopInfo(state,decoded.subarray(20))).catch(e=>log(`[MAP SHOP #${state.id}] ${e.message}`));
+    }
     else if(parsed.code===8327){
       if(parsed.checksumOK)state.work=state.work.then(()=>handleGoldImpose(state,decoded.subarray(20))).catch(e=>log(`[IMPOSTOS #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8213){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaSearch(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA SEARCH #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===5130){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaCreate(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA CREATE #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===5133){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaUpgrade(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA UPGRADE #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===5147){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaLearn(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA LEARN #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8545){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaQuick(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA QUICK #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8212){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaInfo(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA INFO #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8207){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaUserList(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA USER LIST #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8211){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaDutyList(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA DUTY LIST #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===5144){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaOffer(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA OFFER #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8208){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaOfferList(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA OFFER LIST #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===5140){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaModifyDesc(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA DESC #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===5139){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaModifyBbs(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA BBS #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===5146){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaQuit(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA QUIT #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===5135){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaApply(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA APPLY #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===8214){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaInviteList(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA INVITE LIST #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===5134 || parsed.code===5143){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleConsortiaPass(state,decoded.subarray(20))).catch(e=>log(`[CONSORTIA PASS #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===9057){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleGuardReqCmd(state,decoded.subarray(20))).catch(e=>log(`[GUARD REQ #${state.id}] ${e.message}`));
+    }
+    else if(parsed.code===9059){
+      if(parsed.checksumOK)state.work=state.work.then(()=>handleGuardDrawCmd(state,decoded.subarray(20))).catch(e=>log(`[GUARD DRAW #${state.id}] ${e.message}`));
     }
     else if([8801, 8994].includes(parsed.code)){
       if(!parsed.checksumOK)stats.badChecksums++;
@@ -10183,7 +12094,7 @@ wsHttp.on('upgrade',(req,socket,head)=>{
   if(!valid){socket.end('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n');return;}
   const accept=crypto.createHash('sha1').update(req.headers['sec-websocket-key']+'258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest('base64');
   socket.write('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: '+accept+'\r\n\r\n');
-  const state={id:++nextID,socket,closed:false,user:null,site:null,frames:Buffer.alloc(0),pending:Buffer.alloc(0),
+  const state={id:++nextID,socket,closed:false,user:null,site:null,clientOrigin:origin,frames:Buffer.alloc(0),pending:Buffer.alloc(0),
     fragmentOpcode:null,parts:[],partSize:0,key:Uint8Array.from(DEFAULT_KEY),txKey:Uint8Array.from(DEFAULT_KEY),work:Promise.resolve()};
   sessions.add(state);
   stats.wsConnected++;stats.wsTotal++;
@@ -10229,7 +12140,7 @@ async function start(){
           return res.end();
         }
         if ((req.method === 'POST' || req.method === 'GET') && (req.url === '/order/clientsiteinfoservlet' || req.url === '/clientsiteinfoservlet' || req.url.includes('clientsiteinfoservlet'))) {
-          const payload = zlib.deflateSync(Buffer.from(JSON.stringify(listData()), 'utf8'));
+          const payload = zlib.deflateSync(Buffer.from(JSON.stringify(listData(req)), 'utf8'));
           stats.lists++;
           res.writeHead(200, {
             'Access-Control-Allow-Origin': '*',
@@ -10280,5 +12191,5 @@ if(require.main===module){
  for(const sig of ['SIGINT','SIGTERM'])process.once(sig,()=>stop().catch(()=>{process.exitCode=1;}));
  start().catch(async e=>{console.error('[INICIO ERRO]',e.code||e.message);process.exitCode=1;await stop();});
 }
-module.exports={start,stop,api,wsHttp,gameHttp,buildId:BUILD_ID,version:APP_VERSION,worldMap:WORLD_MAP,locateWebroot,sendWorldClock,inspectPbShape,decodeGameBytes, decrypt,encrypt,peekHeader,parsePacket,makePacket,readGatewayRequest, makeBasicPlayerInfo,makeSignInfo,handleLoginDataRequest,trySceneState,handleWorldRequest,sendInventorySnapshot,initialMessages, DEFAULT_KEY, buildLoginStateBody, classifyLoginDataRequest,
+module.exports={start,stop,api,wsHttp,gameHttp,buildId:BUILD_ID,version:APP_VERSION,worldMap:WORLD_MAP,locateWebroot,sendWorldClock,inspectPbShape,decodeGameBytes, decrypt,encrypt,peekHeader,parsePacket,makePacket,readGatewayRequest, makeBasicPlayerInfo,makeSignInfo,handleLoginDataRequest,trySceneState,handleWorldRequest,sendInventorySnapshot,initialMessages, DEFAULT_KEY, buildLoginStateBody, classifyLoginDataRequest,applyFashionExchange,
   encodeItemInfo,makeBagMoveUpdate,makeInventorySnapshot,readItemMoveRequest,handleItemMove,handleItemStrengthen};

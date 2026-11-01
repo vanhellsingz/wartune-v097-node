@@ -18,6 +18,7 @@ const path = require('node:path');
 const integrity = require('./wartune-integrity-r7');
 const wartuneSkillBonuses = require('./wartune-attribute-bonuses');
 const secondaryFeatures = require('./secondary-features-state');
+const jobTransfer = require('./job-transfer-state');
 
 class AttributeCalculatorService {
   constructor() {
@@ -117,7 +118,7 @@ class AttributeCalculatorService {
         const t5 = new Map();
         raw.filter(d => d.Types === 5).forEach(d => t5.set(d.Grades, d.Data));
 
-        for (let g = 1; g <= 100; g++) {
+        for (let g = 1; g <= 160; g++) {
           this.levelCurves.set(g, {
             grade: g,
             xp_required: t3.get(g) || 0,
@@ -505,7 +506,10 @@ class AttributeCalculatorService {
     // ==========================================
     {
       const secondaryState = require('./secondary-systems-state');
-      const secBonus = secondaryState.calculateSecondaryAttributes(saved, jewelGemTotals);
+      const activeGuard=!options.skipGuard && (saved.guardians?.list||[]).some(g=>
+        g?.isFight && Number.isSafeInteger(Number(g.guardId)));
+      const guardBaseHero=activeGuard ? this.calculateAttributes(character,{...options,skipGuard:true}) : null;
+      const secBonus = secondaryState.calculateSecondaryAttributes(saved, jewelGemTotals, guardBaseHero);
       equipPower += secBonus.Power;
       equipAgility += secBonus.Agility;
       equipIntellect += secBonus.Intellect;
@@ -734,8 +738,9 @@ class AttributeCalculatorService {
     if (saved?.tattoo && Array.isArray(saved.tattoo.holes)) {
       const coreMult = 1 + (Number(saved.tattoo.coreStep || 1) - 1) * 0.1;
       for (const hole of saved.tattoo.holes) {
-        const val = Math.floor(Number(hole.NewAddingValue || hole.OldAddingValue || 0) * coreMult);
-        const prop = Number(hole.NewAddProperty || hole.OldAddProperty || 0);
+        // New* is only a refinement preview; it becomes effective after OP_REPLACE.
+        const val = Math.floor(Number(hole.OldAddingValue || 0) * coreMult);
+        const prop = Number(hole.OldAddProperty || 0);
         if (val > 0 && prop > 0) {
           switch (prop) {
             case 1: equipPower += val; break;
@@ -761,18 +766,80 @@ class AttributeCalculatorService {
     if (saved && saved.honorEquip) {
       const hLevel = Number(saved.honorEquip.level || 0);
       const hStage = Number(saved.honorEquip.stage || 0);
+      let honorTable = null;
+      try {
+        const canonicalRepo = require('./canonical-config-repository');
+        honorTable = canonicalRepo.getTable('t_s_honorequip');
+      } catch (_) {}
       if (hLevel > 0) {
-        equipAttack += hLevel * 50;
-        equipMagicAttack += hLevel * 50;
-        equipDefence += hLevel * 30;
-        equipMagicDefence += hLevel * 30;
-        equipLive += hLevel * 200;
+        const rowLvl = Array.isArray(honorTable) ? honorTable.find(x => Number(x.UpgradeType) === 0 && Number(x.Level) === hLevel) : null;
+        if (rowLvl) {
+          equipAttack += Number(rowLvl.Attack || 0);
+          equipMagicAttack += Number(rowLvl.MagicAttack || 0);
+          equipDefence += Number(rowLvl.Defence || 0);
+          equipMagicDefence += Number(rowLvl.MagicDefence || 0);
+          equipLive += Number(rowLvl.Live || 0);
+        } else {
+          equipAttack += hLevel * 50;
+          equipMagicAttack += hLevel * 50;
+          equipDefence += hLevel * 30;
+          equipMagicDefence += hLevel * 30;
+          equipLive += hLevel * 200;
+        }
       }
       if (hStage > 0) {
-        equipStrength += hStage * 80;
-        equipTenacity += hStage * 40;
+        const rowStg = Array.isArray(honorTable) ? honorTable.find(x => Number(x.UpgradeType) === 1 && Number(x.Level) === hStage) : null;
+        if (rowStg) {
+          equipStrength += Number(rowStg.Strength || 0);
+          equipTenacity += Number(rowStg.Tenacity || 0);
+        } else {
+          equipStrength += hStage * 80;
+          equipTenacity += hStage * 40;
+        }
       }
     }
+
+    // Bônus administrativos do herói são separados de state_json.mounts.*.
+    // O painel grava somente este ramo; montarias continuam sendo calculadas em D3.
+    const heroAdmin = saved.hero?.adminAttributes || {};
+    const adminStat = key => {
+      const value = Number(heroAdmin[key] || 0);
+      return Number.isSafeInteger(value) && value >= 0 && value <= 2000000 ? value : 0;
+    };
+    equipPower += adminStat('power');
+    equipAgility += adminStat('agility');
+    equipIntellect += adminStat('intellect');
+    equipPhysique += adminStat('physique');
+    equipCaptain += adminStat('captain');
+    equipAttack += adminStat('attack');
+    equipDefence += adminStat('defence');
+    equipMagicAttack += adminStat('magicAttack');
+    equipMagicDefence += adminStat('magicDefence');
+    equipLive += adminStat('live');
+
+    // Guild skill bonuses are personal and apply only after a paid learn transaction.
+    const guildBonus = require('./guild-skills').bonuses(saved);
+    equipPower += guildBonus.power;
+    equipAgility += guildBonus.agility;
+    equipIntellect += guildBonus.intellect;
+    equipPhysique += guildBonus.physique;
+    equipCaptain += guildBonus.captain;
+
+    const transferBonus=jobTransfer.bonuses(grade,job,Number(saved.numJobChange||0)>0);
+    equipAttack += transferBonus[6]||0;
+    equipDefence += transferBonus[7]||0;
+    equipMagicAttack += transferBonus[8]||0;
+    equipMagicDefence += transferBonus[9]||0;
+    equipLive += transferBonus[10]||0;
+
+    // Arma Poderosa: somente a arma equipada no herói (index 0) soma atributos.
+    const rareWeaponBonus=require('./rare-weapon-state').bonuses(saved);
+    equipAttack+=rareWeaponBonus.Attack;
+    equipDefence+=rareWeaponBonus.Defence;
+    equipMagicAttack+=rareWeaponBonus.MagicAttack;
+    equipMagicDefence+=rareWeaponBonus.MagicDefence;
+    equipLive+=rareWeaponBonus.Live;
+    equipDefensePenetration+=rareWeaponBonus.DefensePenetration;
 
     // ==========================================
     // LAYER F: Totais Finais e Poder de Combate (FightingCapacity / Battle Rating)
@@ -784,12 +851,21 @@ class AttributeCalculatorService {
     const totalIntellect=apply(baseIntellect+equipIntellect,'Intellect');
     const totalPhysique=apply(basePhysique+equipPhysique,'Physique');
     const totalCaptain=apply(baseCaptain+equipCaptain,'Captain');
-    const totalPhyAttack=apply(rawAttack+totalPower*4+equipAttack+techBonuses.heroAtk,'Attack');
-    const totalMagicAttack=apply(rawMagicAttack+totalIntellect*4+equipMagicAttack+techBonuses.heroMAtk,'MagicAttack');
-    const totalPhyDefence=apply(rawDefence+totalPower+totalAgility*4+equipDefence+techBonuses.heroDef,'Defence');
-    const totalMagicDefence=apply(rawMagicDefence+totalIntellect+totalAgility*4+equipMagicDefence+techBonuses.heroMDef,'MagicDefence');
-    const totalLive=apply(rawLive+totalPhysique*20+equipLive+techBonuses.heroHp,'Live');
-    const totalConatArmy=apply(totalCaptain+equipConat+techBonuses.troopVolume,'Conat');
+    let totalPhyAttack=apply(rawAttack+totalPower*4+equipAttack+techBonuses.heroAtk,'Attack');
+    let totalMagicAttack=apply(rawMagicAttack+totalIntellect*4+equipMagicAttack+techBonuses.heroMAtk,'MagicAttack');
+    let totalPhyDefence=apply(rawDefence+totalPower+totalAgility*4+equipDefence+techBonuses.heroDef,'Defence');
+    let totalMagicDefence=apply(rawMagicDefence+totalIntellect+totalAgility*4+equipMagicDefence+techBonuses.heroMDef,'MagicDefence');
+    let totalLive=apply(rawLive+totalPhysique*20+equipLive+techBonuses.heroHp,'Live');
+    let totalConatArmy=apply(totalCaptain+equipConat+techBonuses.troopVolume,'Conat');
+    // Temporary catalog scrolls are part of the effective attributes used by
+    // the battle snapshot and FC, not presentation-only state.
+    const scrollPct=propertyId=>require('./item-consumable-state').activeBuffValue(saved,propertyId);
+    totalPhyAttack=Math.floor(totalPhyAttack*(100+scrollPct(2041))/100);
+    totalMagicAttack=Math.floor(totalMagicAttack*(100+scrollPct(2042))/100);
+    totalPhyDefence=Math.floor(totalPhyDefence*(100+scrollPct(2043)+scrollPct(2037))/100);
+    totalMagicDefence=Math.floor(totalMagicDefence*(100+scrollPct(2044))/100);
+    totalLive=Math.floor(totalLive*(100+scrollPct(2045)+scrollPct(60))/100);
+    totalConatArmy=Math.floor(totalConatArmy*(100+scrollPct(2046))/100);
     const totalForceHit=apply(baseForceHit+equipForceHit,'ForceHit');
     const totalParry=apply(baseParry+equipParry,'Parry');
     const totalStrength = baseStrength + equipStrength;
@@ -812,7 +888,7 @@ class AttributeCalculatorService {
       2*(waterResi+fireResi+electResi+windResi+darkResi+lightResi);
     const fightingCapacity=Math.floor(totalPhyAttack+Math.floor(1.05*totalMagicAttack)+
       totalPhyDefence+totalMagicDefence+Math.floor(totalLive/5)+totalConatArmy+
-      totalForceHit+totalParry+resistCapacity);
+      totalForceHit+totalParry+resistCapacity + Math.floor(totalStrength * 1.5 + totalTenacity * 1.5));
     // Academy effects are already in the effective attributes; do not add twice.
     const techTotalFC=0;
     if(!Number.isSafeInteger(fightingCapacity)||fightingCapacity<0)throw Error('PC invalido');

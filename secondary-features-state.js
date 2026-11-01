@@ -57,9 +57,15 @@ const rewardById = new Map(rawRewardTemplate.map(r => [Number(r.TemplateId), r])
 function ensureAppellState(saved) {
   saved.appells = saved.appells || {
     curAppell: 0,
-    unlocked: [1] // Título 1 liberado por padrão
+    unlocked: [1]
   };
   if (!Array.isArray(saved.appells.unlocked)) saved.appells.unlocked = [1];
+  // Garante que títulos canônicos de nível/classe estejam disponíveis para o personagem
+  for (const tid of [1, 2, 6, 7, 8, 9, 10]) {
+    if (!saved.appells.unlocked.includes(tid)) {
+      saved.appells.unlocked.push(tid);
+    }
+  }
   return saved.appells;
 }
 
@@ -74,7 +80,6 @@ function handleAppellExchange(saved, appellId, look) {
   const id = Number(appellId);
   if (id > 0) {
     if (!st.unlocked.includes(id)) {
-      // Se não estava na lista, verifica se satisfaz requisitos
       st.unlocked.push(id);
     }
     st.curAppell = id;
@@ -91,10 +96,9 @@ function handleAppellExchange(saved, appellId, look) {
 function formatAppellsMsg(saved) {
   const st = ensureAppellState(saved);
   const appells = st.unlocked.map(id => {
-    const tpl = appellById.get(id);
     return {
       appellId: id,
-      isGet: id === st.curAppell,
+      isGet: true,
       value: 0,
       validDate: 0
     };
@@ -351,46 +355,154 @@ function formatDailyTargetList(saved) {
 }
 
 // -------------------------------------------------------------
-// 7. MISSÕES DE RECOMPENSA (BOUNTY)
+// 7. MISSÕES DE RECOMPENSA (BOUNTY / QUADRO DE RECOMPENSAS)
 // -------------------------------------------------------------
-function ensureBountyState(saved) {
+function ensureBountyState(saved, playerGrade = 80) {
   const today = new Date().toISOString().slice(0, 10);
   if (!saved.bounty || saved.bounty.day !== today) {
     saved.bounty = {
       day: today,
       completedCount: 0,
-      active: [
-        { id: 1, isValid: true, quality: 3 },
-        { id: 2, isValid: true, quality: 2 },
-        { id: 3, isValid: true, quality: 4 }
-      ]
+      freeRefreshCount: 0,
+      tasks: []
     };
   }
+  if (!Array.isArray(saved.bounty.tasks)) {
+    saved.bounty.tasks = [];
+  }
+  if (saved.bounty.freeRefreshCount === undefined) {
+    saved.bounty.freeRefreshCount = 0;
+  }
+  if (saved.bounty.completedCount === undefined) {
+    saved.bounty.completedCount = 0;
+  }
+
+  if (saved.bounty.tasks.length < 4) {
+    const grade = Number(playerGrade || 80);
+    const validTemplates = rawRewardTemplate.filter(r =>
+      grade >= Number(r.NeedMinLevel || 0) && grade <= Number(r.NeedMaxLevel || 200)
+    );
+    const pool = validTemplates.length >= 4 ? validTemplates : rawRewardTemplate;
+    const existingIds = new Set(saved.bounty.tasks.map(t => Number(t.templateId)));
+    const shuffled = [...pool].sort(() => 0.5 - Math.random());
+
+    for (const tpl of shuffled) {
+      if (saved.bounty.tasks.length >= 4) break;
+      const tid = Number(tpl.TemplateId);
+      if (!existingIds.has(tid)) {
+        existingIds.add(tid);
+        saved.bounty.tasks.push({
+          templateId: tid,
+          quality: Math.floor(Math.random() * 4) + 2,
+          state: 1
+        });
+      }
+    }
+  }
+
   return saved.bounty;
 }
 
-function refreshBounties(saved) {
-  const b = ensureBountyState(saved);
-  b.active = [
-    { id: Math.floor(Math.random() * 50) + 1, isValid: true, quality: Math.floor(Math.random() * 4) + 1 },
-    { id: Math.floor(Math.random() * 50) + 1, isValid: true, quality: Math.floor(Math.random() * 4) + 1 },
-    { id: Math.floor(Math.random() * 50) + 1, isValid: true, quality: Math.floor(Math.random() * 4) + 1 }
-  ];
+function formatRewardFreshRspMsg(saved, playerGrade = 80) {
+  const b = ensureBountyState(saved, playerGrade);
+  return {
+    templateId: b.tasks.map(t => Number(t.templateId)),
+    rewardLastdate: new Date().toISOString().replace('T', ' ').slice(0, 19),
+    isIsValid: b.tasks.map(t => Number(t.state || 1)),
+    qualitys: b.tasks.map(t => Number(t.quality || 2)),
+    rewardTimes: Number(b.completedCount || 0),
+    freeTimes: Number(b.freeRefreshCount || 0),
+    additionalReward: null
+  };
+}
+
+function formatRewardCountUpdateRspMsg(saved) {
+  return {
+    rewardCount: 0
+  };
+}
+
+function refreshBounties(saved, isButton = false, payType = 0, playerGrade = 80) {
+  const b = ensureBountyState(saved, playerGrade);
+  if (isButton) {
+    if (payType === 0) {
+      b.freeRefreshCount = Math.min(2, (Number(b.freeRefreshCount) || 0) + 1);
+    }
+  }
+
+  const grade = Number(playerGrade || 80);
+  const validTemplates = rawRewardTemplate.filter(r =>
+    grade >= Number(r.NeedMinLevel || 0) && grade <= Number(r.NeedMaxLevel || 200)
+  );
+  const pool = validTemplates.length >= 4 ? validTemplates : rawRewardTemplate;
+  const shuffled = [...pool].sort(() => 0.5 - Math.random());
+
+  const newTasks = [];
+  let pIdx = 0;
+  for (let i = 0; i < 4; i++) {
+    const cur = b.tasks[i];
+    if (cur && (cur.state === 2 || cur.state === 4)) {
+      newTasks.push(cur);
+    } else {
+      const nextTpl = shuffled[pIdx % shuffled.length];
+      pIdx++;
+      newTasks.push({
+        templateId: Number(nextTpl.TemplateId),
+        quality: Math.floor(Math.random() * 4) + 2,
+        state: 1
+      });
+    }
+  }
+  b.tasks = newTasks;
   return { ...b, changed: true };
 }
 
-function finishBounty(saved, bountyId) {
-  const b = ensureBountyState(saved);
-  b.completedCount = (Number(b.completedCount) || 0) + 1;
-  const idx = b.active.findIndex(item => Number(item.id) === Number(bountyId));
-  if (idx >= 0) {
-    b.active.splice(idx, 1);
+function acceptBounty(saved, templateId, playerGrade = 80) {
+  const b = ensureBountyState(saved, playerGrade);
+  const task = b.tasks.find(t => Number(t.templateId) === Number(templateId));
+  if (task) {
+    task.state = 2;
   }
-  const goldReward = 50000;
-  const xpReward = 30000;
+  return { task, changed: true };
+}
+
+function finishBounty(saved, templateId, isPass = false, playerGrade = 80) {
+  const b = ensureBountyState(saved, playerGrade);
+  b.completedCount = Math.min(20, (Number(b.completedCount) || 0) + 1);
+
+  const tid = Number(templateId);
+  const taskIdx = b.tasks.findIndex(t => Number(t.templateId) === tid);
+  const tpl = rewardById.get(tid);
+
+  const goldReward = (Number(tpl?.RewardGold) || 50) * 80 * 2;
+  const xpReward = (Number(tpl?.RewardPlayGP) || 200) * 80 * 2;
+
   saved.wallet = saved.wallet || {};
   saved.wallet.gold = (Number(saved.wallet.gold) || 0) + goldReward;
-  return { bountyId, goldReward, xpReward, completedCount: b.completedCount, changed: true };
+
+  const grade = Number(playerGrade || 80);
+  const validTemplates = rawRewardTemplate.filter(r =>
+    grade >= Number(r.NeedMinLevel || 0) && grade <= Number(r.NeedMaxLevel || 200)
+  );
+  const pool = validTemplates.length >= 4 ? validTemplates : rawRewardTemplate;
+  const existingIds = new Set(b.tasks.map(t => Number(t.templateId)));
+  const nextTpl = pool.find(r => !existingIds.has(Number(r.TemplateId))) || pool[0];
+
+  if (taskIdx >= 0) {
+    b.tasks[taskIdx] = {
+      templateId: Number(nextTpl.TemplateId),
+      quality: Math.floor(Math.random() * 4) + 2,
+      state: 1
+    };
+  }
+
+  return {
+    templateId: tid,
+    goldReward,
+    xpReward,
+    completedCount: b.completedCount,
+    changed: true
+  };
 }
 
 module.exports = {
@@ -431,8 +543,11 @@ module.exports = {
   upgradeSoul,
   // Metas Diárias
   formatDailyTargetList,
-  // Bounty
+  // Bounty / Quadro de Recompensas
   ensureBountyState,
+  formatRewardFreshRspMsg,
+  formatRewardCountUpdateRspMsg,
   refreshBounties,
+  acceptBounty,
   finishBounty
 };

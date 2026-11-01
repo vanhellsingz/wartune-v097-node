@@ -1,0 +1,184 @@
+{
+    "t_s_mapbossconfig": [
+        {
+            "Count": 800,
+            "MapId": 1,
+            "TemplateId": 210101,
+            "Type": 1
+        },
+        {
+            "Count": 400,
+            "MapId": 1,
+            "TemplateId": 210102,
+            "Type": 2
+        },
+        {
+            "Count": 10,
+            "MapId": 1,
+            "TemplateId": 210103,
+            "Type": 3
+        },
+        {
+            "Count": 800,
+            "MapId": 2,
+            "TemplateId": 210104,
+            "Type": 1
+        },
+        {
+            "Count": 400,
+            "MapId": 2,
+            "TemplateId": 210105,
+            "Type": 2
+        },
+        {
+            "Count": 10,
+            "MapId": 2,
+            "TemplateId": 210106,
+            "Type": 3
+        },
+        {
+            "Count": 800,
+            "MapId": 3,
+            "TemplateId": 210107,
+            "Type": 1
+        },
+        {
+            "Count": 400,
+            "MapId": 3,
+            "TemplateId": 210108,
+            "Type": 2
+        },
+        {
+            "Count": 10,
+            "MapId": 3,
+            "TemplateId": 210109,
+            "Type": 3
+        },
+        {
+            "Count": 800,
+            "MapId": 4,
+            "TemplateId": 210110,
+            "Type": 1
+        },
+        {
+            "Count": 400,
+            "MapId": 4,
+            "TemplateId": 210111,
+            "Type": 2
+        },
+        {
+            "Count": 10,
+            "MapId": 4,
+            "TemplateId": 210112,
+            "Type": 3
+        },
+        {
+            "Count": 200,
+            "MapId": 5,
+            "TemplateId": 210113,
+            "Type": 1
+        },
+        {
+            "Count": 100,
+            "MapId": 5,
+            "TemplateId": 210114,
+            "Type": 2
+        },
+        {
+            "Count": 1,
+            "MapId": 5,
+            "TemplateId": 210115,
+            "Type": 3
+        },
+        {
+            "Count": 1,
+            "MapId": 5,
+            "TemplateId": 210116,
+            "Type": 3
+        },
+        {
+            "Count": 200,
+            "MapId": 5,
+            "TemplateId": 210117,
+            "Type": 1
+        },
+        {
+            "Count": 100,
+            "MapId": 5,
+            "TemplateId": 210118,
+            "Type": 2
+        },
+        {
+            "Count": 2,
+            "MapId": 5,
+            "TemplateId": 210119,
+            "Type": 3
+        },
+        {
+            "Count": 2,
+            "MapId": 5,
+            "TemplateId": 210120,
+            "Type": 3
+        },
+        {
+            "Count": 200,
+            "MapId": 5,
+            "TemplateId": 210121,
+            "Type": 1
+        },
+        {
+            "Count": 100,
+            "MapId": 5,
+            "TemplateId": 210122,
+            "Type": 2
+        },
+        {
+            "Count": 2,
+            "MapId": 5,
+            "TemplateId": 210123,
+            "Type": 3
+        },
+        {
+            "Count": 3,
+            "MapId": 5,
+            "TemplateId": 210124,
+            "Type": 3
+        },
+        {
+            "Count": 3,
+            "MapId": 5,
+            "TemplateId": 210125,
+            "Type": 3
+        },
+        {
+            "Count": 200,
+            "MapId": 5,
+            "TemplateId": 210126,
+            "Type": 1
+        },
+        {
+            "Count": 100,
+            "MapId": 5,
+            "TemplateId": 210127,
+            "Type": 2
+        },
+        {
+            "Count": 2,
+            "MapId": 5,
+            "TemplateId": 210128,
+            "Type": 3
+        },
+        {
+            "Count": 2,
+            "MapId": 5,
+            "TemplateId": 210129,
+            "Type": 3
+        },
+        {
+            "Count": 3,
+            "MapId": 5,
+            "TemplateId": 210130,
+            "Type": 3
+        }
+    ]
+}

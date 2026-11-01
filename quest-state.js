@@ -464,6 +464,43 @@ function evaluateQuest(savedState, quest) {
             isMet = true;
           }
         }
+        else if (cType === 104) {
+          const required=String(c.Para1||'').split(',').map(Number).filter(Number.isSafeInteger);
+          const completed=new Set((savedState.quests?.completed||[]).map(Number));
+          quest[condKey]=required.filter(id=>completed.has(id)).length;
+          isMet=required.length>0&&quest[condKey]>=required.length;
+        }
+        else if (cType === 105) {
+          const equipment=Object.values(savedState.inventory?.equipment||{}).map(Number);
+          const items=savedState.inventory?.items||[];
+          quest[condKey]=equipment.filter(instanceId=>{
+            const item=items.find(x=>Number(x.instanceId)===instanceId);
+            const template=itemTemplates.get(Number(item?.templateId));
+            return template&&Number(template.NeedGrades)>=80&&Number(template.Profile)>=p1;
+          }).length;
+          isMet=quest[condKey]>=p2;
+        }
+        else if (cType === 106) {
+          const completed=new Set((savedState.campaigns?.completed||[]).map(Number));
+          quest[condKey]=completed.has(p1)?p2:0;
+          isMet=quest[condKey]>=p2;
+        }
+        else if (cType === 85) {
+          // Class advancement introduction: a promoted hero has already met it.
+          const grade=Number(savedState.progression?.grade || savedState.grade ||
+            resource.calcGradeFromXp(Number(savedState.progression?.totalXp||0),1,savedState));
+          isMet=Number(savedState.numJobChange||0)>0 || grade>=p1;
+          quest[condKey]=isMet?p2:0;
+        }
+        else if (cType === 36) {
+          // Capturing an astral increases the persistent astrology point counter.
+          isMet=Number(savedState.astrals?.points||0)>0 || Number(quest[condKey]||0)>=p2;
+          quest[condKey]=isMet?p2:0;
+        }
+        else if (cType === 107) {
+          quest[condKey]=Number(savedState.dragonSoul?.grade||0);
+          isMet=quest[condKey]>=p1;
+        }
         else if (cType === 17) {
           const items = savedState.inventory?.items || [];
           const hasEnchant = items.some(it => Number(it.strengthenGrade || 0) >= (p1 || 1));
@@ -1187,7 +1224,7 @@ function formatQuestUpdatedProtocol(savedState, quest) {
   const states = completedQuestLog(savedState);
   const questList = Array.isArray(quest)
     ? quest.map(q => (q && q.templateId !== undefined ? formatQuestProtocol(q) : q))
-    : [quest && quest.templateId !== undefined ? formatQuestProtocol(q) : quest];
+    : [quest && quest.templateId !== undefined ? formatQuestProtocol(quest) : quest];
   return { quest: questList, statesLength: states.length, states };
 }
 

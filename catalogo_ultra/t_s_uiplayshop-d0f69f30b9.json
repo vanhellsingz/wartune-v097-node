@@ -1,0 +1,202 @@
+{
+    "t_s_uiplayshop": [
+        {
+            "GiftToken": 500,
+            "Id": 2101001,
+            "ItemId": 2060601,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110005,
+            "Point": 0,
+            "Sort": 1
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101002,
+            "ItemId": 2060602,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110010,
+            "Point": 1500,
+            "Sort": 2
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101003,
+            "ItemId": 2060602,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110020,
+            "Point": 1500,
+            "Sort": 3
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101004,
+            "ItemId": 2060602,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110030,
+            "Point": 1500,
+            "Sort": 4
+        },
+        {
+            "GiftToken": 500,
+            "Id": 2101005,
+            "ItemId": 2060601,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110045,
+            "Point": 0,
+            "Sort": 5
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101006,
+            "ItemId": 2060603,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110060,
+            "Point": 1980,
+            "Sort": 6
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101007,
+            "ItemId": 2060603,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110080,
+            "Point": 1980,
+            "Sort": 7
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101008,
+            "ItemId": 2060604,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110100,
+            "Point": 2700,
+            "Sort": 8
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101009,
+            "ItemId": 2060604,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110120,
+            "Point": 2700,
+            "Sort": 9
+        },
+        {
+            "GiftToken": 500,
+            "Id": 2101010,
+            "ItemId": 2060601,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110140,
+            "Point": 0,
+            "Sort": 10
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101011,
+            "ItemId": 2060602,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110160,
+            "Point": 1500,
+            "Sort": 11
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101012,
+            "ItemId": 2060602,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110180,
+            "Point": 1500,
+            "Sort": 12
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101013,
+            "ItemId": 2060602,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110200,
+            "Point": 1500,
+            "Sort": 13
+        },
+        {
+            "GiftToken": 500,
+            "Id": 2101014,
+            "ItemId": 2060601,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110220,
+            "Point": 0,
+            "Sort": 14
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101015,
+            "ItemId": 2060603,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110240,
+            "Point": 1980,
+            "Sort": 15
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101016,
+            "ItemId": 2060603,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110260,
+            "Point": 1980,
+            "Sort": 16
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101017,
+            "ItemId": 2060604,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110280,
+            "Point": 2700,
+            "Sort": 17
+        },
+        {
+            "GiftToken": 0,
+            "Id": 2101018,
+            "ItemId": 2060604,
+            "ItemNum": 1,
+            "Limit": 1,
+            "LimitType": 1,
+            "MessTower": 2110300,
+            "Point": 2700,
+            "Sort": 18
+        }
+    ]
+}

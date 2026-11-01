@@ -60,7 +60,8 @@ function experience(raw,grade,{ref,amount,source},now=Date.now()){
  const result=ledger(state,ref,'xp',{amount,source},()=>{
   const before={grade,currentXp:state.progression.currentXp,totalXp:state.progression.totalXp};
   state.progression.currentXp=integer(state.progression.currentXp+amount);state.progression.totalXp=integer(state.progression.totalXp+amount);
-  while(newGrade<maxLevel&&newGrade<jobChangeBoundary&&state.progression.currentXp>=integer(curve.get(newGrade+1))){state.progression.currentXp-=curve.get(newGrade+1);newGrade++;}
+  const cap=Number(state.numJobChange||0)>0?maxLevel:jobChangeBoundary;
+  while(newGrade<cap&&state.progression.currentXp>=integer(curve.get(newGrade+1))){state.progression.currentXp-=curve.get(newGrade+1);newGrade++;}
   return {before,after:{grade:newGrade,...state.progression},pendingJobChange:newGrade===jobChangeBoundary};
  },now);
  if(result.duplicate)newGrade=grade;
@@ -79,9 +80,10 @@ function sell(raw,positions,resolveTemplate,now=Date.now()){
  if(!change.duplicate){const items=inv.inventory(state).items;for(const sale of sold){const item=items.find(i=>i.instanceId===sale.instanceId);item.count-=sale.soldCount;if(!item.count)items.splice(items.indexOf(item),1);}}
  return {state,sold,total,duplicate:change.duplicate};
 }
-function calcGradeFromXp(totalXp, currentGrade = 1) {
+function calcGradeFromXp(totalXp, currentGrade = 1, state = {}) {
  let grade = currentGrade;
- while (grade < maxLevel) {
+ const cap=Number(state?.numJobChange||0)>0?maxLevel:jobChangeBoundary;
+ while (grade < cap) {
   try {
    const nextTotal = totalAtLevel(grade + 1);
    if (totalXp >= nextTotal) grade++;

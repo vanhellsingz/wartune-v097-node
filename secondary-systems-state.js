@@ -56,7 +56,7 @@ function getJewelEffectPercent(grade) {
   if (t <= 50) return 2 * t;
   if (t <= 70) return 3 * (t - 50) + 100;
   if (t <= 80) return 4 * (t - 70) + 160;
-  return 200;
+  return 0; // Paridade com jo.getJewelEffecyByGrade para nivel invalido.
 }
 
 /**
@@ -111,7 +111,7 @@ function ensureSecondarySystemsState(saved) {
 /**
  * Calcula atributos adicionais gerados pelos 4 sistemas para o AttributeCalculatorService
  */
-function calculateSecondaryAttributes(saved, gemTotals = { Power: 0, Agility: 0, Intellect: 0, Physique: 0, Attack: 0, Defence: 0, MagicAttack: 0, MagicDefence: 0, Live: 0 }) {
+function calculateSecondaryAttributes(saved, gemTotals = { Power: 0, Agility: 0, Intellect: 0, Physique: 0, Attack: 0, Defence: 0, MagicAttack: 0, MagicDefence: 0, Live: 0 }, guardBaseHero = null) {
   saved = saved || {};
   const bonus=Object.fromEntries(integrity.FIELDS.filter(Boolean).map(k=>[k,0]));
 
@@ -127,9 +127,10 @@ function calculateSecondaryAttributes(saved, gemTotals = { Power: 0, Agility: 0,
     const tpl=petTemplateCatalog.find(t=>Number(t.TemplateId)===Number(activeSylph.templateId));
     activeSylph=integrity.normalizePet(activeSylph,tpl,new Map(petTemplateCatalog.map(t=>[Number(t.TemplateId),t])));
     const gear=sylphEquipment.equipmentStats(saved.inventory?.items || [],activeSylph.petId);
+    const guildSylph=require('./guild-skills').sylphBonuses(saved,tpl);
     const equipped={...activeSylph,
-      power:activeSylph.power+gear.power,armor:activeSylph.armor+gear.armor,
-      intel:activeSylph.intel+gear.intel,physi:activeSylph.physi+gear.physi,
+      power:activeSylph.power+gear.power+guildSylph.power,armor:activeSylph.armor+gear.armor+guildSylph.armor,
+      intel:activeSylph.intel+gear.intel+guildSylph.intel,physi:activeSylph.physi+gear.physi+guildSylph.physi,
       bagAttack:gear.bagAttack,bagDefence:gear.bagDefence,
       bagMagicattack:gear.bagMagicattack,bagMagicdefence:gear.bagMagicdefence,
       bagLiving:gear.bagLiving};
@@ -161,6 +162,19 @@ function calculateSecondaryAttributes(saved, gemTotals = { Power: 0, Agility: 0,
     const key=integrity.FIELDS[Number(id)];if(key)bonus[key]+=value;
   }
 
+  // A Guarda em combate transfere seus atributos efetivos ao heroi, como o
+  // Silfo ativo. A ressonancia usa o heroi sem esse bonus para evitar ciclo.
+  if (guardBaseHero) {
+    const guard=(saved.guardians?.list||[]).find(g=>g?.isFight && Number.isSafeInteger(Number(g.guardId)));
+    if (guard) {
+      const attrs=require('./guard-system-state').calculateGuardAttributes(guard,saved,guardBaseHero);
+      for (const [id,value] of attrs) {
+        const key=integrity.FIELDS[Number(id)];
+        if(key)bonus[key]+=value;
+      }
+    }
+  }
+
   return bonus;
 }
 
@@ -188,9 +202,10 @@ function formatPlayerPetMsg(saved, playerId, op = 0) {
       ? wartuneSylphSkills.initialBar(normalizedPet,template,sylphSkillCatalogue)
       : originalBar;
     const gear=sylphEquipment.equipmentStats(saved.inventory?.items || [],s.petId);
+    const guildSylph=require('./guild-skills').sylphBonuses(saved,template);
     const equipped={...s,
-      power:Number(s.power||0)+gear.power, armor:Number(s.armor||0)+gear.armor,
-      intel:Number(s.intel||0)+gear.intel, physi:Number(s.physi||0)+gear.physi,
+      power:Number(s.power||0)+gear.power+guildSylph.power, armor:Number(s.armor||0)+gear.armor+guildSylph.armor,
+      intel:Number(s.intel||0)+gear.intel+guildSylph.intel, physi:Number(s.physi||0)+gear.physi+guildSylph.physi,
       bagAttack:gear.bagAttack,bagDefence:gear.bagDefence,
       bagMagicattack:gear.bagMagicattack,bagMagicdefence:gear.bagMagicdefence,
       bagLiving:gear.bagLiving};

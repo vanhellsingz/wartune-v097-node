@@ -63,7 +63,11 @@ class MpdRooms {
   defeat(roomId){const r=this.get(roomId);if(r.state!=='running')throw Error('Masmorra nao iniciada');
     return {checkpoint:r.checkpoint,wonNodes:[...r.wonNodes],members:[...r.members.keys()]};}
   disconnect(playerId){const rid=this.memberRooms.get(Number(playerId));if(!rid)return null;
-    const r=this.get(rid),m=r.members.get(Number(playerId));if(m)m.online=false;return this.view(r);}
+    const r=this.get(rid);
+    // A sala ainda não iniciou: sair limpa o vínculo e permite entrar de novo
+    // no Salão dos Heróis após relogin. Uma MPD em execução preserva o checkpoint.
+    if(r.state==='forming')return this.leave(rid,playerId);
+    const m=r.members.get(Number(playerId));if(m)m.online=false;return this.view(r);}
   leave(roomId,playerId){const r=this.get(roomId),id=this.validId(playerId);
     if(!r.members.delete(id))return this.view(r);
     this.memberRooms.delete(id);r.invitations.delete(id);

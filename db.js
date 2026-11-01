@@ -96,7 +96,7 @@ async function characterById(id){
 }
 async function updateCharacterVip(id, { vip_level, vip_type = 1, vip_expire_time = null, vip_points = 0 } = {}) {
  if (!Number.isSafeInteger(id) || id < 1) throw Error('ID de personagem invalido');
- const lvl = Math.max(0, Math.min(10, Number(vip_level) || 0));
+ const lvl = Math.max(0, Math.min(19, Number(vip_level) || 0));
  const type = Math.max(1, Number(vip_type) || 1);
  const pts = Math.max(0, Number(vip_points) || 0);
  const expTime = vip_expire_time ? new Date(vip_expire_time) : null;
@@ -135,7 +135,7 @@ async function mutateCharacterStateOnConnectionSource(getConnection,id,mutator){
   if(!rows.length)throw Error('Personagem nao encontrado');
   const hydrated=await charRepo.hydrateCharacter(rows[0], cx);
   let state=hydrated.state_json;
-  const result=await mutator(structuredClone(state),{grade:Number(rows[0].grade),gold:Number(rows[0].gold),experience:Number(rows[0].experience)});
+  const result=await mutator(structuredClone(state),{grade:Number(rows[0].grade),gold:Number(rows[0].gold),experience:Number(rows[0].experience)},cx);
   if(!result||!result.state||typeof result.state!=='object'||Array.isArray(result.state))throw Error('Mutacao nao retornou estado valido');
   if(result.resources){
    const values={

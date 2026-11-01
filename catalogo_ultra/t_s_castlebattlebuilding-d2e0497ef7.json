@@ -1,0 +1,124 @@
+{
+    "t_s_castlebattlebuilding": [
+        {
+            "AttackPreBattleBuilding": "1514",
+            "BattleBuffCondition": 201,
+            "BattleBuffConditionParam": "104",
+            "BattleType": 2,
+            "CompleteOwnExtraPoint": 50,
+            "DefendPreBattleBuilding": "402",
+            "Id": 101,
+            "SingleOwnPoint": 20
+        },
+        {
+            "AttackPreBattleBuilding": "402",
+            "BattleBuffCondition": 102,
+            "BattleBuffConditionParam": "1|2|3",
+            "BattleType": 1,
+            "CompleteOwnExtraPoint": 80,
+            "DefendPreBattleBuilding": "1512,501,1504",
+            "Id": 301,
+            "SingleOwnPoint": 30
+        },
+        {
+            "AttackPreBattleBuilding": "1514",
+            "BattleBuffCondition": 101,
+            "BattleBuffConditionParam": "1,2,3,5|4,6,7|8,9,10,11",
+            "BattleType": 1,
+            "CompleteOwnExtraPoint": 100,
+            "DefendPreBattleBuilding": "1512,501,1504",
+            "Id": 402,
+            "SingleOwnPoint": 50
+        },
+        {
+            "AttackPreBattleBuilding": "402",
+            "BattleBuffCondition": 201,
+            "BattleBuffConditionParam": "106",
+            "BattleType": 2,
+            "CompleteOwnExtraPoint": 80,
+            "DefendPreBattleBuilding": "901",
+            "Id": 501,
+            "SingleOwnPoint": 40
+        },
+        {
+            "AttackPreBattleBuilding": "1512,501,1504",
+            "BattleBuffCondition": 102,
+            "BattleBuffConditionParam": "1|2|3",
+            "BattleType": 1,
+            "CompleteOwnExtraPoint": 100,
+            "DefendPreBattleBuilding": "",
+            "Id": 901,
+            "SingleOwnPoint": 60
+        },
+        {
+            "AttackPreBattleBuilding": "402",
+            "BattleBuffCondition": 102,
+            "BattleBuffConditionParam": "1|2|3",
+            "BattleType": 1,
+            "CompleteOwnExtraPoint": 80,
+            "DefendPreBattleBuilding": "1512,501,1504",
+            "Id": 1201,
+            "SingleOwnPoint": 30
+        },
+        {
+            "AttackPreBattleBuilding": "402",
+            "BattleBuffCondition": 201,
+            "BattleBuffConditionParam": "103",
+            "BattleType": 2,
+            "CompleteOwnExtraPoint": 80,
+            "DefendPreBattleBuilding": "901",
+            "Id": 1504,
+            "SingleOwnPoint": 40
+        },
+        {
+            "AttackPreBattleBuilding": "1514",
+            "BattleBuffCondition": 201,
+            "BattleBuffConditionParam": "102",
+            "BattleType": 2,
+            "CompleteOwnExtraPoint": 50,
+            "DefendPreBattleBuilding": "402",
+            "Id": 1506,
+            "SingleOwnPoint": 20
+        },
+        {
+            "AttackPreBattleBuilding": "402",
+            "BattleBuffCondition": 201,
+            "BattleBuffConditionParam": "101",
+            "BattleType": 2,
+            "CompleteOwnExtraPoint": 80,
+            "DefendPreBattleBuilding": "901",
+            "Id": 1512,
+            "SingleOwnPoint": 40
+        },
+        {
+            "AttackPreBattleBuilding": "",
+            "BattleBuffCondition": 101,
+            "BattleBuffConditionParam": "1,2,3,5|4,6,7|8,9,10,11",
+            "BattleType": 1,
+            "CompleteOwnExtraPoint": 50,
+            "DefendPreBattleBuilding": "1514",
+            "Id": 1513,
+            "SingleOwnPoint": 20
+        },
+        {
+            "AttackPreBattleBuilding": "",
+            "BattleBuffCondition": 201,
+            "BattleBuffConditionParam": "105",
+            "BattleType": 2,
+            "CompleteOwnExtraPoint": 100,
+            "DefendPreBattleBuilding": "402",
+            "Id": 1514,
+            "SingleOwnPoint": 50
+        },
+        {
+            "AttackPreBattleBuilding": "",
+            "BattleBuffCondition": 101,
+            "BattleBuffConditionParam": "1,2,3,5|4,6,7|8,9,10,11",
+            "BattleType": 1,
+            "CompleteOwnExtraPoint": 50,
+            "DefendPreBattleBuilding": "1514",
+            "Id": 1515,
+            "SingleOwnPoint": 20
+        }
+    ]
+}

@@ -1,0 +1,136 @@
+{
+    "t_s_battlefieldhonorgroup": [
+        {
+            "HonorLowerLimit": 0,
+            "HonorUpperLimit": 15000,
+            "Id": 1,
+            "Type": 1
+        },
+        {
+            "HonorLowerLimit": 15001,
+            "HonorUpperLimit": 32000,
+            "Id": 2,
+            "Type": 1
+        },
+        {
+            "HonorLowerLimit": 0,
+            "HonorUpperLimit": 32000,
+            "Id": 3,
+            "Type": 2
+        },
+        {
+            "HonorLowerLimit": 32001,
+            "HonorUpperLimit": 88000,
+            "Id": 4,
+            "Type": 2
+        },
+        {
+            "HonorLowerLimit": 0,
+            "HonorUpperLimit": 88000,
+            "Id": 5,
+            "Type": 3
+        },
+        {
+            "HonorLowerLimit": 88001,
+            "HonorUpperLimit": 176000,
+            "Id": 6,
+            "Type": 3
+        },
+        {
+            "HonorLowerLimit": 0,
+            "HonorUpperLimit": 176000,
+            "Id": 7,
+            "Type": 4
+        },
+        {
+            "HonorLowerLimit": 176001,
+            "HonorUpperLimit": 320000,
+            "Id": 8,
+            "Type": 4
+        },
+        {
+            "HonorLowerLimit": 0,
+            "HonorUpperLimit": 88000,
+            "Id": 9,
+            "Type": 5
+        },
+        {
+            "HonorLowerLimit": 88001,
+            "HonorUpperLimit": 240000,
+            "Id": 10,
+            "Type": 5
+        },
+        {
+            "HonorLowerLimit": 240001,
+            "HonorUpperLimit": 999999999,
+            "Id": 11,
+            "Type": 5
+        },
+        {
+            "HonorLowerLimit": 0,
+            "HonorUpperLimit": 88000,
+            "Id": 12,
+            "Type": 6
+        },
+        {
+            "HonorLowerLimit": 88001,
+            "HonorUpperLimit": 240000,
+            "Id": 13,
+            "Type": 6
+        },
+        {
+            "HonorLowerLimit": 240001,
+            "HonorUpperLimit": 999999999,
+            "Id": 14,
+            "Type": 6
+        },
+        {
+            "HonorLowerLimit": 0,
+            "HonorUpperLimit": 88000,
+            "Id": 15,
+            "Type": 7
+        },
+        {
+            "HonorLowerLimit": 88001,
+            "HonorUpperLimit": 240000,
+            "Id": 16,
+            "Type": 7
+        },
+        {
+            "HonorLowerLimit": 240001,
+            "HonorUpperLimit": 520000,
+            "Id": 17,
+            "Type": 7
+        },
+        {
+            "HonorLowerLimit": 520001,
+            "HonorUpperLimit": 760000,
+            "Id": 18,
+            "Type": 7
+        },
+        {
+            "HonorLowerLimit": 760001,
+            "HonorUpperLimit": 999999999,
+            "Id": 19,
+            "Type": 7
+        },
+        {
+            "HonorLowerLimit": 0,
+            "HonorUpperLimit": 240000,
+            "Id": 20,
+            "Type": 8
+        },
+        {
+            "HonorLowerLimit": 240001,
+            "HonorUpperLimit": 760000,
+            "Id": 21,
+            "Type": 8
+        },
+        {
+            "HonorLowerLimit": 760001,
+            "HonorUpperLimit": 999999999,
+            "Id": 22,
+            "Type": 8
+        }
+    ]
+}

@@ -312,8 +312,27 @@ function unlockNextCampaigns(state, campaignId) {
   }
 }
 
-function formatNodeData(row, wonNodes = []) {
+function trialChallengeNodes(mapId) {
+  if (![8201, 8205].includes(Number(mapId))) return [];
+  return getNodesForMap(mapId).filter(row => Number(row.SonType) === 2174 &&
+    String(row.Heros || '').trim()).sort((a, b) => Number(a.Id) - Number(b.Id));
+}
+
+function isTrialGuard(row) {
+  return [8201, 8205].includes(Number(row?.CampaignId)) &&
+    String(row?.AI || '').endsWith('.CNTrialAi') && !String(row?.Heros || '').trim();
+}
+
+function nextTrialChallenge(mapId, wonNodes = []) {
+  const won = new Set(wonNodes.map(Number));
+  return trialChallengeNodes(mapId).find(row => !won.has(Number(row.Id))) || null;
+}
+
+function formatNodeData(row, wonNodes = [], trialStarted = false) {
   const isWon = wonNodes.includes(Number(row.Id));
+  const trialNodes = trialChallengeNodes(row.CampaignId);
+  const isTrialChallenge = trialNodes.some(node => Number(node.Id) === Number(row.Id));
+  const activeTrial = trialStarted && Number(nextTrialChallenge(row.CampaignId, wonNodes)?.Id) === Number(row.Id);
   return {
     nodeId: Number(row.Id),
     campDataId: Number(row.Id),
@@ -322,7 +341,7 @@ function formatNodeData(row, wonNodes = []) {
     sonType: Number(row.SonType),
     preNodeIds: Number(row.PreNodeIds) || 0,
     nextNodeIds: Number(row.NextNodeIds) || 0,
-    state: isWon ? 8 : (Number(row.NodeState) || 1),
+    state: isTrialGuard(row) ? 1 : isWon ? 8 : isTrialChallenge ? (activeTrial ? 1 : 9) : (Number(row.NodeState) || 1),
     refreshSpeed: Number(row.RefreshSpeed) || 1,
     posX: Number(row.Property1) || 0,
     posY: Number(row.Property2) || 0,
@@ -399,8 +418,8 @@ function enterCampaign(character, savedState, campaignOrMapId, options = {}) {
   if (!camp) throw new Error(`Campanha ${id} desconhecida`);
   if (Number(camp.Capacity) < 1)
     throw new Error(`Campanha ${campaignId} com capacidade invalida`);
-  if (mapId !== resolveMapForCampaign(campaignId) &&
-      !(options.resumeTower && towerFloor(mapId)?.campaignId === campaignId))
+  const isTowerStage = Boolean(towerFloor(mapId) && towerFloor(mapId).campaignId === campaignId);
+  if (mapId !== resolveMapForCampaign(campaignId) && !isTowerStage)
     throw new Error(`Entrada direta no estagio ${mapId} nao permitida`);
 
   if (camp.MinLevel && character.grade < camp.MinLevel) {
@@ -504,7 +523,7 @@ function enterCampaign(character, savedState, campaignOrMapId, options = {}) {
     masterServerName: ''
   };
 
-  const formattedNodes = nodeList.map(n => formatNodeData(n, wonList));
+  const formattedNodes = nodeList.map(n => formatNodeData(n, wonList, Boolean(state.campaigns.current.trialStarted)));
 
   const packets = [
     packet(125, 'room.RoomCreatedMsg', { createdType: 1, room, isCross: false, campignId: campaignId }),
@@ -911,6 +930,9 @@ module.exports = {
   recordTowerVictory,
   ensureCampaignState,
   formatNodeData,
+  trialChallengeNodes,
+  isTrialGuard,
+  nextTrialChallenge,
   enterCampaign,
   arriveNode,
   finishCampaign,

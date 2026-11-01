@@ -74,6 +74,21 @@ function ensureCastleState(savedState, playerGrade = 1) {
     { buildingId: 17, sonType: 1446, templateId: 144600, grade: 0 }  // Volume de Tropas
   ];
 
+  const advancedTechLayout = [
+    { buildingId: 18, sonType: 2304, templateId: 230400, grade: 0 }, // Produção de Ouro Avanç.
+    { buildingId: 19, sonType: 2420, templateId: 242000, grade: 0 }, // PV de Tropa Avanç.
+    { buildingId: 20, sonType: 2421, templateId: 242100, grade: 0 }, // ATQ de Tropa Avanç.
+    { buildingId: 21, sonType: 2422, templateId: 242200, grade: 0 }, // DEF de Tropa Avanç.
+    { buildingId: 22, sonType: 2423, templateId: 242300, grade: 0 }, // ATQM de Tropa Avanç.
+    { buildingId: 23, sonType: 2424, templateId: 242400, grade: 0 }, // DEFM de Tropa Avanç.
+    { buildingId: 24, sonType: 2441, templateId: 244100, grade: 0 }, // ATQ de Herói Avanç.
+    { buildingId: 25, sonType: 2442, templateId: 244200, grade: 0 }, // ATQM de Herói Avanç.
+    { buildingId: 26, sonType: 2443, templateId: 244300, grade: 0 }, // DEF de Herói Avanç.
+    { buildingId: 27, sonType: 2444, templateId: 244400, grade: 0 }, // DEFM de Herói Avanç.
+    { buildingId: 28, sonType: 2445, templateId: 244500, grade: 0 }, // PV de Herói Avanç.
+    { buildingId: 29, sonType: 2446, templateId: 244600, grade: 0 }  // Volume de Tropas Avanç.
+  ];
+
   if (!savedState.castle.technologies) savedState.castle.technologies = {};
 
   // Se player < 18 (e nao possuir edifícios avançados previamente estabelecidos), remove QUALQUER resquício de Academia ou Tecnologia do castle.buildings
@@ -83,15 +98,19 @@ function ensureCastleState(savedState, playerGrade = 1) {
       if (!b) continue;
       const bId = Number(b.buildingId);
       const sType = Number(b.sonType);
-      if (bId >= 6 || sType === 501 || [1304, 1420, 1421, 1422, 1423, 1424, 1441, 1442, 1443, 1444, 1445, 1446].includes(sType)) {
+      if (bId >= 6 || sType === 501 || [1304, 1420, 1421, 1422, 1423, 1424, 1441, 1442, 1443, 1444, 1445, 1446, 2304, 2420, 2421, 2422, 2423, 2424, 2441, 2442, 2443, 2444, 2445, 2446].includes(sType)) {
         delete savedState.castle.buildings[key];
       }
     }
   }
 
-  const allowedLayout = pGrade >= 18
-    ? [...basicLayout, ...academyLayout, ...defaultTechLayout]
-    : basicLayout;
+  let allowedLayout = basicLayout;
+  if (pGrade >= 18) {
+    allowedLayout = [...allowedLayout, ...academyLayout, ...defaultTechLayout];
+  }
+  if (pGrade >= 50) {
+    allowedLayout = [...allowedLayout, ...advancedTechLayout];
+  }
 
   for (const b of allowedLayout) {
     if (!savedState.castle.buildings[b.buildingId] && !savedState.castle.buildings[String(b.buildingId)]) {
@@ -200,9 +219,13 @@ function upgradeBuilding(savedState, buildingId, playerLevel = 5) {
     throw new Error(`Edifício com ID ${bId} não encontrado no castelo`);
   }
 
-  // Trava estrita de Nível 18 para Academia (501) e Tecnologias
-  if ((bId === 6 || bId >= 7 || Number(building.sonType) === 501 || [1304, 1420, 1421, 1422, 1423, 1424, 1441, 1442, 1443, 1444, 1445, 1446].includes(Number(building.sonType))) && pLevel < 18) {
+  // Trava estrita de Nível 18 para Academia (501) e Tecnologias Básicas
+  if ((bId === 6 || (bId >= 7 && bId <= 17) || Number(building.sonType) === 501 || [1304, 1420, 1421, 1422, 1423, 1424, 1441, 1442, 1443, 1444, 1445, 1446].includes(Number(building.sonType))) && pLevel < 18) {
     throw new Error(`A Academia e suas tecnologias exigem Nível 18 (nível atual: ${pLevel})`);
+  }
+  // Trava estrita de Nível 50 para Tecnologias Avançadas
+  if ((bId >= 18 || [2304, 2420, 2421, 2422, 2423, 2424, 2441, 2442, 2443, 2444, 2445, 2446].includes(Number(building.sonType))) && pLevel < 50) {
+    throw new Error(`As tecnologias avançadas exigem Nível 50 (nível atual: ${pLevel})`);
   }
 
   const currentTemplate = buildingTemplates.get(Number(building.templateId));
@@ -260,7 +283,7 @@ function upgradeBuilding(savedState, buildingId, playerLevel = 5) {
   building.updatedDate = formatNow();
 
   if (!state.castle.technologies) state.castle.technologies = {};
-  if (bId >= 7 || [1304, 1420, 1421, 1423, 1424, 1441, 1442, 1443, 1444, 1445, 1446].includes(Number(building.sonType))) {
+  if (bId >= 7 || [1304, 1420, 1421, 1422, 1423, 1424, 1441, 1442, 1443, 1444, 1445, 1446, 2304, 2420, 2421, 2422, 2423, 2424, 2441, 2442, 2443, 2444, 2445, 2446].includes(Number(building.sonType))) {
     state.castle.technologies[building.sonType] = building.grade;
   }
 
@@ -296,7 +319,12 @@ function formatBuildingListMsg(savedState, userId, playerGrade) {
       const bId = Number(b.buildingId);
       const sType = Number(b.sonType);
       if (pGrade < 18) {
-        if (bId >= 6 || sType === 501 || [1304, 1420, 1421, 1422, 1423, 1424, 1441, 1442, 1443, 1444, 1445, 1446].includes(sType)) {
+        if (bId >= 6 || sType === 501 || [1304, 1420, 1421, 1422, 1423, 1424, 1441, 1442, 1443, 1444, 1445, 1446, 2304, 2420, 2421, 2422, 2423, 2424, 2441, 2442, 2443, 2444, 2445, 2446].includes(sType)) {
+          return false;
+        }
+      }
+      if (pGrade < 50) {
+        if (bId >= 18 || [2304, 2420, 2421, 2422, 2423, 2424, 2441, 2442, 2443, 2444, 2445, 2446].includes(sType)) {
           return false;
         }
       }

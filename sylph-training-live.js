@@ -111,9 +111,11 @@ function apply({saved,opType,petId,value,itemPos=0,catalogs,rng}){
  if(!stage)throw Error('Etapa do Silfo sem regras disponiveis');
  if(q>stage.max)throw Error('Qualidade incompatível com a etapa do modelo');
  const before={growth:growthAt(base,q,cat),quality:q,curQualityGp:Number(pet.curQualityGp||0),fightingCapacity:Number(pet.fightingCapacity||0),aptitudes:Object.fromEntries(APT.map(([key])=>[key,Number(pet[key]||0)]))};
- for(const [key,field] of APT){
+ // Promoted legacy Sylphs may carry aptitude above the new template's cap.
+ // That earned value must remain intact; the cap limits only new enchant points.
+ for(const [key] of APT){
   const value=Number(pet[key]??0);
-  if(!Number.isSafeInteger(value)||value<0||value>currentCap(base,q,field,cat))throw Error('Aptidao atual corrompida: '+key);
+  if(!Number.isSafeInteger(value)||value<0)throw Error('Aptidao atual corrompida: '+key);
  }
  let upgrades=0, progressBefore=0, progressAfter=0, enchantPoints={};
  if(op===4){
@@ -133,9 +135,11 @@ function apply({saved,opType,petId,value,itemPos=0,catalogs,rng}){
    if(!nextModel||Number(nextModel.PetType)!==Number(base.PetType))throw Error('Modelo destino da evolucao nao existe');
    for(const [key,field] of APT){
     const oldMin=interpolate(base,from,field,cat)[0];
+    const oldCap=currentCap(base,from,field,cat);
     const newMin=interpolate(base,next,field,cat)[0];
+    const carriedExcess=Math.max(0,Number(pet[key]||0)-oldCap);
     pet[key]=Number(pet[key]||0)+Math.max(0,newMin-oldMin);
-    if(pet[key]>currentCap(base,next,field,cat))pet[key]=currentCap(base,next,field,cat);
+    pet[key]=Math.min(pet[key],currentCap(base,next,field,cat)+carriedExcess);
    }
    upgrades++;
   }
@@ -146,7 +150,7 @@ function apply({saved,opType,petId,value,itemPos=0,catalogs,rng}){
   pet.growthRate=growthAt(base,next,cat);
   progressAfter=pet.curQualityGp;
  }else{
-  const available=APT.reduce((acc,[key,field])=>acc+currentCap(base,q,field,cat)-Number(pet[key]||0),0);
+  const available=APT.reduce((acc,[key,field])=>acc+Math.max(0,currentCap(base,q,field,cat)-Number(pet[key]||0)),0);
   if(available<quantity)throw Error('Aptidoes perto do limite: reduza quantidade; Sepulcrum preservado');
   enchantPoints=Object.fromEntries(APT.map(([key])=>[key,0]));
   const sample=typeof rng==='function'?rng:()=>crypto.randomInt(0,0x100000)/0x100000;

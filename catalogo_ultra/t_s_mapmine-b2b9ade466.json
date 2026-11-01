@@ -1,0 +1,2214 @@
+{
+    "t_s_mapmine": [
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 30110,
+            "Positionid": 301,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 30120,
+            "Positionid": 301,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 30130,
+            "Positionid": 301,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 30210,
+            "Positionid": 302,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 30220,
+            "Positionid": 302,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 30230,
+            "Positionid": 302,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 30310,
+            "Positionid": 303,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 30320,
+            "Positionid": 303,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 30330,
+            "Positionid": 303,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 30340,
+            "Positionid": 303,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 30410,
+            "Positionid": 304,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 30420,
+            "Positionid": 304,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 30430,
+            "Positionid": 304,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 30440,
+            "Positionid": 304,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 30510,
+            "Positionid": 305,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 30520,
+            "Positionid": 305,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 30530,
+            "Positionid": 305,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 30540,
+            "Positionid": 305,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 30550,
+            "Positionid": 305,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 30610,
+            "Positionid": 306,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 30620,
+            "Positionid": 306,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 30630,
+            "Positionid": 306,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 30640,
+            "Positionid": 306,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 30650,
+            "Positionid": 306,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 30660,
+            "Positionid": 306,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 30720,
+            "Positionid": 307,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 30730,
+            "Positionid": 307,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 30740,
+            "Positionid": 307,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 30750,
+            "Positionid": 307,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 30760,
+            "Positionid": 307,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 30770,
+            "Positionid": 307,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 30830,
+            "Positionid": 308,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 30840,
+            "Positionid": 308,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 30850,
+            "Positionid": 308,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 30860,
+            "Positionid": 308,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 30870,
+            "Positionid": 308,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 30880,
+            "Positionid": 308,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 30910,
+            "Positionid": 309,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 30920,
+            "Positionid": 309,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 30930,
+            "Positionid": 309,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 30940,
+            "Positionid": 309,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 30950,
+            "Positionid": 309,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 30960,
+            "Positionid": 309,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 31020,
+            "Positionid": 310,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 31030,
+            "Positionid": 310,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 31040,
+            "Positionid": 310,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 31050,
+            "Positionid": 310,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 31060,
+            "Positionid": 310,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 31070,
+            "Positionid": 310,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 31110,
+            "Positionid": 311,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 31120,
+            "Positionid": 311,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 31130,
+            "Positionid": 311,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 31140,
+            "Positionid": 311,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 31150,
+            "Positionid": 311,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 31210,
+            "Positionid": 312,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 31220,
+            "Positionid": 312,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 31230,
+            "Positionid": 312,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 31240,
+            "Positionid": 312,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 31250,
+            "Positionid": 312,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 31260,
+            "Positionid": 312,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 31320,
+            "Positionid": 313,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 31330,
+            "Positionid": 313,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 31340,
+            "Positionid": 313,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 31350,
+            "Positionid": 313,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 31360,
+            "Positionid": 313,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 31370,
+            "Positionid": 313,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 31430,
+            "Positionid": 314,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 31440,
+            "Positionid": 314,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 31450,
+            "Positionid": 314,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 31460,
+            "Positionid": 314,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 31470,
+            "Positionid": 314,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 31480,
+            "Positionid": 314,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 31510,
+            "Positionid": 315,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 31520,
+            "Positionid": 315,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 31530,
+            "Positionid": 315,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 31540,
+            "Positionid": 315,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 31550,
+            "Positionid": 315,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 31560,
+            "Positionid": 315,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 31620,
+            "Positionid": 316,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 31630,
+            "Positionid": 316,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 31640,
+            "Positionid": 316,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 31650,
+            "Positionid": 316,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 31660,
+            "Positionid": 316,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 31670,
+            "Positionid": 316,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 31710,
+            "Positionid": 317,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 31720,
+            "Positionid": 317,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 31730,
+            "Positionid": 317,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 31740,
+            "Positionid": 317,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 31750,
+            "Positionid": 317,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": 31810,
+            "Positionid": 318,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 31820,
+            "Positionid": 318,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 31830,
+            "Positionid": 318,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 31840,
+            "Positionid": 318,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 31850,
+            "Positionid": 318,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 31860,
+            "Positionid": 318,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 31920,
+            "Positionid": 319,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 31930,
+            "Positionid": 319,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 31940,
+            "Positionid": 319,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 31950,
+            "Positionid": 319,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 31960,
+            "Positionid": 319,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 31970,
+            "Positionid": 319,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 32030,
+            "Positionid": 320,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 32040,
+            "Positionid": 320,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 32050,
+            "Positionid": 320,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 32060,
+            "Positionid": 320,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 32070,
+            "Positionid": 320,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 32080,
+            "Positionid": 320,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": 32120,
+            "Positionid": 321,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 32130,
+            "Positionid": 321,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 32140,
+            "Positionid": 321,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 32150,
+            "Positionid": 321,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 32160,
+            "Positionid": 321,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 32170,
+            "Positionid": 321,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": 32230,
+            "Positionid": 322,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": 32240,
+            "Positionid": 322,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": 32250,
+            "Positionid": 322,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 32260,
+            "Positionid": 322,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 32270,
+            "Positionid": 322,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 32280,
+            "Positionid": 322,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": "32310",
+            "Positionid": 323,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": "32320",
+            "Positionid": 323,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "32330",
+            "Positionid": 323,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "32340",
+            "Positionid": 323,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "32350",
+            "Positionid": 323,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": "32410",
+            "Positionid": 324,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": "32420",
+            "Positionid": 324,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "32430",
+            "Positionid": 324,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "32440",
+            "Positionid": 324,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "32450",
+            "Positionid": 324,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": "32510",
+            "Positionid": 325,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": "32520",
+            "Positionid": 325,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "32530",
+            "Positionid": 325,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "32540",
+            "Positionid": 325,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "32550",
+            "Positionid": 325,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": "32560",
+            "Positionid": 325,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": "32610",
+            "Positionid": 326,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": "32620",
+            "Positionid": 326,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "32630",
+            "Positionid": 326,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "32640",
+            "Positionid": 326,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "32650",
+            "Positionid": 326,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": "32660",
+            "Positionid": 326,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": "32710",
+            "Positionid": 327,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": "32720",
+            "Positionid": 327,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "32730",
+            "Positionid": 327,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "32740",
+            "Positionid": 327,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "32750",
+            "Positionid": 327,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": "32760",
+            "Positionid": 327,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 10,
+            "Heroes": "",
+            "ID": "32810",
+            "Positionid": 328,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 3000,
+            "Soldiers": "6010,2|6010,8|6010,3|6010,9",
+            "TotalNum": 1000
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": "32820",
+            "Positionid": 328,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "32830",
+            "Positionid": 328,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "32840",
+            "Positionid": 328,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "32850",
+            "Positionid": 328,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": "32860",
+            "Positionid": 328,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": "32920",
+            "Positionid": 329,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "32930",
+            "Positionid": 329,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "32940",
+            "Positionid": 329,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "32950",
+            "Positionid": 329,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": "32960",
+            "Positionid": 329,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": "32970",
+            "Positionid": 329,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": "33020",
+            "Positionid": 330,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "33030",
+            "Positionid": 330,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "33040",
+            "Positionid": 330,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "33050",
+            "Positionid": 330,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": "33060",
+            "Positionid": 330,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": "33070",
+            "Positionid": 330,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": "33120",
+            "Positionid": 331,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "33130",
+            "Positionid": 331,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "33140",
+            "Positionid": 331,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "33150",
+            "Positionid": 331,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": "33160",
+            "Positionid": 331,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": "33170",
+            "Positionid": 331,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 20,
+            "Heroes": "",
+            "ID": "33220",
+            "Positionid": 332,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 6000,
+            "Soldiers": "6020,2|6020,8|6020,3|6020,9",
+            "TotalNum": 500
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "33230",
+            "Positionid": 332,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "33240",
+            "Positionid": 332,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "33250",
+            "Positionid": 332,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": "33260",
+            "Positionid": 332,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": "33270",
+            "Positionid": 332,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "33330",
+            "Positionid": 333,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "33340",
+            "Positionid": 333,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "33350",
+            "Positionid": 333,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": "33360",
+            "Positionid": 333,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": "33370",
+            "Positionid": 333,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": "33380",
+            "Positionid": 333,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 30,
+            "Heroes": "",
+            "ID": "33430",
+            "Positionid": 334,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 9000,
+            "Soldiers": "6030,2|6030,8|6030,3|6030,9",
+            "TotalNum": 200
+        },
+        {
+            "Grade": 40,
+            "Heroes": "",
+            "ID": "33440",
+            "Positionid": 334,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 12000,
+            "Soldiers": "6040,2|6040,8|6040,3|6040,9",
+            "TotalNum": 100
+        },
+        {
+            "Grade": 50,
+            "Heroes": "",
+            "ID": "33450",
+            "Positionid": 334,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 15000,
+            "Soldiers": "6050,2|6050,8|6050,3|6050,9",
+            "TotalNum": 50
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": "33460",
+            "Positionid": 334,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": "33470",
+            "Positionid": 334,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": "33480",
+            "Positionid": 334,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 335070,
+            "Positionid": 335,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 335080,
+            "Positionid": 335,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 120,
+            "Heroes": "",
+            "ID": 335120,
+            "Positionid": 335,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 27000,
+            "Soldiers": "6081,2|6081,8|6081,3|6081,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 160,
+            "Heroes": "",
+            "ID": 335160,
+            "Positionid": 335,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 30000,
+            "Soldiers": "6082,2|6082,8|6082,3|6082,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 336070,
+            "Positionid": 336,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 336080,
+            "Positionid": 336,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 120,
+            "Heroes": "",
+            "ID": 336120,
+            "Positionid": 336,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 27000,
+            "Soldiers": "6081,2|6081,8|6081,3|6081,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 160,
+            "Heroes": "",
+            "ID": 336160,
+            "Positionid": 336,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 30000,
+            "Soldiers": "6082,2|6082,8|6082,3|6082,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 337060,
+            "Positionid": 337,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 337070,
+            "Positionid": 337,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 337080,
+            "Positionid": 337,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 120,
+            "Heroes": "",
+            "ID": 337120,
+            "Positionid": 337,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 27000,
+            "Soldiers": "6081,2|6081,8|6081,3|6081,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 338060,
+            "Positionid": 338,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 338070,
+            "Positionid": 338,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 338080,
+            "Positionid": 338,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 120,
+            "Heroes": "",
+            "ID": 338120,
+            "Positionid": 338,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 27000,
+            "Soldiers": "6081,2|6081,8|6081,3|6081,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 339070,
+            "Positionid": 339,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 339080,
+            "Positionid": 339,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 120,
+            "Heroes": "",
+            "ID": 339120,
+            "Positionid": 339,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 27000,
+            "Soldiers": "6081,2|6081,8|6081,3|6081,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 160,
+            "Heroes": "",
+            "ID": 339160,
+            "Positionid": 339,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 30000,
+            "Soldiers": "6082,2|6082,8|6082,3|6082,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 340060,
+            "Positionid": 340,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 340070,
+            "Positionid": 340,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 340080,
+            "Positionid": 340,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 120,
+            "Heroes": "",
+            "ID": 340120,
+            "Positionid": 340,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 27000,
+            "Soldiers": "6081,2|6081,8|6081,3|6081,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 341070,
+            "Positionid": 341,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 341080,
+            "Positionid": 341,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 120,
+            "Heroes": "",
+            "ID": 341120,
+            "Positionid": 341,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 27000,
+            "Soldiers": "6081,2|6081,8|6081,3|6081,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 160,
+            "Heroes": "",
+            "ID": 341160,
+            "Positionid": 341,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 30000,
+            "Soldiers": "6082,2|6082,8|6082,3|6082,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 60,
+            "Heroes": "",
+            "ID": 342060,
+            "Positionid": 342,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 18000,
+            "Soldiers": "6060,2|6060,8|6060,3|6060,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 70,
+            "Heroes": "",
+            "ID": 342070,
+            "Positionid": 342,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 21000,
+            "Soldiers": "6070,2|6070,8|6070,3|6070,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 80,
+            "Heroes": "",
+            "ID": 342080,
+            "Positionid": 342,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 24000,
+            "Soldiers": "6080,2|6080,8|6080,3|6080,9",
+            "TotalNum": 20
+        },
+        {
+            "Grade": 120,
+            "Heroes": "",
+            "ID": 342120,
+            "Positionid": 342,
+            "ResourcesId": -100,
+            "ResourcesNumPerhour": 27000,
+            "Soldiers": "6081,2|6081,8|6081,3|6081,9",
+            "TotalNum": 20
+        }
+    ]
+}

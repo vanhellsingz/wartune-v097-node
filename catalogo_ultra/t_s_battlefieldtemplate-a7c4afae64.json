@@ -1,0 +1,60 @@
+{
+    "t_s_battlefieldtemplate": [
+        {
+            "Battlefield": 1,
+            "Id": 1,
+            "LevelLowerLimit": 30,
+            "LevelUpperLimit": 39,
+            "Type": 1
+        },
+        {
+            "Battlefield": 1,
+            "Id": 2,
+            "LevelLowerLimit": 40,
+            "LevelUpperLimit": 49,
+            "Type": 2
+        },
+        {
+            "Battlefield": 1,
+            "Id": 3,
+            "LevelLowerLimit": 50,
+            "LevelUpperLimit": 59,
+            "Type": 3
+        },
+        {
+            "Battlefield": 1,
+            "Id": 4,
+            "LevelLowerLimit": 60,
+            "LevelUpperLimit": 69,
+            "Type": 4
+        },
+        {
+            "Battlefield": 1,
+            "Id": 5,
+            "LevelLowerLimit": 70,
+            "LevelUpperLimit": 80,
+            "Type": 5
+        },
+        {
+            "Battlefield": 1,
+            "Id": 6,
+            "LevelLowerLimit": 81,
+            "LevelUpperLimit": 999,
+            "Type": 6
+        },
+        {
+            "Battlefield": 2,
+            "Id": 7,
+            "LevelLowerLimit": 81,
+            "LevelUpperLimit": 120,
+            "Type": 7
+        },
+        {
+            "Battlefield": 2,
+            "Id": 8,
+            "LevelLowerLimit": 121,
+            "LevelUpperLimit": 999,
+            "Type": 8
+        }
+    ]
+}

@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const inventoryState = require('./inventory-state');
 const shopP0 = require('./shop-p0-catalog');
+const shopDbLive = require('./shop-db-live');
 
 const configRoot = path.resolve(__dirname, '../res/release/config');
 
@@ -96,7 +97,15 @@ function buyShopItem(savedState, goodId, count = 1, payType = 0, managedGood = n
   }
 
   savedState.shop = savedState.shop || {};
-  savedState.shop.weekly = savedState.shop.weekly || {};
+  // Older characters have weekly=[]; numeric catalog IDs make that a sparse
+  // array of >200,000 nulls when serialized and exceed MariaDB's packet limit.
+  if (!savedState.shop.weekly || Array.isArray(savedState.shop.weekly)) {
+    savedState.shop.weekly = Object.fromEntries(Object.entries(savedState.shop.weekly || {}));
+  }
+  const activeWeek=utcKeys(new Date()).week;
+  if(savedState.shop.weeklyPeriod && savedState.shop.weeklyPeriod!==activeWeek)
+    savedState.shop.weekly={};
+  savedState.shop.weeklyPeriod=activeWeek;
   const weeklyBought = Number(savedState.shop.weekly[gId] || 0);
   if (good.WeeklyLimit && Number(good.WeeklyLimit) > 0 && (weeklyBought + buyCount) > Number(good.WeeklyLimit)) {
     throw new Error(`Limite semanal atingido para este item (${good.WeeklyLimit})`);
@@ -117,6 +126,7 @@ function buyShopItem(savedState, goodId, count = 1, payType = 0, managedGood = n
   const mazeVal = Number(good.MazeCoin || 0);
   const mineVal = Number(good.MineScore || 0);
   const scoreVal = Number(good.Score || 0);
+  const lordsScoreVal = Number(good.LordsScore || 0);
   const pointVal = Number(good.Point || good.balensPrice || 0);
   const giftTokenVal = Number(good.GiftToken || good.boundBalensPrice || 0);
   const priceVal = Number(good.Price || good.alternativePrice || 0);
@@ -139,6 +149,9 @@ function buyShopItem(savedState, goodId, count = 1, payType = 0, managedGood = n
   } else if (scoreVal > 0) {
     currency = 'score';
     unitPrice = scoreVal;
+  } else if (lordsScoreVal > 0) {
+    currency = 'lordsScore';
+    unitPrice = lordsScoreVal;
   } else if (Number(payType) === 0 && (pointVal > 0 || priceVal > 0)) {
     currency = 'balens';
     unitPrice = pointVal || priceVal;
@@ -149,9 +162,7 @@ function buyShopItem(savedState, goodId, count = 1, payType = 0, managedGood = n
     currency = 'balens';
     unitPrice = pointVal || priceVal;
   } else {
-    // Oferta gratuita / Grátis
-    currency = 'balens';
-    unitPrice = 0;
+    throw new Error(`Moeda não identificada para a oferta ${gId}`);
   }
 
   const totalCost = unitPrice * buyCount;
@@ -177,7 +188,8 @@ function buyShopItem(savedState, goodId, count = 1, payType = 0, managedGood = n
         mazeCoin: 'Moedas do Labirinto',
         mineScore: 'Ametistas / Pontos de Mina',
         consortiaOffer: 'Contribuição da Guilda',
-        score: 'Pontos'
+        score: 'Pontos',
+        lordsScore: 'Pontos de Lorde'
       };
       throw new Error(`Saldo insuficiente de ${currencyNames[currency] || currency}: requer ${totalCost} (possui ${currentBalance})`);
     }
@@ -247,6 +259,48 @@ function buyShopItem(savedState, goodId, count = 1, payType = 0, managedGood = n
   };
 }
 
+// The member's contribution lives in consortia_members, not in the character wallet.
+// Run this inside the same transaction that persists the character and purchased item.
+async function buyShopItemInTransaction(cx, characterId, savedState, goodId, count = 1, payType = 0) {
+  const [characters]=await cx.execute('SELECT grade,vip_level FROM characters WHERE id=?',[characterId]);
+  if(!characters.length)throw Error('Personagem da compra nao encontrado');
+  const character={grade:Number(characters[0].grade),vip:Number(characters[0].vip_level||0)};
+  const managedGood=await shopDbLive.purchaseRules(cx,goodId,Math.max(0,Math.min(19,character.vip)));
+  const good = managedGood || getShopGood(goodId);
+  if (!good) throw Error(`Item da loja com ID ${goodId} não encontrado no catálogo`);
+  if(managedGood?.enabled!==1)throw Error('Oferta desabilitada no painel');
+  const memberPrice=Number(good.ConsortiaOffer || 0);
+  const requiredShopLevel=Number(good.NeedConsortiaLevels || 0);
+  if (memberPrice <= 0 && requiredShopLevel <= 0) {
+    return buyShopItem(savedState, goodId, count, payType, managedGood, character);
+  }
+  const [members] = await cx.execute(
+    'SELECT consortia_id, offer FROM consortia_members WHERE character_id=? FOR UPDATE',
+    [characterId]
+  );
+  const member = members[0];
+  if (!member || (savedState.consortia?.id && Number(savedState.consortia.id) !== Number(member.consortia_id))) {
+    throw Error('Personagem não pertence à guilda desta loja');
+  }
+  const [guilds]=await cx.execute('SELECT shop_level FROM consortia WHERE id=?',[member.consortia_id]);
+  if(!guilds.length)throw Error('Guilda nao encontrada');
+  if(Number(guilds[0].shop_level)<requiredShopLevel)
+    throw Error(`Loja da guilda requer nivel ${good.NeedConsortiaLevels}`);
+  if(memberPrice<=0)return buyShopItem(savedState, goodId, count, payType, managedGood, character);
+  const offer = Number(member.offer);
+  if (!Number.isSafeInteger(offer) || offer < 0) throw Error('Contribuição da guilda inválida');
+  savedState.wallet ||= {};
+  savedState.wallet.consortiaOffer = offer;
+  const result = buyShopItem(savedState, goodId, count, payType, managedGood, character);
+  const remaining = Number(result.remainingBalance);
+  savedState.consortia ||= {};
+  savedState.consortia.id = Number(member.consortia_id);
+  savedState.consortia.offer = remaining;
+  await cx.execute('UPDATE consortia_members SET offer=? WHERE character_id=? AND consortia_id=?',
+    [remaining, characterId, member.consortia_id]);
+  return result;
+}
+
 /**
  * Formata pacote de confirmação de compra para o protocolo 90 (ShopMsg)
  */
@@ -274,5 +328,6 @@ module.exports = {
   getGood: getShopGood,
   getItemTemplate,
   buyShopItem,
+  buyShopItemInTransaction,
   formatShopBuyRspMsg
 };

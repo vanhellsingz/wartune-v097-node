@@ -108,11 +108,32 @@ function armyInfo(character, overrideMapId = null){
   const honorEquipLevel = Number(saved.honorEquip?.level || 0);
   const honorEquipStage = Number(saved.honorEquip?.stage || 0);
 
+  let guardShowInfo = null;
+  const activeGuard = (saved.guardians?.list || []).find(g => g && g.isFight && Number(g.guardId) === Number(saved.guardians?.activeId || 1));
+  if (activeGuard) {
+    const gStar = Math.max(0, Math.min(5, Number(activeGuard.guardStar) || 0));
+    const gStage = Math.max(0, Math.min(4, Number(activeGuard.guardStage) || 0));
+    let gLv = 1;
+    if (Array.isArray(activeGuard.equipInfos) && activeGuard.equipInfos.length > 0) {
+      const sum = activeGuard.equipInfos.reduce((acc, eq) => acc + (Number(eq.equipLv) || 0), 0);
+      gLv = Math.max(1, Math.floor(sum / 8));
+    }
+    guardShowInfo = {
+      guardTemplateId: Number(activeGuard.guardId) || 1,
+      guardStage: gStage,
+      guardLv: gLv,
+      guardName: String(activeGuard.guardName || 'Cavaleiro Sagrado'),
+      guardStar: gStar,
+      isFollowing: Boolean(activeGuard.isFollowing)
+    };
+  }
+
   return {
     armyId:h.armyId, playerId:character.id, nickName:character.nickname,
     mapId:currentMapId, curPosX, curPosY,
     state:0, type:2, armyPawn:armyPawns, simpleHeroInfo, heroTempId:t.TemplateId || 1, headId:h.headId || 1,
-    grades:character.grade, job:t.Job || 1, consortiaName:'',
+    grades:character.grade, job:t.Job || 1, consortiaName:(saved.consortia && saved.consortia.name) ? saved.consortia.name : '',
+    consortiaId:(saved.consortia && saved.consortia.id) ? Number(saved.consortia.id) : 0,
     fightingCapacity:simpleHeroInfo.fightingCapacity,
     isVip,
     vipType,
@@ -120,9 +141,11 @@ function armyInfo(character, overrideMapId = null){
     mountGrade,
     honorEquipLevel,
     honorEquipStage,
+    appellid: Number(character.appell_id || saved.appells?.curAppell || 0),
     geste: Number(saved.wallet?.honor ?? saved.honor ?? 0),
     onVehicle: false,
     serverName: character.site || 'S1',
+    guardShowInfo,
     ...appearance(character)
   };
 }

@@ -1,0 +1,4197 @@
+{
+    "t_s_config": [
+        {
+            "ConfigName": "Player_BagCount",
+            "ConfigValue": "100",
+            "Description": "玩家背包默认格子数",
+            "Id": 5,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "Castle_Building",
+            "ConfigValue": "901,1201,402",
+            "Description": "城堡初始建筑",
+            "Id": 7,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Castle_Order",
+            "ConfigValue": "1",
+            "Description": "建筑冷却队列",
+            "Id": 8,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Player_weary",
+            "ConfigValue": "200",
+            "Description": "体力上限",
+            "Id": 9,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Consortia_Grade",
+            "ConfigValue": "12",
+            "Description": "建立公会等级",
+            "Id": 10,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Consortia_Gold",
+            "ConfigValue": "700000",
+            "Description": "建立公会金币",
+            "Id": 11,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Player_BagAdd",
+            "ConfigValue": "5",
+            "Description": "购买领主格子数量",
+            "Id": 13,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Hero_EngagePrice",
+            "ConfigValue": "20",
+            "Description": "购买背包格基础价格",
+            "Id": 14,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "MatchTime",
+            "ConfigValue": "12:00,13:00|20:00,21:00",
+            "Description": "竞技场开放时间",
+            "Id": 15,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Player_AttackCount",
+            "ConfigValue": "5",
+            "Description": "用户默认攻击次数",
+            "Id": 21,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "Defence_Time",
+            "ConfigValue": "7200",
+            "Description": "默认受保护时间",
+            "Id": 22,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Consortia_Member",
+            "ConfigValue": "2",
+            "Description": "公会等级人数",
+            "Id": 23,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "Consortia_Change",
+            "ConfigValue": "20",
+            "Description": "机器人公会转让人数限制",
+            "Id": 24,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Star_BagPrice",
+            "ConfigValue": "200",
+            "Description": "购买星格价格",
+            "Id": 29,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Star_BagAdd",
+            "ConfigValue": "4",
+            "Description": "购买星格格子数量",
+            "Id": 30,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Compose",
+            "ConfigValue": "1,2000",
+            "Description": "默认合成公式",
+            "Id": 31,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "StarPickGold0",
+            "ConfigValue": "4000",
+            "Description": "占星价格",
+            "Id": 32,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "StarPickGold1",
+            "ConfigValue": "5000",
+            "Description": "占星价格",
+            "Id": 33,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "StarPickGold2",
+            "ConfigValue": "6000",
+            "Description": "占星价格",
+            "Id": 34,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "StarPickGold3",
+            "ConfigValue": "8000",
+            "Description": "占星价格",
+            "Id": 35,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "StarPickGold4",
+            "ConfigValue": "10000",
+            "Description": "占星价格",
+            "Id": 36,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "HeroSkillSet",
+            "ConfigValue": "1,10811|2,20811|3,30811",
+            "Description": "新手引导领悟技能",
+            "Id": 37,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Player_JumpItemAdd",
+            "ConfigValue": "1,1011002|2,1012002|3,1013002",
+            "Description": "新手跳过获得物品",
+            "Id": 39,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "GiveCastle_Grade",
+            "ConfigValue": "11",
+            "Description": "离开新手岛等级",
+            "Id": 40,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "SingleCampaign_Weary",
+            "ConfigValue": "20",
+            "Description": "单人副本消耗体力",
+            "Id": 41,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "MultiCampaign_Weary",
+            "ConfigValue": "20",
+            "Description": "多人副本消耗体力",
+            "Id": 42,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "AddSkill_Grade",
+            "ConfigValue": "6",
+            "Description": "获取第一个技能点的等级",
+            "Id": 44,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "RemoveMap_Day",
+            "ConfigValue": "7",
+            "Description": "未登陆天数移至新手岛",
+            "Id": 46,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "RemoveMap_Persent",
+            "ConfigValue": "80",
+            "Description": "大地图城堡百分比时清理小号",
+            "Id": 47,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "MultiCampaign_MaxCount",
+            "ConfigValue": "1",
+            "Description": "多人副本进入次数",
+            "Id": 49,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Consortia_Rename",
+            "ConfigValue": "1000",
+            "Description": "公会改名",
+            "Id": 50,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "StarPoint0",
+            "ConfigValue": "1",
+            "Description": "占星积分",
+            "Id": 51,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "StarPoint1",
+            "ConfigValue": "2",
+            "Description": "占星积分",
+            "Id": 52,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "StarPoint2",
+            "ConfigValue": "3",
+            "Description": "占星积分",
+            "Id": 53,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "StarPoint3",
+            "ConfigValue": "4",
+            "Description": "占星积分",
+            "Id": 54,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "StarPoint4",
+            "ConfigValue": "5",
+            "Description": "占星积分",
+            "Id": 55,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Item_Resolve",
+            "ConfigValue": "1000",
+            "Description": "【铁匠铺】单个装备分解消耗黄金数",
+            "Id": 56,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Geste_UpperLimit",
+            "ConfigValue": "34,10000|39,32000|44,60000|49,88000|54,126000|59,176000|64,240000|69,320000|200,2200000",
+            "Description": "各等级对应的荣誉值上限",
+            "Id": 57,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic1",
+            "ConfigValue": "cybattle01,cybattle02,cybattle03",
+            "Description": "草原",
+            "Id": 61,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic2",
+            "ConfigValue": "battle02",
+            "Description": "雪地",
+            "Id": 62,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic3",
+            "ConfigValue": "battle03",
+            "Description": "悬浮山",
+            "Id": 63,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic4",
+            "ConfigValue": "battle04",
+            "Description": "熔岩",
+            "Id": 64,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic5",
+            "ConfigValue": "battle05",
+            "Description": "森林",
+            "Id": 65,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic6",
+            "ConfigValue": "battle06",
+            "Description": "沼泽",
+            "Id": 66,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic7",
+            "ConfigValue": "gcbattle01",
+            "Description": "攻城",
+            "Id": 67,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic8",
+            "ConfigValue": "jjcbattle01",
+            "Description": "竞技场",
+            "Id": 68,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic9",
+            "ConfigValue": "battle01,battle02,battle03",
+            "Description": "沙漠",
+            "Id": 69,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic10",
+            "ConfigValue": "battle04,battle05,battle06",
+            "Description": "地下迷宫",
+            "Id": 70,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic11",
+            "ConfigValue": "WORLDBOSS",
+            "Description": "世界BOSS",
+            "Id": 71,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusicBoss",
+            "ConfigValue": "BOSS",
+            "Description": "boss音乐",
+            "Id": 72,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusicWorldBoss",
+            "ConfigValue": "WORLDBOSS",
+            "Description": "世界boss音乐",
+            "Id": 73,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Farm_Operate_Time",
+            "ConfigValue": 20,
+            "Description": "【家园】动物饥饿状态出现时间(成长期占比)",
+            "Id": 82,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Farm_Operate_Percent",
+            "ConfigValue": "40,70,55,85",
+            "Description": "【家园】动物成熟期：生病状态(第1次)、生病状态(第2次)、焦躁状态(第1次)、焦躁状态(第2次)",
+            "Id": 83,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "FarmCrop_miraclewood_GP",
+            "ConfigValue": 1,
+            "Description": "【家园】奇迹神树驱虫除草获得的神树经验",
+            "Id": 84,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "FarmCrop_miraclewood_Gold",
+            "ConfigValue": "5,5,10000000",
+            "Description": "【家园】黄金灌溉一次获得的神树经验，可灌溉次数，灌溉花费",
+            "Id": 85,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "FarmCrop_miraclewood_Point",
+            "ConfigValue": "10,5,15",
+            "Description": "【家园】绑定钻石灌溉一次获得的神树经验，可灌溉次数，灌溉花费",
+            "Id": 86,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "FarmCrop_miraclewood_Gift",
+            "ConfigValue": 1000,
+            "Description": "【家园】奇迹神树状态值",
+            "Id": 87,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "FarmCrop_miraclewood_Train",
+            "ConfigValue": "36,1000",
+            "Description": "【家园】奇迹神树单个道具培养花费时间，花费金币",
+            "Id": 88,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "FarmCrop_Mature_Percent",
+            "ConfigValue": "0",
+            "Description": "【家园】动物植物成熟时间加成",
+            "Id": 89,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "FarmCrop_Gains_Percent",
+            "ConfigValue": "3",
+            "Description": "【家园】动物植物收获数量加成",
+            "Id": 90,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "FarmCrop_Operate_GP",
+            "ConfigValue": "1",
+            "Description": "【家园】驱虫除草安抚治疗喂食获得经验",
+            "Id": 91,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Farm_Unlock_Point",
+            "ConfigValue": "300,600,900",
+            "Description": "【家园】解锁第10格所需钻石、第11格所需钻石、第12格所需钻石",
+            "Id": 92,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Farm_Today_HelpFeed_Count",
+            "ConfigValue": 10,
+            "Description": "【家园】每天帮好友喂养牲畜次数上限",
+            "Id": 93,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "ShopFresh_NeedDiamond",
+            "ConfigValue": "75",
+            "Description": "【神秘商店】刷新消耗钻石",
+            "Id": 95,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Consortia_ClearCD_Point",
+            "ConfigValue": "50",
+            "Description": "清除加入公会CD扣费",
+            "Id": 97,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Second_SkillPoint",
+            "ConfigValue": "600",
+            "Description": "开启双技能售价",
+            "Id": 98,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Farm_TodayFromFriend_GP",
+            "ConfigValue": 500,
+            "Description": "【家园】每天能从好友获取的家园经验",
+            "Id": 102,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic12",
+            "ConfigValue": "battle01,battle02,battle03",
+            "Description": "绿洲",
+            "Id": 103,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BattleMusic13",
+            "ConfigValue": "battle01,battle02,battle03",
+            "Description": "深渊",
+            "Id": 104,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Farm_Accelerate_Point",
+            "ConfigValue": 15,
+            "Description": "【家园】种植养殖加速所需钻石",
+            "Id": 105,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "FamTree_WaterMax",
+            "ConfigValue": "50",
+            "Description": "公会秘境神树每日充能上限",
+            "Id": 110,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Live_Fight_Pay",
+            "ConfigValue": "5",
+            "Description": "世界BOSS立即进入战斗价钱",
+            "Id": 117,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Live_Pay",
+            "ConfigValue": "2",
+            "Description": "世界BOSS复活价钱",
+            "Id": 118,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Fam_Buffer_Price",
+            "ConfigValue": "200",
+            "Description": "秘境BUFF贡献价格",
+            "Id": 124,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "Farm_TodayStolen_Count",
+            "ConfigValue": "200",
+            "Description": "每天偷取次数上限",
+            "Id": 127,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "TrialSkill",
+            "ConfigValue": "101,3,3,30|102,3,3,30|104,3,3,30|103,1,1,75",
+            "Description": "试炼技能",
+            "Id": 130,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "OpenRuneGrade",
+            "ConfigValue": "35",
+            "Description": "开放符文系统等级",
+            "Id": 147,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CarryTwoRune",
+            "ConfigValue": "40",
+            "Description": "携带两种符文等级",
+            "Id": 148,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "SMALL_BUGLE_FREE_COUNT",
+            "ConfigValue": "10",
+            "Description": "【聊天】世界频道每日免费发言次数",
+            "Id": 150,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "RuneCommonCD",
+            "ConfigValue": "15000",
+            "Description": "符文公用CD",
+            "Id": 151,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "clearDays",
+            "ConfigValue": "15",
+            "Description": "清除指定天数之前的精彩活动数据",
+            "Id": 152,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "backPlayerGrades",
+            "ConfigValue": 999,
+            "Description": "获得英雄回归Buff的最低等级——配999屏蔽",
+            "Id": 160,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "backOfflineDays",
+            "ConfigValue": 14,
+            "Description": "获得英雄回归Buff的最低离线天数——【已废弃】",
+            "Id": 161,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "backBufferDays",
+            "ConfigValue": 14,
+            "Description": "英雄回归Buff持续天数——【已废弃】",
+            "Id": 162,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Bottle_Price",
+            "ConfigValue": "30|300|1500",
+            "Description": "【黄金神树】抽奖消耗钻石数量",
+            "Id": 164,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "Fly_Mount",
+            "ConfigValue": "7001,1117,3047,3040,8026,8201,8198,8012,8204,8073,8189,8215,8317,8235,8334,8389,8278,8127,8093,8217,8451,8286,8487,8329,8371,8396,8225,8399,8495,8165,8525,8037,1120,8093,8494,8516,8338,8217,8499,8458,8260,8102,8332,8548,8537,8425,8561,8522,8469,8373,8376,8456,8563,8176,8113,3012,8370,8500,8533,8523,8457,8448,8462,8455,8120,8392,3044,8405,8513,8340,8528,8331,3073,8497,8369,8574,8409,8551,3050,8062,8046,8023,3014,8086,8136,8293,8578,8470,8572,8305,8416,8354",
+            "Description": "飞行坐骑",
+            "Id": 170,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "FreshSeconds",
+            "ConfigValue": "14400",
+            "Description": "限时抢购刷新的总秒数",
+            "Id": 171,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "Awake_value",
+            "ConfigValue": "-150,25,250",
+            "Description": "觉醒值的变化（变身3秒消耗/无用/非变身3秒获得）",
+            "Id": 172,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Pet_Challenge_Grade",
+            "ConfigValue": "50",
+            "Description": "【英灵竞技】英灵竞技挑战的等级限制",
+            "Id": 173,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Pet_Challenge_Count",
+            "ConfigValue": "10",
+            "Description": "【英灵竞技】每日英灵竞技次数",
+            "Id": 174,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "MineOfActiveTime",
+            "ConfigValue": "20:30,21:00",
+            "Description": "紫金矿场活动时间",
+            "Id": 176,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Mine_Level",
+            "ConfigValue": "25,39|40,10000",
+            "Description": "紫晶矿场等级段",
+            "Id": 177,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "MaxMineScore",
+            "ConfigValue": "99999",
+            "Description": "玩家紫晶积分上限",
+            "Id": 178,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Imm_over_battle",
+            "ConfigValue": "20000",
+            "Description": "【英灵竞技】立即结束战斗等待时间",
+            "Id": 179,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "add_pet_count",
+            "ConfigValue": "100,100,300",
+            "Description": "【英灵】开启额外英灵携带格子所需钻石数量",
+            "Id": 181,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "treasure_refresh_points",
+            "ConfigValue": "40",
+            "Description": "藏宝图一键刷新所需钻石",
+            "Id": 182,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "treasure_refresh_item",
+            "ConfigValue": "8",
+            "Description": "藏宝图一键刷新所需物品数量",
+            "Id": 183,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "treasure_imm_battle",
+            "ConfigValue": "10",
+            "Description": "藏宝图立即挖掘所需钻石",
+            "Id": 184,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "join_tremap_count",
+            "ConfigValue": "5",
+            "Description": "藏宝图领取次数",
+            "Id": 185,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "reward_tremap_count",
+            "ConfigValue": "5",
+            "Description": "藏宝图收益次数",
+            "Id": 186,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Dati_Day",
+            "ConfigValue": "1,3,5,6",
+            "Description": "答题系统日期段",
+            "Id": 187,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "AnswerQuestionTime",
+            "ConfigValue": "14:35:00",
+            "Description": "答题系统开始时间段",
+            "Id": 188,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "swallow_fullgp_points",
+            "ConfigValue": "50",
+            "Description": "英灵吞噬经验100%转化所需钻石",
+            "Id": 191,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "50_coupons",
+            "ConfigValue": "500,50",
+            "Description": "消费满500钻石可用此券立减50钻石",
+            "Id": 198,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "200_coupons",
+            "ConfigValue": "1000,200",
+            "Description": "消费满100钻石可用此券立减200钻石",
+            "Id": 199,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "2000_coupons",
+            "ConfigValue": "5000,2000",
+            "Description": "消费满5000钻石可用此券立减2000钻石",
+            "Id": 200,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "prop_coupons",
+            "ConfigValue": "1000,100|2000,400|3000,900",
+            "Description": "在商城道具栏中消费使用，满1000减100 消费满2000减400 消费满3000减900",
+            "Id": 201,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "gem_coupons",
+            "ConfigValue": "1000,100|2000,400|3000,900",
+            "Description": "在商城宝石栏中消费使用，满1000减100 消费满2000减400 消费满3000减900",
+            "Id": 202,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "fashion_coupons",
+            "ConfigValue": "1000,100|2000,400|3000,900",
+            "Description": "在商城时装栏中消费使用，满1000减100 消费满2000减400 消费满3000减900",
+            "Id": 203,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Weary_Restore",
+            "ConfigValue": "20",
+            "Description": "每小时恢复体力值",
+            "Id": 205,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "DayAddGeste",
+            "ConfigValue": "6000",
+            "Description": "每日获取荣誉上限",
+            "Id": 233,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "fund_diamond",
+            "ConfigValue": "1680",
+            "Description": "【成长基金】购买后一次性可获得钻石数",
+            "Id": 400,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "fund_multiple",
+            "ConfigValue": "10",
+            "Description": "【成长基金】成长基金返利倍数",
+            "Id": 401,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "fund_money",
+            "ConfigValue": "98",
+            "Description": "【成长基金】购买成长基金消耗金额（元）",
+            "Id": 402,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "monthlycard_ordinary",
+            "ConfigValue": "300",
+            "Description": "【月卡】普通月卡购买后一次性可获得钻石数",
+            "Id": 500,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "monthlycard_super",
+            "ConfigValue": "980",
+            "Description": "【月卡】超级月卡购买后一次性可获得钻石数",
+            "Id": 501,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "monthlycard_needordinary",
+            "ConfigValue": "300",
+            "Description": "【月卡】普通月卡每日可获得绑定钻石数",
+            "Id": 502,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "monthlycard_needsuper",
+            "ConfigValue": "980",
+            "Description": "【月卡】超级月卡每日可获得绑定钻石数",
+            "Id": 503,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "monthlycard_ordinarytime",
+            "ConfigValue": "30",
+            "Description": "【月卡】普通月卡持续天数",
+            "Id": 504,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "monthlycard_supertime",
+            "ConfigValue": "30",
+            "Description": "【月卡】超级月卡持续天数",
+            "Id": 505,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "monthlycard_ordinarymoney",
+            "ConfigValue": "30",
+            "Description": "【月卡】购买普通月卡金额（元）",
+            "Id": 506,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "monthlycard_supermoney",
+            "ConfigValue": "98",
+            "Description": "【月卡】购买超级月卡金额（元）",
+            "Id": 507,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "seventarget_Grade",
+            "ConfigValue": "15",
+            "Description": "【七日目标】大于X等级后开启七日目标",
+            "Id": 600,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "seventarget_Refresh",
+            "ConfigValue": "5:00:00",
+            "Description": "【七日目标】每日刷新时间",
+            "Id": 601,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "seventarget_Time",
+            "ConfigValue": "15|1,7",
+            "Description": "【七日目标】七日目标持续时间（等级|开始天数,结束天数,）",
+            "Id": 602,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "temple_open",
+            "ConfigValue": "12:00-14:00,40|17:00-19:00,40|21:00-23:00,40",
+            "Description": "【修行神殿】【时间-时间,体力|时间-时间,体力】",
+            "Id": 603,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "BtnAutoAttackLimitLevel",
+            "ConfigValue": "10",
+            "Description": "自动战斗开启等级",
+            "Id": 650,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "RECOVER_POINT",
+            "ConfigValue": "15",
+            "Description": "修行纹章价格",
+            "Id": 1000,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Gem_Maze_Day",
+            "ConfigValue": "5,6,7",
+            "Description": "宝石迷阵开启日期",
+            "Id": 1204,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Gem_Maze_BuyInfo",
+            "ConfigValue": "10,8,99",
+            "Description": "宝石迷阵移动次数购买信息",
+            "Id": 1205,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Gem_Maze_BuyNum",
+            "ConfigValue": "50",
+            "Description": "宝石迷阵每日购买步数最大次数",
+            "Id": 1206,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Dice_Monopoly",
+            "ConfigValue": "20,1",
+            "Description": "【游戏盒子】云端历险初始普通骰子数，终点抽奖消耗数量",
+            "Id": 1207,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Monopoly_Day",
+            "ConfigValue": "5,6,7",
+            "Description": "【游戏盒子】云端历险开启日期",
+            "Id": 1208,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "WorldMapFreshTime",
+            "ConfigValue": "0,8,10,12,14,16,18,20,22",
+            "Description": "外城活动刷怪时间",
+            "Id": 1510,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "WorldMapKill",
+            "ConfigValue": "5,3,1",
+            "Description": "外城活动击杀次数",
+            "Id": 1511,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "consortia_boss_mission_a_drop_rate",
+            "ConfigValue": "50",
+            "Description": "【公会boss】任务A道具掉落几率",
+            "Id": 1608,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_island_defend_reward_count",
+            "ConfigValue": "10,5,1",
+            "Description": "【保卫英灵岛】最大获取奖励次数，配置格式：【中级英灵次数,高级英灵次数,英灵领主次数】",
+            "Id": 1609,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_island_defend_boss_rage",
+            "ConfigValue": "100",
+            "Description": "【保卫英灵岛】BOSS出现怒气值",
+            "Id": 1610,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_island_defend_hour",
+            "ConfigValue": "1,4,7,10,13,16,19,22",
+            "Description": "【保卫英灵岛】活动开启整点",
+            "Id": 1611,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_island_defend_rage_add",
+            "ConfigValue": "10,20",
+            "Description": "【保卫英灵岛】击杀小怪增加怒气，配置格式：【中级英灵,高级英灵】",
+            "Id": 1612,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Multi_Match",
+            "ConfigValue": "8:00,12:00",
+            "Description": "跨服多人本开放时间",
+            "Id": 1637,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "Fashion_Soul",
+            "ConfigValue": "200",
+            "Description": "【时装吞噬】时装之魄经验",
+            "Id": 1673,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Fashion_Wing",
+            "ConfigValue": "1600",
+            "Description": "【时装吞噬】时装翅膀经验",
+            "Id": 1674,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Fashion_Other",
+            "ConfigValue": "300",
+            "Description": "【时装吞噬】其他时装经验",
+            "Id": 1675,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Fashion_Lucky",
+            "ConfigValue": "200",
+            "Description": "【时装吞噬】幸运符经验",
+            "Id": 1676,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "mail_rewards",
+            "ConfigValue": "2060020,2|-500,100",
+            "Description": "游戏角色邮箱验证完成奖励",
+            "Id": 1689,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_open_week_day",
+            "ConfigValue": "6,7",
+            "Description": "外域开放日",
+            "Id": 1691,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_open_time",
+            "ConfigValue": "20:00,20:20|20:30,20:50",
+            "Description": "外域开放时间",
+            "Id": 1692,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_action_point",
+            "ConfigValue": "750,100",
+            "Description": "外域行动力上限，每小时行动力恢复",
+            "Id": 1693,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_attack_buff",
+            "ConfigValue": "25,1,500,500",
+            "Description": "外域进军祝福（行动力,攻血加成百分数,堆叠上限,积分）",
+            "Id": 1694,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_defence_buff",
+            "ConfigValue": "50,1,500,1000",
+            "Description": "外域守备祝福（行动力,攻血加成百分数,堆叠上限,积分）",
+            "Id": 1695,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_senior_general_buff",
+            "ConfigValue": "50,100,150,200",
+            "Description": "外域四将额外攻血加成",
+            "Id": 1696,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_charge_point",
+            "ConfigValue": "150",
+            "Description": "外域补充行动力上限消耗钻石",
+            "Id": 1697,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_defence_debuff",
+            "ConfigValue": "5,15",
+            "Description": "外域守备军胜利削弱（每次攻血削弱百分数,最高层数）",
+            "Id": 1698,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_kill_senior_general_extra_score",
+            "ConfigValue": "2,3,4,5",
+            "Description": "外域击杀四将分数倍数",
+            "Id": 1699,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_week_union",
+            "ConfigValue": "50000,100",
+            "Description": "外域弱国联盟（强国最低分数,弱国分数加成百分数）",
+            "Id": 1700,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_join_fee",
+            "ConfigValue": "500000",
+            "Description": "外域报名耗费财富",
+            "Id": 1701,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_win_score",
+            "ConfigValue": "2,200",
+            "Description": "外域攻打胜利积分掠夺百分数（掠夺百分数，最低分）",
+            "Id": 1702,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_attack_action_point",
+            "ConfigValue": "75",
+            "Description": "外域攻打消耗行动力",
+            "Id": 1703,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "stack_head_defence_npc",
+            "ConfigValue": "240000",
+            "Description": "外域防守npc（heroid）",
+            "Id": 1704,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "DiscountMallDisc",
+            "ConfigValue": "1,1,8,15,20,20,20,15,0",
+            "Description": "新打折商城折扣(1-9折）",
+            "Id": 1880,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "vice_password_reward",
+            "ConfigValue": "-100,100000|3040001,100",
+            "Description": "【二级密码】首次添加二级密码时获得的奖励",
+            "Id": 2306,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Privacy_protection",
+            "ConfigValue": "https://bm-agreement.wan.com/protocol.html",
+            "Description": "【个人中心】隐私保护指引链接",
+            "Id": 2307,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "User_Agreement",
+            "ConfigValue": "https://bm-agreement.wan.com/terms-server.html",
+            "Description": "【个人中心】用户协议链接",
+            "Id": 2308,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Team_Invite_Level",
+            "ConfigValue": "10",
+            "Description": "组队邀请等级限制",
+            "Id": 2309,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "UpStar_Add_Blessing",
+            "ConfigValue": "1,25|2,64|5,10|10,1",
+            "Description": "【坐骑炼化】炼化升星暴击所获得的祝福值及概率（配置格式：祝福值,概率百分比|祝福值,概率百分比...）",
+            "Id": 2310,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "GVG_People",
+            "ConfigValue": "25",
+            "Description": "【公会战】单个公会参战人数",
+            "Id": 2320,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "memorycard_buytimes",
+            "ConfigValue": "10",
+            "Description": "【记忆卡牌】记忆卡牌每次购买步数",
+            "Id": 2331,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "memorycard_costdiamond",
+            "ConfigValue": "100",
+            "Description": "【记忆卡牌】记忆卡牌每次购买步数需要消耗钻石",
+            "Id": 2332,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "memorycard_defaulttimes",
+            "ConfigValue": "15",
+            "Description": "【记忆卡牌】记忆卡牌初始步数",
+            "Id": 2333,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "memorycard_limittimes",
+            "ConfigValue": "99",
+            "Description": "【记忆卡牌】记忆卡牌步数上限",
+            "Id": 2334,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "memorycard_maxtimes",
+            "ConfigValue": "10",
+            "Description": "【记忆卡牌】记忆卡牌每日可购买步数最大次数",
+            "Id": 2335,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_learn_random_skill",
+            "ConfigValue": "100",
+            "Description": "【英灵技能】宠物随机学习技能",
+            "Id": 2401,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_learn_random_skill_interval",
+            "ConfigValue": "480",
+            "Description": "【英灵技能】宠物技能免费学习间隔",
+            "Id": 2402,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_forget_skill",
+            "ConfigValue": "300",
+            "Description": "【英灵技能】宠物遗忘技能消耗",
+            "Id": 2403,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Language",
+            "ConfigValue": "en,es,pt,tr,de,fr,zhtw,id,th,pl,nl,ru",
+            "Description": "多语言生效",
+            "Id": 2500,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Weary_Limit",
+            "ConfigValue": "5000",
+            "Description": "每天使用药水最多可恢复的体力",
+            "Id": 5000,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "QQ_Giftbagfornovices",
+            "ConfigValue": "2060014,2|2030503,1",
+            "Description": "【QQ大厅】新手礼包",
+            "Id": 5050,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "QQ_Dailygiftpackage",
+            "ConfigValue": "-100,10000",
+            "Description": "【QQ大厅】每日礼包",
+            "Id": 5051,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Kongjian_Giftbagfornovices",
+            "ConfigValue": "-500,50|2030102,1|2060014,3",
+            "Description": "【QQ空间】新手礼包",
+            "Id": 5060,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "onlinerewards_times",
+            "ConfigValue": "5,10,15,20,25,30,35,40",
+            "Description": "【在线奖励】间隔X时间增加的抽奖次数(分钟)",
+            "Id": 5100,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "upgradeaccount_rewards",
+            "ConfigValue": "2030102,2|2060020,2|-500,200",
+            "Description": "账号绑定奖励",
+            "Id": 5101,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Questionnaire_level",
+            "ConfigValue": "15",
+            "Description": "【问卷调查】出现等级",
+            "Id": 5199,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Questionnaire_reward",
+            "ConfigValue": "208051,1|208001,200",
+            "Description": "【问卷调查奖励】配置格式为：ID,数量|ID,数量|ID,数量",
+            "Id": 5200,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "passcheck_open_time",
+            "ConfigValue": "0,30",
+            "Description": "【通行证】开放时间格式：【玩家创角天数,等级】，需要同时完成两个条件才可开启",
+            "Id": 5201,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "passcheck_refresh_day",
+            "ConfigValue": "50,100,150",
+            "Description": "【通行证】通行证每日刷新格式：【价格,价格,价格...】",
+            "Id": 5204,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "passcheck_grade_diamond",
+            "ConfigValue": "150",
+            "Description": "【通行证】等级购买价格（按等级收费）",
+            "Id": 5206,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "passcheck_exhibition",
+            "ConfigValue": "800,9888|2688,36888",
+            "Description": "【通行证】界面展示格式配置：返利,价值|豪华返利，价值",
+            "Id": 5207,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "passcheck_tasknum",
+            "ConfigValue": "5,0,0",
+            "Description": "【通行证】通行证任务数量，配置格式：【今日任务数,本周任务数,成就任务数】",
+            "Id": 5208,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "passcheck_max_grade",
+            "ConfigValue": "100",
+            "Description": "【通行证】可购买至的最大等级",
+            "Id": 5209,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "mapphysicstreasure_peace_time",
+            "ConfigValue": "12:00,18:00|21:00,23:59|0:00,9:00",
+            "Description": "【宝藏矿脉争夺】和平期时间，配置格式（12:00,18:00|0:00,7:00）",
+            "Id": 5210,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "mapphysicstreasure_Warfare_time",
+            "ConfigValue": "10:00,11:59|19:00,20:59",
+            "Description": "【宝藏矿脉争夺】争夺期时间，配置格式（8:00,11:59|18:01,23:59）",
+            "Id": 5211,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "mapphysicstreasure_Reset_time",
+            "ConfigValue": "9:01,9:59|18:01,18:59",
+            "Description": "【宝藏矿脉争夺】重置时间（清除所有宝藏矿脉的占领）",
+            "Id": 5212,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "mapphysicstreasure_cd",
+            "ConfigValue": "30",
+            "Description": "【宝藏矿脉争夺】挑战失败CD（累计达到此配置分钟数，玩家将不可挑战）",
+            "Id": 5213,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "mapphysicstreasure_cd_everytime",
+            "ConfigValue": "2",
+            "Description": "【宝藏矿脉争夺】挑战失败CD分钟（失败后每次增加的CD），配置格式：【第1次失败增加的CD,第2次失败增加的CD…】",
+            "Id": 5214,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "mapphysicstreasure_cd_accelerate_spend",
+            "ConfigValue": "10,20,30",
+            "Description": "【宝藏矿脉争夺】挑战失败CD加速所消耗的钻石及可加速的次数，配置格式【第1次加速消耗的钻石,第2次加速消耗的钻石…】,配置了几条就代表最大可刷新几次",
+            "Id": 5215,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "consortiaboss_openingdate",
+            "ConfigValue": "6,7",
+            "Description": "【公会BOSS】公会BOSS开放日期",
+            "Id": 5216,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "mapphysicstreasure_fight_time",
+            "ConfigValue": "5",
+            "Description": "【宝藏矿脉争夺】战斗时长（分钟）",
+            "Id": 5217,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "runehole_bag",
+            "ConfigValue": "80,160",
+            "Description": "【符石背包】默认开放，最大上限",
+            "Id": 5300,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "runehole_bag_buy",
+            "ConfigValue": "8,30",
+            "Description": "【符石背包】购买数量，购买价格（单价）",
+            "Id": 5301,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "runehole_spot",
+            "ConfigValue": "10,30,200",
+            "Description": "【符孔】能量点：获得点，时间间隔*分钟,自然恢复上限",
+            "Id": 5303,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "runehole_spot_use",
+            "ConfigValue": "10",
+            "Description": "【符孔】每次消耗的能量点",
+            "Id": 5304,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "runehole_special_add",
+            "ConfigValue": "20",
+            "Description": "【符孔】每次抽取的特殊增幅",
+            "Id": 5305,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "runehole_decompose",
+            "ConfigValue": "100",
+            "Description": "【符孔】符石分解返还材料比例（百分比）",
+            "Id": 5309,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "SylphAtoll_RewardLimit",
+            "ConfigValue": 60,
+            "Description": "【英灵岛】当天收益次数上限",
+            "Id": 5350,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_bag",
+            "ConfigValue": "100,300",
+            "Description": "【英灵装备】背包格子数(默认大小，总大小)",
+            "Id": 5360,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_bag_buy",
+            "ConfigValue": "5,40",
+            "Description": "【英灵装备】背包购买价格（格子数量,购买价格）",
+            "Id": 5361,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Share_Reward",
+            "ConfigValue": "-500,200|208017,20",
+            "Description": "【分享】首次分享成功获得奖励",
+            "Id": 5500,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Microterminal_Reward",
+            "ConfigValue": "-500,50|2030102,1|2060014,3",
+            "Description": "【微端】微端登录奖励",
+            "Id": 5550,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Microterminal_Platform",
+            "ConfigValue": "30040",
+            "Description": "【微端】使用微端的平台",
+            "Id": 5551,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Order_NeedPay",
+            "ConfigValue": "150",
+            "Description": "【建筑队列】城堡建堡队扩展需要支付点券或礼金",
+            "Id": 5601,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "QuickenOrder_Price",
+            "ConfigValue": "2",
+            "Description": "【建筑队列】加速队列价格（每10分钟）",
+            "Id": 5602,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "QuickCoolChallenge_Price",
+            "ConfigValue": "2",
+            "Description": "【竞技挑战】挑战、英灵竞技冷却价格（每1分钟）",
+            "Id": 5603,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "Tower_Live",
+            "ConfigValue": "5",
+            "Description": "【地下迷宫】地下迷宫复活所需钻石",
+            "Id": 5605,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "AddEnergy_Price",
+            "ConfigValue": "2",
+            "Description": "【传送阵】传送阵充能价格（每5能量）",
+            "Id": 5606,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "AddAttck_Point",
+            "ConfigValue": "100",
+            "Description": "【外城】增加攻击城堡次数所需钻石",
+            "Id": 5607,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "RefreshLock_Price",
+            "ConfigValue": "15",
+            "Description": "【洗练】洗练属性锁价格",
+            "Id": 5611,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "PawnChange_NeedPoint",
+            "ConfigValue": "200",
+            "Description": "【兵种】兵种特性替换所需钻石",
+            "Id": 5614,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "PointConsortiaOffer_Price",
+            "ConfigValue": "2",
+            "Description": "【公会】钻石公会贡献点价格",
+            "Id": 5615,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "ConsortiaQuic_Price",
+            "ConfigValue": "2",
+            "Description": "【公会】公会冷却价格价格（每10分钟）",
+            "Id": 5616,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "Mail_NeedPoint",
+            "ConfigValue": "50",
+            "Description": "【公会】群发邮件需要钻石",
+            "Id": 5617,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "FreshReward_Price",
+            "ConfigValue": "3",
+            "Description": "【悬赏】刷新悬赏任务价格（每1次）",
+            "Id": 5619,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "SkipRepeatReward_Price",
+            "ConfigValue": "10",
+            "Description": "【跑环】跳过完成当前环任务价格",
+            "Id": 5620,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "Land_Up_Mulriple",
+            "ConfigValue": "1",
+            "Description": "【家园】土地升级价格放大倍数",
+            "Id": 5621,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "Tattoo_Property_Random",
+            "ConfigValue": "1,100|2,100|3,100|4,100|5,100",
+            "Description": "【龙纹】正属性类型（属性类型,权重）",
+            "Id": 5701,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Tattoo_Reduce_Property_Random",
+            "ConfigValue": "1,100|2,100|3,100|4,0|5,100",
+            "Description": "【龙纹】负属性类型（属性类型,权重）",
+            "Id": 5702,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Tattoo_refresh_lock_price",
+            "ConfigValue": "75",
+            "Description": "【龙纹】属性上锁价格",
+            "Id": 5703,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Tattoo_consume",
+            "ConfigValue": "208052,10",
+            "Description": "【龙纹】洗炼所需材料及数量（道具ID,数量）",
+            "Id": 5704,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Identical_tattoo",
+            "ConfigValue": "4",
+            "Description": "【龙纹】可拥有同种属性龙纹数量上限",
+            "Id": 5705,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Tattoo_Class_Proterty_Value_Max",
+            "ConfigValue": "50,120,210,320,450,600,750,900",
+            "Description": "【龙纹】阶级对应属性上限（对应Ⅰ阶、Ⅱ阶、Ⅲ阶......）",
+            "Id": 5707,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Tattoo_Upgrade_Grade",
+            "ConfigValue": "55,55,60,65,70,75,80",
+            "Description": "【龙纹】进阶所需角色等级（对应Ⅰ阶升Ⅱ阶、Ⅱ阶升Ⅲ阶、Ⅲ阶升Ⅳ阶...）",
+            "Id": 5708,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Tattoo_Hight_MultiplicativeBasis",
+            "ConfigValue": "20",
+            "Description": "【龙纹】洗炼增加属性上限系数（距属性上限值x百分比）",
+            "Id": 5709,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "card_bag",
+            "ConfigValue": "10,50",
+            "Description": "【魔法卡牌】背包格子数(默认大小，总大小)",
+            "Id": 5711,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "card_bag_buy",
+            "ConfigValue": "5,20",
+            "Description": "【魔法卡牌】背包购买价格（格子数量,购买价格）",
+            "Id": 5712,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "card_open_level",
+            "ConfigValue": "45",
+            "Description": "【魔法卡牌】开启等级",
+            "Id": 5713,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "honoropenlevel",
+            "ConfigValue": "30",
+            "Description": "【荣誉系统】开启等级",
+            "Id": 5801,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "ShopFresh_DayCount",
+            "ConfigValue": "10",
+            "Description": "【神秘商店】每日刷新次数上限",
+            "Id": 5901,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "ShopFresh_Time",
+            "ConfigValue": "1:00,10:00,15:00,20:00",
+            "Description": "【神秘商店】每天免费自动刷新商品时间（格式：时间,时间）",
+            "Id": 5902,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Special_Stretgy",
+            "ConfigValue": "100000",
+            "Description": "【士兵领悟】领悟特性所需黄金",
+            "Id": 5904,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "PawnChange_NeedStrategy",
+            "ConfigValue": "500000",
+            "Description": "【士兵转换】转换特性所需黄金",
+            "Id": 5905,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "plural_pvp_resetting_ratio",
+            "ConfigValue": "95",
+            "Description": "【多人竞技】积分重置比例（格式：倍数（百分比））",
+            "Id": 5906,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Remotepet_Weary",
+            "ConfigValue": "30",
+            "Description": "【英灵远征】消耗体力",
+            "Id": 5907,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "RuneHole_OpenLevel",
+            "ConfigValue": "35,40,45,50,55,60,65,70,75,80",
+            "Description": "【符孔】开放等级",
+            "Id": 5908,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "RuneOpen_Cost",
+            "ConfigValue": "0,0,0,1,3",
+            "Description": "【符孔】符孔解锁消耗符孔钻",
+            "Id": 5909,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Effect_Engraving_Cost",
+            "ConfigValue": "5",
+            "Description": "【符孔】效果雕刻消耗",
+            "Id": 5910,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "ChallengeTotalCount",
+            "ConfigValue": "10",
+            "Description": "【单人竞技】每日挑战次数",
+            "Id": 5911,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "single_arena_reward_win",
+            "ConfigValue": "30",
+            "Description": "【单人竞技】获胜奖励（基础分值）",
+            "Id": 5912,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "single_arena_reward_lose",
+            "ConfigValue": "9",
+            "Description": "【单人竞技】失败奖励（基础分值）",
+            "Id": 5913,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "weekly_attenuation",
+            "ConfigValue": "20",
+            "Description": "【单人竞技】每周衰减系数",
+            "Id": 5914,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "skill_reset_gold",
+            "ConfigValue": "10000",
+            "Description": "【技能】技能重置所需固定黄金基数（固定黄金基数*玩家等级）",
+            "Id": 5915,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "talent_reset_gold",
+            "ConfigValue": "5000",
+            "Description": "【天赋】天赋重置所需固定黄金基数（固定黄金基数*天赋等级）",
+            "Id": 5916,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CarnivalStartDate",
+            "ConfigValue": "2026-7-7 10:00:00",
+            "Description": "【嘉年华】嘉年华开始时间",
+            "Id": 5917,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CarnivalStopDate",
+            "ConfigValue": "2026-7-20 23:59:59",
+            "Description": "【嘉年华】嘉年华结束时间",
+            "Id": 5918,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CarnivalPayLuckyDraw",
+            "ConfigValue": "750",
+            "Description": "【嘉年华】充值有礼抽奖资格",
+            "Id": 5919,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CarnivalLuckyDraw",
+            "ConfigValue": "208054,1",
+            "Description": "【嘉年华】幸运夺宝抽奖配置",
+            "Id": 5920,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CarnivalDailControl",
+            "ConfigValue": "00:00:00",
+            "Description": "【嘉年华】嘉年华每日挑战、礼包、时长礼包刷新",
+            "Id": 5921,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CarnivalPayCount",
+            "ConfigValue": "15,1",
+            "Description": "【嘉年华】嘉年华充值获得积分（同时也是帮助说明里面的每充值XX钻石，即可获得XX点嘉年华积分）",
+            "Id": 5922,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "carnival_buy_gift_limit",
+            "ConfigValue": "2001,1|2002,1|2003,5|2004,2",
+            "Description": "【嘉年华】礼包购买限制",
+            "Id": 5924,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CarnivalGameCount",
+            "ConfigValue": "2,2,2",
+            "Description": "【嘉年华】记忆翻牌，连连看，数独的每日最大收益次数",
+            "Id": 5925,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CarnivalTabControl",
+            "ConfigValue": "summer",
+            "Description": "【嘉年华】方便主题活动替换时外部资源的加载",
+            "Id": 5926,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "bind_mobile_rewards",
+            "ConfigValue": "2060020,2|-500,100",
+            "Description": "游戏角色手机绑定完成奖励",
+            "Id": 5927,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "bind_open_level",
+            "ConfigValue": "26,26",
+            "Description": "绑定手机邮箱活动开启等级",
+            "Id": 5928,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Inner_Levy",
+            "ConfigValue": "10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300",
+            "Description": "【内城】单日额外征收次数及每次增加征收次数消耗钻石数",
+            "Id": 5930,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Pet_arena_reward_win",
+            "ConfigValue": "50",
+            "Description": "【英灵竞技】基础胜利分",
+            "Id": 5931,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Pet_arena_reward_lose",
+            "ConfigValue": "15",
+            "Description": "【英灵竞技】基础失败分",
+            "Id": 5932,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Pet_resetting_ratio",
+            "ConfigValue": "20",
+            "Description": "【英灵竞技】每周衰减系数",
+            "Id": 5933,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Battlefield_Honor_Range",
+            "ConfigValue": "0,1000|500,2000|1000,3000|2000,4000|3000,5000|4000,6000|6000,9000|6000,16000|9000,32000|16000,60000|32000,84000|60000,120000|84000,164000|120000,236000|164000,290000|236000,400000|290000,400000",
+            "Description": "战场荣誉分段",
+            "Id": 5934,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "pet_battle_count",
+            "ConfigValue": "10",
+            "Description": "【英灵战役】每日最大收益次数",
+            "Id": 5935,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Second_talent",
+            "ConfigValue": "600",
+            "Description": "开启双天赋售价",
+            "Id": 5936,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_battle_Awake_value",
+            "ConfigValue": "-75,25,375",
+            "Description": "英灵战役觉醒值的变化（变身3秒消耗/无用/非变身3秒获得）",
+            "Id": 5937,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "grail_level_point",
+            "ConfigValue": "30,10|40,15|50,20|60,25|70,30|80,35|90,40|100,45|110,50",
+            "Description": "【圣杯】额外技能点上限（等级1,额外技能点上限|等级2,额外技能点上限）",
+            "Id": 5938,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Repairsignin_Point",
+            "ConfigValue": "50",
+            "Description": "付费补签绑钻价格",
+            "Id": 5939,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Divinecast_Upperlimit",
+            "ConfigValue": "80,160",
+            "Description": "【神铸】神铸等级上限（1星为1级），一转神铸上限",
+            "Id": 5940,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_equip_refresh",
+            "ConfigValue": "5,1",
+            "Description": "【英灵装备】洗练消耗材料数量参数（A + B * INT（强化等级/5））",
+            "Id": 5941,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Mine_UpperLimit",
+            "ConfigValue": "1,3|40,4|50,5|60,6|70,7|80,8",
+            "Description": "【外城】各等级对应矿数量上限",
+            "Id": 5942,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "email_privacy_rewards",
+            "ConfigValue": "-500,50|2030502,2",
+            "Description": "邮箱额外奖励配置（道具id,数量）",
+            "Id": 5943,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "recover_consume",
+            "ConfigValue": "15",
+            "Description": "【找回】额外领取消耗修行纹章数量",
+            "Id": 5944,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "pet_skillpoint",
+            "ConfigValue": "300",
+            "Description": "【英灵技能】开启双技能栏售价（绑钻）",
+            "Id": 5945,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CastleBattle_ChallengeTime",
+            "ConfigValue": "8:00,20:59",
+            "Description": "【城战】宣战时间段",
+            "Id": 5946,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CastleBattle_WaitingTime",
+            "ConfigValue": "60",
+            "Description": "【城战】宣战等待分钟",
+            "Id": 5947,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CastleBattle_WarTime",
+            "ConfigValue": "60",
+            "Description": "【城战】战斗持续分钟",
+            "Id": 5948,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CastleBattle_ProtectTime",
+            "ConfigValue": "240",
+            "Description": "【城战】保护持续分钟",
+            "Id": 5949,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CastleBattle_Debuff",
+            "ConfigValue": "5,15",
+            "Description": "【城战】守备力削弱规则（每次削弱攻血百分比，最高层数）",
+            "Id": 5950,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CastleBattle_ActionPoint_Default",
+            "ConfigValue": "500",
+            "Description": "【城战】行动力（初始行动力，进攻消耗行动力",
+            "Id": 5951,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CastleBattle_ActionPoint_Attack",
+            "ConfigValue": "50",
+            "Description": "【城战】进攻消耗行动力",
+            "Id": 5952,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CastleBattle_ActionPoint_BuyPrice",
+            "ConfigValue": "100",
+            "Description": "【城战】购买行动力钻石价格（不可绑钻）",
+            "Id": 5953,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CastleBattle_ActionPoint_BuyNum",
+            "ConfigValue": "200",
+            "Description": "【城战】每次购买行动力点数",
+            "Id": 5954,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CarnivalCloseDate",
+            "ConfigValue": "2026-7-22 23:59:59",
+            "Description": "【嘉年华】嘉年华关闭时间（公示期结束）",
+            "Id": 5955,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Sudoku_Blankgrid",
+            "ConfigValue": "15,15",
+            "Description": "【嘉年华】数独空格数量（随机数区间）",
+            "Id": 5956,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Market_TaxRare",
+            "ConfigValue": "10",
+            "Description": "【市场】交易手续费",
+            "Id": 5957,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Market_MaxOrder",
+            "ConfigValue": "100",
+            "Description": "【市场】玩家可发起交易数量的上限",
+            "Id": 5958,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Tattoo_refresh_price",
+            "ConfigValue": "75",
+            "Description": "【龙纹】属性洗炼价格",
+            "Id": 5959,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Monopoly_Dice_BuyInfo",
+            "ConfigValue": "75,75,100,100,125,125",
+            "Description": "【游戏盒子】云端历险魔力骰子购买价格",
+            "Id": 5960,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "CastleBattle_BuildSiteCount",
+            "ConfigValue": "5",
+            "Description": "【城战】单建筑据点数量",
+            "Id": 5961,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Monopoly_Node",
+            "ConfigValue": "1,6|2,10|3,6|4,36",
+            "Description": "【游戏盒子】云端历险各类型节点数量，总计节点58个（事件类型:1.陷阱、2.宝箱类型、3.随机移动、4.镜像战斗）（配置格式：事件类型,事件数量|事件类型,事件数量.....）",
+            "Id": 5962,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Market_OrderDayCount",
+            "ConfigValue": "5,5,500000",
+            "Description": "【市场】每日免费出售，每日额外出售，额外出售收取黄金数量",
+            "Id": 5963,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "GuildEscort_Time",
+            "ConfigValue": "19:00,19:59",
+            "Description": "【外城护送】活动时间段",
+            "Id": 5964,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "GuildEscort_Speed",
+            "ConfigValue": "1,2,3,4",
+            "Description": "【外城护送】行进速度（0/1/2/3人推车时）",
+            "Id": 5965,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "ExtraJob_CountActive",
+            "ConfigValue": "0,15,30",
+            "Description": "【专精】秘典可激活数量对应所需总等级",
+            "Id": 5966,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "ExtraJob_EquipGemOpen",
+            "ConfigValue": "2,3,4,5",
+            "Description": "【专精】魂器宝石孔开放所需阶数",
+            "Id": 5967,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Secret_Live",
+            "ConfigValue": "5",
+            "Description": "【秘境】复活所需钻石",
+            "Id": 5968,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "ConsortiaTask_TotalScore",
+            "ConfigValue": "1000,2000,3000,4000,5000",
+            "Description": "【公会任务】所需总积分",
+            "Id": 5969,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "ConsortiaTask_Random",
+            "ConfigValue": "30,50,50,30,10",
+            "Description": "【公会任务】1~5星概率",
+            "Id": 5970,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "ConsortiaTask_StarPrice",
+            "ConfigValue": "40,60,100,200",
+            "Description": "【公会任务】任务升星所需钻石",
+            "Id": 5971,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "ConsortiaTask_RefreshNum",
+            "ConfigValue": "3",
+            "Description": "【公会任务】免费刷新次数",
+            "Id": 5972,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "Consortia_Altar_Consume",
+            "ConfigValue": "50,100,200,300,400,500,650,700,850,1000",
+            "Description": "【公会祈福】祈福消耗",
+            "Id": 5973,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "Consortia_Altar_Refresh",
+            "ConfigValue": "3,500",
+            "Description": "【公会祈福】祈福重置次数及消耗",
+            "Id": 5974,
+            "IsClient": "1"
+        },
+        {
+            "ConfigName": "backStartDate",
+            "ConfigValue": "2026-07-07 23:59:59",
+            "Description": "英雄回归活动开启时间",
+            "Id": 5975,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Market_PurchaseRelease",
+            "ConfigValue": "5,10,500000",
+            "Description": "【市场】每日免费求购，每日额外求购，额外求购收取黄金数量",
+            "Id": 5976,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "AppearanceLevel_giftpackage",
+            "ConfigValue": "16",
+            "Description": "【每日礼包】出现等级",
+            "Id": 5977,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "config_9mount_ids",
+            "ConfigValue": "8138,8098,8175,8144,8132,8169,8187,8168,8183,8167,8188,8114,8270,8329,8503,8399,8516,8371,8494,8425,8561,8373,8563,8370,8457,8392,8409,8086,8578,8572",
+            "Description": "类型9坐骑",
+            "Id": 5978,
+            "IsClient": "99"
+        },
+        {
+            "ConfigName": "config_10mount_ids",
+            "ConfigValue": "8316,8537,8522",
+            "Description": "类型10坐骑",
+            "Id": 5979,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Consortia_MineCarLimit",
+            "ConfigValue": "2",
+            "Description": "【公会】公会物资车最大占领数量",
+            "Id": 5981,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "ConsortiaTask_PaidRefreshPrice",
+            "ConfigValue": "10",
+            "Description": "【公会】贡献任务付费刷新价格",
+            "Id": 5982,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "ConsortiaTask_PaidRefreshNum",
+            "ConfigValue": "5",
+            "Description": "【公会】贡献任务付费刷新次数",
+            "Id": 5983,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_Income",
+            "ConfigValue": "2",
+            "Description": "【圣诞节】打雪仗每日收益次数",
+            "Id": 5984,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_Time",
+            "ConfigValue": "19:00:00,22:00:00",
+            "Description": "【圣诞节】打雪仗每日开放时间和结束时间",
+            "Id": 5985,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_TimeLimit",
+            "ConfigValue": "300",
+            "Description": "【圣诞节】打雪仗单局游戏时间上限（单位秒）",
+            "Id": 5986,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_RankUp",
+            "ConfigValue": "100",
+            "Description": "【圣诞节】打雪仗单局结束游戏积分上限",
+            "Id": 5987,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_Reward",
+            "ConfigValue": "2126493",
+            "Description": "【圣诞节】打雪仗奖励预览",
+            "Id": 5988,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_match_max",
+            "ConfigValue": "10",
+            "Description": "【圣诞节】打雪仗匹配人数上限",
+            "Id": 5989,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_RevivalTime",
+            "ConfigValue": "30",
+            "Description": "【圣诞节】打雪仗复活时长（单位秒）",
+            "Id": 5990,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_Time_Day",
+            "ConfigValue": "2024-02-12 10:00:00|2024-02-15 23:59:59",
+            "Description": "【圣诞节】打雪仗开放时间",
+            "Id": 5992,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_campaign_id",
+            "ConfigValue": "3002",
+            "Description": "【圣诞节】打雪仗副本id",
+            "Id": 5993,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_Income_Point",
+            "ConfigValue": "0",
+            "Description": "【圣诞节】打雪仗每次收益获得嘉年华积分数",
+            "Id": 5994,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Marry_Divorce_Price",
+            "ConfigValue": "750,0",
+            "Description": "【婚姻】强制离婚价格，协议离婚价格（单位绑钻）",
+            "Id": 5995,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Marry_Level",
+            "ConfigValue": "25",
+            "Description": "【婚姻】结婚开启等级",
+            "Id": 5996,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Marry_Happiness_Help",
+            "ConfigValue": "5,10",
+            "Description": "【婚姻】美满度助力次数上限和金额，单位绑钻",
+            "Id": 5998,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Marry_Value_Heat",
+            "ConfigValue": "3344",
+            "Description": "【婚姻】总热度值",
+            "Id": 6000,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Marry_Value_Heat_Node",
+            "ConfigValue": "520,1314,3344",
+            "Description": "【婚姻】3个节点热度",
+            "Id": 6001,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Marry_Collection_Limit",
+            "ConfigValue": "10",
+            "Description": "【婚姻】采集上限",
+            "Id": 6002,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Marry_Hangup_Gold",
+            "ConfigValue": "10,2000",
+            "Description": "【婚姻】挂机时间（单位秒），获得黄金数量",
+            "Id": 6003,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_Mount",
+            "ConfigValue": "1000",
+            "Description": "【圣诞节】打雪仗默认坐骑id",
+            "Id": 6004,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Carnival_Snowball_Skill",
+            "ConfigValue": "2001",
+            "Description": "【圣诞节】打雪仗默认技能id",
+            "Id": 6006,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Marry_ReservationReward",
+            "ConfigValue": "360002,2",
+            "Description": "【婚姻】婚宴预约成功的奖励",
+            "Id": 6007,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Marry_Hangup_Heat",
+            "ConfigValue": "10,20",
+            "Description": "【婚姻】挂机时间（单位秒），热度值自然增长值",
+            "Id": 6008,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Player_WarehouseCount",
+            "ConfigValue": 200,
+            "Description": "玩家仓库默认格子数量",
+            "Id": 6009,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ClanWar_TowerPoint",
+            "ConfigValue": "10,2,10",
+            "Description": "【公会战】占领神秘塔后，每隔%s时间（单位秒），获得%s【个人】积分，%s【公会】积分",
+            "Id": 6010,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ClanWar_ClanPoint",
+            "ConfigValue": "10,0",
+            "Description": "【公会战】战斗胜利后，获胜方和失败方公会可获得的公会积分",
+            "Id": 6011,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ClanWar_PersonPoint",
+            "ConfigValue": "20,5",
+            "Description": "【公会战】战斗胜利后，获胜方和失败方个人可获得的个人积分",
+            "Id": 6012,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ClanWar_EndPoint",
+            "ConfigValue": 5000,
+            "Description": "【公会战】提前结束的公会积分要求",
+            "Id": 6013,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ClanWar_BattleTime",
+            "ConfigValue": 300,
+            "Description": "【公会战】战斗时长，单位秒",
+            "Id": 6014,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ClanWar_OpenDay",
+            "ConfigValue": "6,7",
+            "Description": "【公会战】星期几开启",
+            "Id": 6015,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ClanWar_OpenTime",
+            "ConfigValue": "20:00:00,20:20:00|20:30:00,20:50:00",
+            "Description": "【公会战】每场开启时间和关闭时间",
+            "Id": 6016,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "WorldBoss_Live",
+            "ConfigValue": 10160,
+            "Description": "世界BOSS每x秒掉万分比的血量（10秒掉1.6%）",
+            "Id": 6017,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ClanWar_SignTime",
+            "ConfigValue": "18:00:00,22:00:00",
+            "Description": "【公会战】报名截止时间，报名再开放时间",
+            "Id": 6018,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "plural_pvp_team_mate_time",
+            "ConfigValue": 30,
+            "Description": "【多人竞技】匹配队友时间",
+            "Id": 6019,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "plural_pvp_enemy_mate_time",
+            "ConfigValue": 30,
+            "Description": "【多人竞技】匹配对手时间",
+            "Id": 6020,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "plural_pvp_diffusion_time",
+            "ConfigValue": 5,
+            "Description": "【多人竞技】扩散匹配段位的时间",
+            "Id": 6021,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ClanWar_SignWealth",
+            "ConfigValue": 50000,
+            "Description": "【公会战】报名所消耗公会财富",
+            "Id": 6022,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "SecondpayLimit",
+            "ConfigValue": 499,
+            "Description": "【二次充值】限定金额（金额为0时为关闭二次充值活动）",
+            "Id": 6023,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ClanWar_PersonPointSolo",
+            "ConfigValue": "10,1",
+            "Description": "【公会战】处于公会战场景时，每10秒获得1个人积分",
+            "Id": 6024,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "marrypreview",
+            "ConfigValue": 20,
+            "Description": "【婚姻】控制“婚姻预告”界面的入口出现等级",
+            "Id": 6025,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "marrypreview_reward",
+            "ConfigValue": "208051,1|208001,200",
+            "Description": "【婚姻】控制“婚姻预告”界面的奖励",
+            "Id": 6026,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Marry_Daily_YHZX",
+            "ConfigValue": "1,1",
+            "Description": "【婚姻】每答对X题奖励Y个永恒之心",
+            "Id": 6027,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "pet_island_GatherTime",
+            "ConfigValue": 3,
+            "Description": "【英灵岛】采集时间/秒",
+            "Id": 6028,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Battlefield_VictorySettlementRewards",
+            "ConfigValue": "208001,160|2032202,18",
+            "Description": "战场结算胜场奖励",
+            "Id": 6029,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Battlefield_FailSettlementRewards",
+            "ConfigValue": "208001,60|2032202,6",
+            "Description": "战场结算败场奖励",
+            "Id": 6030,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Battlefield_GearReward",
+            "ConfigValue": "208011,2|208011,4|208011,6",
+            "Description": "战场拉矿道具奖励",
+            "Id": 6031,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Battlefield_GearHonor",
+            "ConfigValue": "8,10,12",
+            "Description": "战场拉矿荣誉奖励",
+            "Id": 6032,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Battlefield_GearPoints",
+            "ConfigValue": "10,20,30",
+            "Description": "战场拉矿积分",
+            "Id": 6033,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "WarField_MaxCount",
+            "ConfigValue": "1",
+            "Description": "战场奖励次数",
+            "Id": 6034,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "minicampaign_Maxmum",
+            "ConfigValue": "9",
+            "Description": "【游戏盒子】迷你战役（打地鼠）游玩次数存储上限",
+            "Id": 6035,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "RefreshNum",
+            "ConfigValue": "3",
+            "Description": "【个人竞技场】免费的刷新次数",
+            "Id": 6036,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "Number_Limit",
+            "ConfigValue": "3",
+            "Description": "【个人竞技场】购买次数",
+            "Id": 6037,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "PaidRefreshPrice",
+            "ConfigValue": 45,
+            "Description": "【个人竞技场】购买次数价格（钻石单位)",
+            "Id": 6038,
+            "IsClient": "0"
+        },
+        {
+            "ConfigName": "minicampaign_DailyPurchase",
+            "ConfigValue": 10,
+            "Description": "【游戏盒子】迷你战役（打地鼠）每日购买次数",
+            "Id": 6039,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "minicampaign_OpenDay",
+            "ConfigValue": "5,6,7",
+            "Description": "【游戏盒子】迷你战役（打地鼠）开启时间",
+            "Id": 6040,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "minicampaign_Price",
+            "ConfigValue": 300,
+            "Description": "【游戏盒子】迷你战役（打地鼠）购买次数价格（钻石单位)",
+            "Id": 6041,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "pet_island_activity_time",
+            "ConfigValue": 90,
+            "Description": "【保卫英灵岛】英灵暴动持续时间（分钟）",
+            "Id": 6042,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "RegularMonthlyCard_rebate",
+            "ConfigValue": 450,
+            "Description": "【月卡】普通月卡返利倍数",
+            "Id": 6043,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "SuperMonthlyCard_rebate",
+            "ConfigValue": 600,
+            "Description": "【月卡】超级月卡返利倍数",
+            "Id": 6044,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "star_max_count",
+            "ConfigValue": 30,
+            "Description": "【观星】每可观星次数",
+            "Id": 6045,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "star_pos_dig",
+            "ConfigValue": 5,
+            "Description": "【观星】成外挖掘点最大数量",
+            "Id": 6046,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "star_count",
+            "ConfigValue": 10,
+            "Description": "【观星】每次观星消耗次数",
+            "Id": 6047,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "star_coordinate",
+            "ConfigValue": "125,42|120,135|50,165|40,235|35,295|175,297|212,245|230,207|327,115|382,132",
+            "Description": "【观星】多个坐标，后端随机从改数组抽取数据",
+            "Id": 6048,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "star_general",
+            "ConfigValue": 2125147,
+            "Description": "【观星】通用道具ID",
+            "Id": 6049,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "wish_count",
+            "ConfigValue": "2125149,1",
+            "Description": "【观星】星愿抽奖道具和数量",
+            "Id": 6050,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "luckPoint_max",
+            "ConfigValue": 10,
+            "Description": "【观星】强化幸运最大值",
+            "Id": 6051,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "star_number",
+            "ConfigValue": 180,
+            "Description": "【观星】抽奖时道具不足，消耗的钻石数量",
+            "Id": 6052,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "pet_artifact_extra",
+            "ConfigValue": 1,
+            "Description": "【英灵神器】额外2个格子，国内填1开启，海外填0关闭",
+            "Id": 6053,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "old_sevenday_login",
+            "ConfigValue": 1,
+            "Description": "【七日登录】旧版，国内填0关闭，海外填1开启",
+            "Id": 6054,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "consortiapve_level",
+            "ConfigValue": 2,
+            "Description": "【公会副本】玩法开启所要求的公会等级",
+            "Id": 6055,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "consortiapve_times_day",
+            "ConfigValue": 1,
+            "Description": "【公会副本】每日每人可挑战的次数",
+            "Id": 6056,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "FreshReward_Time",
+            "ConfigValue": 15,
+            "Description": "【悬赏】任务刷新时间",
+            "Id": 6057,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "world_grede_exp_level",
+            "ConfigValue": "35,80",
+            "Description": "【经验加成】玩家等级处于该区间内（双边包含），才会触发经验加成",
+            "Id": 6058,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "WorldBossTimeCondition",
+            "ConfigValue": 300,
+            "Description": "【世界BOSS】进入第二阶段条件（在时限内打败赤眼狼王）",
+            "Id": 6059,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "World_MaxHp",
+            "ConfigValue": 1000000000,
+            "Description": "【世界BOSS】第二阶段最小血量",
+            "Id": 6060,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "World_MaxReward",
+            "ConfigValue": 10000000,
+            "Description": "【世界BOSS】第二阶段战斗获得金币最大值",
+            "Id": 6061,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "WorldBoss_ReadyTime",
+            "ConfigValue": 120,
+            "Description": "【世界BOSS】进入第二阶段的准备时间（秒）",
+            "Id": 6062,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "dragonsoul_config",
+            "ConfigValue": "1,1",
+            "Description": "【龙魂】1个道具增加x经验",
+            "Id": 6063,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "skytrial_max_energy",
+            "ConfigValue": "500",
+            "Description": "【天穹之径】最大行动力值",
+            "Id": 6064,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "skytrial_skill",
+            "ConfigValue": "40401000,40401001,40401002",
+            "Description": "【天穹之径】可购买技能",
+            "Id": 6065,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "skytrial_buy_skill_cost",
+            "ConfigValue": "100,100,100",
+            "Description": "【天穹之径】购买技能花费的探索点",
+            "Id": 6066,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "skytrial_max_skill_count",
+            "ConfigValue": "5",
+            "Description": "【天穹之径】技能最大数量",
+            "Id": 6067,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "skytrial_max_search_point",
+            "ConfigValue": "1000",
+            "Description": "【天穹之径】探索点最大数量",
+            "Id": 6068,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "skytrial_item",
+            "ConfigValue": 2125151,
+            "Description": "【天穹之径】增加行动力道具ID",
+            "Id": 6069,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "skytrial_energy",
+            "ConfigValue": 60,
+            "Description": "【天穹之径】每使用一个对应的道具增加x点行动力",
+            "Id": 6070,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Sky_Integration",
+            "ConfigValue": 5,
+            "Description": "【天穹之径】抽奖一次获得积分",
+            "Id": 6071,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Sky_RefreshTime",
+            "ConfigValue": 10800,
+            "Description": "【天穹之径】抽奖每个x刷自动重置（单位：秒）",
+            "Id": 6072,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Sky_exchange",
+            "ConfigValue": "2125151,0",
+            "Description": "【天穹之径】玩家每探险一次可活动抽奖x个道具（比例1：1）",
+            "Id": 6073,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Sky_length",
+            "ConfigValue": 500,
+            "Description": "【天穹之径-抽奖】抽奖进度条积分长度",
+            "Id": 6074,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Sky_FirstAward",
+            "ConfigValue": 1001,
+            "Description": "【天穹之径-抽奖】天穹抽奖初始奖池",
+            "Id": 6075,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Sky_Award",
+            "ConfigValue": "1001,3400|2001,1100|3001,1100|4001,1100|5001,1100|6001,1100|7001,1100",
+            "Description": "【天穹之径-抽奖】天穹抽奖属性奖池权重",
+            "Id": 6076,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Sky_item",
+            "ConfigValue": 2125152,
+            "Description": "【天穹之径-抽奖】抽奖消耗道具",
+            "Id": 6077,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Sky_RefreshPrice",
+            "ConfigValue": 45,
+            "Description": "【天穹之径-抽奖】刷新次数消耗钻石",
+            "Id": 6078,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "sky_extraction",
+            "ConfigValue": 3,
+            "Description": "【天穹之径-随机事件】从奖池随机x个道具",
+            "Id": 6079,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "skytrialReset_count",
+            "ConfigValue": 3,
+            "Description": "【天穹之径】关卡每天可重置次数",
+            "Id": 6080,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "world_grede_exp_up",
+            "ConfigValue": "10,80",
+            "Description": "【经验加成】取排行榜前X名玩家，开启经验加成的服务器等级（大于等于即开启）",
+            "Id": 6081,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guardwar_boss_normal_buff",
+            "ConfigValue": "23040101,23040201,23040301,23040401",
+            "Description": "【守卫战争】boss身上的buff。目前守卫战争一共5层，至多配置4个buff在boss身上",
+            "Id": 6085,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guardwar_boss_add_reward1",
+            "ConfigValue": "23040101,2273007,1|23040201,2273007,1|23040301,2273007,1|23040401,2273007,1",
+            "Description": "【守卫战争】普通难度，每层额外奖励",
+            "Id": 6086,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guardwar_boss_add_reward2",
+            "ConfigValue": "23040101,2273008,1|23040201,2273008,1|23040301,2273008,1|23040401,2273008,1",
+            "Description": "【守卫战争】噩梦难度，每层额外奖励",
+            "Id": 6087,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guardwar_boss_add_reward3",
+            "ConfigValue": "23040101,2273009,1|23040201,2273009,1|23040301,2273009,1|23040401,2273009,1",
+            "Description": "【守卫战争】地狱难度，每层额外奖励",
+            "Id": 6088,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "pet_island_AutoFightTime",
+            "ConfigValue": 30,
+            "Description": "【英灵岛】自动巡逻战斗单次时长（分钟）",
+            "Id": 6089,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Vip_Inner_Levy",
+            "ConfigValue": "310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470",
+            "Description": "【内城】单日VIP额外征收次数及每次增加征收次数消耗钻石数",
+            "Id": 6090,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Guard_Draw_Record_Max",
+            "ConfigValue": 100,
+            "Description": "【守卫招募】玩家招募抽卡记录上限值",
+            "Id": 6091,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guardexpedition_income_times",
+            "ConfigValue": 5,
+            "Description": "【守卫远征】每天免费收益次数",
+            "Id": 6092,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guardexpedition_max_times",
+            "ConfigValue": 45,
+            "Description": "【守卫远征】额外购买次数存储上限",
+            "Id": 6094,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Mate_Time",
+            "ConfigValue": "20:00,21:00",
+            "Description": "【情侣竞技】开赛时间",
+            "Id": 6095,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Mate_Join",
+            "ConfigValue": 2000000,
+            "Description": "【情侣竞技】报名需要黄金",
+            "Id": 6096,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "MateLords_Day",
+            "ConfigValue": 5,
+            "Description": "【情侣竞技】周几开打（1~7对应周日期周一~周日）",
+            "Id": 6097,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Mate_TeamType",
+            "ConfigValue": "2600,1500,800,200",
+            "Description": "【情侣竞技】达到组别积分(钻石,黄金,白银,黑铁)",
+            "Id": 6098,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Mate_Shop",
+            "ConfigValue": "41001000,30,9,2|41001005,30,9,2|41001006,30,9,2|41001007,30,9,2",
+            "Description": "【情侣竞技】祭坛商店(模版ID,价格,最大数量,类型(2为技能))",
+            "Id": 6099,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Mate_TeamReward",
+            "ConfigValue": "4000,2000,1000,500",
+            "Description": "【情侣竞技】组别奖励(钻石,黄金,白银,黑铁)",
+            "Id": 6100,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Mate_Desc",
+            "ConfigValue": "10,70|7,60|6,50|5,40",
+            "Description": "【情侣竞技】分数衰减，百分比|固定分，(钻石,黄金,白银,黑铁)",
+            "Id": 6101,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_skillpoint",
+            "ConfigValue": 200,
+            "Description": "【守卫技能】第二栏位解锁消耗（绑钻）",
+            "Id": 6102,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_item_title",
+            "ConfigValue": "2124021,2124022,2124023",
+            "Description": "【守卫擂台】排行榜前三名道具id",
+            "Id": 6103,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_Challenge_Grade",
+            "ConfigValue": 50,
+            "Description": "【守卫擂台】英灵竞技挑战的等级限制",
+            "Id": 6104,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_Challenge_Count",
+            "ConfigValue": 10,
+            "Description": "【守卫擂台】每日英灵竞技次数",
+            "Id": 6105,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_arena_reward_win",
+            "ConfigValue": 50,
+            "Description": "【守卫擂台】基础胜利分",
+            "Id": 6106,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_arena_reward_lose",
+            "ConfigValue": 15,
+            "Description": "【守卫擂台】基础失败分",
+            "Id": 6107,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_resetting_ratio",
+            "ConfigValue": 20,
+            "Description": "【守卫擂台】每周衰减系数",
+            "Id": 6108,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_fresh_count",
+            "ConfigValue": 3,
+            "Description": "【守卫擂台】守卫擂台刷新次数",
+            "Id": 6109,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_fresh_time",
+            "ConfigValue": 1800,
+            "Description": "【守卫擂台】系统自动刷新倒计时：单位  s/秒",
+            "Id": 6110,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_shop_reward_win",
+            "ConfigValue": 0,
+            "Description": "【守卫擂台】守卫擂台胜利获得货币数量",
+            "Id": 6111,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "guard_shop_reward_lose",
+            "ConfigValue": 0,
+            "Description": "【守卫擂台】守卫擂台失败获得货币数量",
+            "Id": 6112,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "campaign_transfer_weeklimit",
+            "ConfigValue": 1,
+            "Description": "【恐惧荒原】一转多人周副本每周收益次数",
+            "Id": 6113,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_strength_default",
+            "ConfigValue": 100,
+            "Description": "【航海奇遇】航海每天初始体力",
+            "Id": 6115,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_strength_shipping",
+            "ConfigValue": 20,
+            "Description": "【航海奇遇】每次出航消耗体力",
+            "Id": 6116,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_strength_buy_point",
+            "ConfigValue": 150,
+            "Description": "【航海奇遇】每次购买体力消耗钻石",
+            "Id": 6117,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_strength_buy_num",
+            "ConfigValue": 2,
+            "Description": "【航海奇遇】每天购买体力次数限制",
+            "Id": 6118,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_strength_assist_speedup",
+            "ConfigValue": 20,
+            "Description": "【航海奇遇】每次协助好友加速消耗体力",
+            "Id": 6119,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_port_task_refresh_point",
+            "ConfigValue": 15,
+            "Description": "【航海奇遇】刷新港口任务品质消耗钻石",
+            "Id": 6120,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_port_task_refresh_cd",
+            "ConfigValue": 30,
+            "Description": "【航海奇遇】刷新港口任务cd",
+            "Id": 6121,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_boat_activate_point",
+            "ConfigValue": 750,
+            "Description": "【航海奇遇】激活船位消耗钻石",
+            "Id": 6122,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_boat_stopping_cd",
+            "ConfigValue": 0,
+            "Description": "【航海奇遇】船只停航修整时间",
+            "Id": 6123,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_boat_shipping_cd",
+            "ConfigValue": 60,
+            "Description": "【航海奇遇】船只出航任务时间（分）",
+            "Id": 6124,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_boat_upgrade_cd",
+            "ConfigValue": 600,
+            "Description": "【航海奇遇】船只升级固定时间（分）",
+            "Id": 6125,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_boat_upgrade_invite_num",
+            "ConfigValue": 3,
+            "Description": "【航海奇遇】每天邀请好友加速升级船只次数",
+            "Id": 6126,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_boat_upgrade_assist_num",
+            "ConfigValue": 5,
+            "Description": "【航海奇遇】协助好友加速次数",
+            "Id": 6127,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_boat_upgrade_speedup_cd",
+            "ConfigValue": 10,
+            "Description": "【航海奇遇】好友协助加速升级时间（分）",
+            "Id": 6128,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_currency_assist_speedup",
+            "ConfigValue": 40,
+            "Description": "【航海奇遇】每次协助好友加速船只获得航海币",
+            "Id": 6129,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_shop_buy_num",
+            "ConfigValue": 6,
+            "Description": "【航海奇遇】每天商店购买次数",
+            "Id": 6130,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_shop_refresh_point",
+            "ConfigValue": 15,
+            "Description": "【航海奇遇】每次刷新商店消耗钻石",
+            "Id": 6131,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_fishing_reward_interval",
+            "ConfigValue": 1440,
+            "Description": "【航海】捕捞奖励间隔（秒）",
+            "Id": 6132,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_fishing_time",
+            "ConfigValue": 360,
+            "Description": "【航海】捕捞单次消耗时长（分）",
+            "Id": 6133,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ChallengeBuy",
+            "ConfigValue": "15,15,15,25,25,30,30,40,40,45",
+            "Description": "【竞技场】次数购买（第一次购买价格，第二次购买价格，第三次购买...）",
+            "Id": 6134,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Messtower_times",
+            "ConfigValue": "1,10",
+            "Description": "【迷惘之塔】清醒值消耗，每日总量",
+            "Id": 6135,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_ship_consumption",
+            "ConfigValue": "0,0,0,0,0",
+            "Description": "【航海奇遇】出航船只消耗",
+            "Id": 6137,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_refresh_consumption",
+            "ConfigValue": 0,
+            "Description": "【航海奇遇】拒绝后刷新钻石消耗",
+            "Id": 6138,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "equip_refresh_num",
+            "ConfigValue": 18,
+            "Description": "【一转】装备洗炼道具数量",
+            "Id": 6139,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "relic_refresh_num",
+            "ConfigValue": 18,
+            "Description": "【一转】纹章圣物洗炼道具数量",
+            "Id": 6140,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "follow_reward_show_channels",
+            "ConfigValue": -1,
+            "Description": "【关注有礼】展示渠道号用逗号分割，填-1全展示",
+            "Id": 6141,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "dragon_soul_lv_limit",
+            "ConfigValue": 5,
+            "Description": "【龙魂】一转前龙魂最大等级",
+            "Id": 6142,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "skytrial_buff_reset_day",
+            "ConfigValue": "1,3,5",
+            "Description": "【天穹之径】天穹之径buff刷新日期",
+            "Id": 6143,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Challenge_MapId",
+            "ConfigValue": 992,
+            "Description": "多人竞技场战斗背景（对应map表的id）",
+            "Id": 6144,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "advancedtalent_reset_gold",
+            "ConfigValue": 5000,
+            "Description": "【一转】进阶天赋重置所需固定黄金基数（固定黄金基数*天赋等级）",
+            "Id": 6145,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Medal_Timelimited",
+            "ConfigValue": 1,
+            "Description": "【续时勋章】购买单次续时增加时长（天）",
+            "Id": 6146,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Medal_TimeConsume",
+            "ConfigValue": "208090,300",
+            "Description": "【续时勋章】单次续时消耗（多个物品消耗用\"|\"间隔）",
+            "Id": 6147,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "consortia_pve_buy_times",
+            "ConfigValue": "500000,1,3",
+            "Description": "【公会副本】消耗公会财富，每周额外挑战次数，增加上限",
+            "Id": 6148,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "DuskBattlefield_VictorySettlementRewards",
+            "ConfigValue": "208090,500|2032202,18",
+            "Description": "黄昏战场结算胜场奖励",
+            "Id": 6149,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "DuskBattlefield_FailSettlementRewards",
+            "ConfigValue": "208090,200|2032202,6",
+            "Description": "黄昏战场结算败场奖励",
+            "Id": 6150,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "DuskBattlefield_GearReward",
+            "ConfigValue": "208111,2|208111,4|208111,6",
+            "Description": "黄昏战场拉矿道具奖励",
+            "Id": 6151,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "DuskBattlefield_GearHonor",
+            "ConfigValue": "8,10,12",
+            "Description": "黄昏战场拉矿荣誉奖励",
+            "Id": 6152,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "DuskBattlefield_GearPoints",
+            "ConfigValue": "10,20,30",
+            "Description": "黄昏战场拉矿个人/阵营积分",
+            "Id": 6153,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Wishgacha_Battlepass_Levelcost",
+            "ConfigValue": 300,
+            "Description": "【心愿招募】战令购买等级消耗钻石",
+            "Id": 6154,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Wishgacha_Battlepass_Maxgrade",
+            "ConfigValue": 15,
+            "Description": "【心愿招募】战令钻石可购买最大等级",
+            "Id": 6155,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Wishgacha_Battlepass_Exhibition",
+            "ConfigValue": "1288,25888",
+            "Description": "【心愿招募】战令显示性价比 倍率,价值钻石",
+            "Id": 6156,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Trial_Tower_Reward_Normal",
+            "ConfigValue": 2060045,
+            "Description": "【试炼之塔】普通道具奖励，每层发1个",
+            "Id": 6157,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Trial_Tower_EXP_Normal",
+            "ConfigValue": 300000,
+            "Description": "【试炼之塔】普通经验奖励，每层发1个",
+            "Id": 6158,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Trial_Tower_Reward_Hard",
+            "ConfigValue": 2060505,
+            "Description": "【试炼之塔】困难道具奖励，每层发1个",
+            "Id": 6159,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Trial_Tower_EXP_Hard",
+            "ConfigValue": 450000,
+            "Description": "【试炼之塔】困难经验奖励，每层发1个",
+            "Id": 6160,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "mount_king_active_item",
+            "ConfigValue": "2131500,1",
+            "Description": "激活兽王坐骑使用物品及数量",
+            "Id": 6161,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Challenge_MapId",
+            "ConfigValue": 992,
+            "Description": "多人竞技场战斗背景（对应map表的id）",
+            "Id": 6162,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Wishgacha_Battlepass_Levelup",
+            "ConfigValue": 120,
+            "Description": "【心愿招募】战令升级耗费经验值/每级。",
+            "Id": 6163,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "WorldBossChristmas",
+            "ConfigValue": "2025-12-18 00:00:00|2025-12-31 23:59:59",
+            "Description": "【世界BOSS】圣诞节UI",
+            "Id": 6164,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Messtower_count",
+            "ConfigValue": "1,10,150|11,40,100|41,100,50|101,500,20|501,999999,10",
+            "Description": "【迷惘之塔】次数区间下，次数区间上，单次属性加成比例（万分比）",
+            "Id": 6165,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PetEquipChangeEntryCost",
+            "ConfigValue": "2127299,1",
+            "Description": "【英灵装备】重选词条消耗道具id，消耗数量",
+            "Id": 6166,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Activities_Expansion",
+            "ConfigValue": 0,
+            "Description": "【朔望月】0为春节活动，1为圣诞活动",
+            "Id": 6167,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PetEquipChangeCost",
+            "ConfigValue": 2127200,
+            "Description": "【英灵装备】EX通用晋升石道具id",
+            "Id": 6168,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Player_BagCountLock",
+            "ConfigValue": 370,
+            "Description": "【玩家背包】可购买格子数量",
+            "Id": 6169,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Arcane_Draw_Record_Max",
+            "ConfigValue": 100,
+            "Description": "【奥术回廊】玩家抽奖记录上限值",
+            "Id": 6170,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PetEquipDecompositionReturn",
+            "ConfigValue": 60,
+            "Description": "【英灵装备】EX装备晋升材料返还比例(百分比)",
+            "Id": 6171,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "GuildEscort_BattleTime",
+            "ConfigValue": 5,
+            "Description": "【外城护送】推车战斗时长限制（分钟）",
+            "Id": 6172,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "TimeSpaceFaultSkill",
+            "ConfigValue": "617007,617002,617003,617004,617005",
+            "Description": "时空断层替换技能",
+            "Id": 6173,
+            "IsClient": 1
+        },
+        {
+            "ConfigName": "Farm_Party_Ready",
+            "ConfigValue": 60,
+            "Description": "【家园】篝火准备时间（秒）",
+            "Id": 6174,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Farm_Party_Action",
+            "ConfigValue": 600,
+            "Description": "【家园】篝火进行时间（秒）",
+            "Id": 6175,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Farm_Party_time",
+            "ConfigValue": 30,
+            "Description": "【家园】经验奖励间隔，每配置时间（s）对主人及参与好友奖励一次经验",
+            "Id": 6176,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Farm_Party_Reward",
+            "ConfigValue": "5000,5001",
+            "Description": "【家园】小篝火奖励，篝火赠礼奖励",
+            "Id": 6177,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Mine_BattleTime",
+            "ConfigValue": 5,
+            "Description": "【外城】矿场占领战斗时长限制（分钟）",
+            "Id": 6178,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "NewWorldBoss_MaxHp",
+            "ConfigValue": "1,7200000|2,10080000|3,14110000|4,19750000|5,27650000|6,38710000|7,54190000|8,75870000|9,106220000|10,148710000|11,208190000|12,291470000|13,408060000|14,571280000|15,799790000",
+            "Description": "世界BOSS第二阶段新服最小血量//3.8配置：开服天数,最小血量|开服天数,最小血量",
+            "Id": 6179,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ForgingChestItem",
+            "ConfigValue": "2273204,1|2273204,1",
+            "Description": "【神兵铸造】匠心宝箱道具内容",
+            "Id": 6180,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ForgingExperience",
+            "ConfigValue": "2,10,10",
+            "Description": "【神兵铸造】普通铸造＆高级铸造获取经验值",
+            "Id": 6181,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Farm_Party_Littlelimit",
+            "ConfigValue": 1,
+            "Description": "【家园】每场篝火中可获取奖励的小篝火次数（同样限制点燃小篝火次数）",
+            "Id": 6182,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Farm_Party_Droplimit",
+            "ConfigValue": 3,
+            "Description": "【家园】每日可从篝火中获得奖励的最大场次，包含小篝火点燃与间隔奖励场次",
+            "Id": 6183,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Farm_Party_LittleXp",
+            "ConfigValue": 500,
+            "Description": "【家园】小篝火经验加成（5%）",
+            "Id": 6184,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Farm_Party_LvExp",
+            "ConfigValue": 23000,
+            "Description": "【家园】人物等级系数",
+            "Id": 6185,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ForgingConsumeTime",
+            "ConfigValue": "30,120,120",
+            "Description": "【神兵铸造】铸造需要耗费时间（分）",
+            "Id": 6186,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ForgingSpeedUpDiamondCost",
+            "ConfigValue": 1,
+            "Description": "【神兵铸造】铸造花费钻石（个）/分",
+            "Id": 6187,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ForgingChestExp",
+            "ConfigValue": "50,50",
+            "Description": "【神兵铸造】匠心宝箱所需经验值",
+            "Id": 6188,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PublicDragonCrystal_LimitNumber",
+            "ConfigValue": 60,
+            "Description": "【跨服矿场】房间人数限制",
+            "Id": 6189,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PublicDragonCrystal_LimitPagination",
+            "ConfigValue": 10,
+            "Description": "【跨服矿场】房间内的矿场（页签）数",
+            "Id": 6190,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PublicDragonCrystal_LootingOpportunities",
+            "ConfigValue": 2,
+            "Description": "【跨服矿场】每日免费掠夺次数（每日刷新）",
+            "Id": 6191,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PublicDragonCrystal_LootingPurchasing",
+            "ConfigValue": "1,150|2,200|3,300|4,375|5,450|6,450|7,450|8,450",
+            "Description": "【跨服矿场】每日掠夺次数购买（每日刷新）",
+            "Id": 6192,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PublicDragonCrystal_LootingLimit",
+            "ConfigValue": 3,
+            "Description": "【跨服矿场】每次采矿被掠夺次数上限",
+            "Id": 6193,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PublicDragonCrystal_LootingNumber",
+            "ConfigValue": 20,
+            "Description": "【跨服矿场】每次被掠夺比例（掠夺比例 = 配置值 / 100）",
+            "Id": 6194,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Farm_Party_Firelevel",
+            "ConfigValue": "1,10,30",
+            "Description": "【家园】大篝火颜色所需住所等级：黄色yellow等级，橙色orange等级，红色red等级",
+            "Id": 6195,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Furniture_likexp",
+            "ConfigValue": 1,
+            "Description": "【住所】个人住所单次可获得点赞经验",
+            "Id": 6196,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Furniture_likelimit",
+            "ConfigValue": 10,
+            "Description": "【住所】个人每日可获得点赞经验次数上限",
+            "Id": 6197,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Furniture_point",
+            "ConfigValue": 10,
+            "Description": "【住所】为他人点赞可获得家具兑换券数目",
+            "Id": 6198,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Furniture_pointlimit",
+            "ConfigValue": 10,
+            "Description": "【住所】为他人点赞可获得家具兑换券次数上限",
+            "Id": 6199,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PublicDragonCrystal_OccupyOpportunities",
+            "ConfigValue": 2,
+            "Description": "【跨服矿场】每日免费攻打次数（每日刷新）",
+            "Id": 6200,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "PublicDragonCrystal_OccupyPurchasing",
+            "ConfigValue": "1,150|2,200|3,300|4,375|5,450|6,450|7,450|8,450",
+            "Description": "【跨服矿场】每日攻打次数购买（每日刷新）",
+            "Id": 6201,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "BonFire_Campaign_Expire_Time",
+            "ConfigValue": 60,
+            "Description": "【家园】篝火有效期时间(分钟)",
+            "Id": 6203,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "House_Campaign_Expire_Min",
+            "ConfigValue": 30,
+            "Description": "【家园】住所副本最大存活时间(分)",
+            "Id": 6204,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "BonFire_Campaign_Player_Count",
+            "ConfigValue": 10,
+            "Description": "【家园】篝火副本人数最大限制",
+            "Id": 6205,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "SeasonPass_Exp",
+            "ConfigValue": 400,
+            "Description": "【赛季】赛季通行证升级所需经验",
+            "Id": 6206,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "QteGame_count",
+            "ConfigValue": 1,
+            "Description": "【幻色奇境】qte游戏每日收益次数",
+            "Id": 6207,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Crisis_count",
+            "ConfigValue": 1,
+            "Description": "【幻色奇境】奇境危机每日收益次数",
+            "Id": 6208,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Crisis_costtime",
+            "ConfigValue": 20,
+            "Description": "【幻色奇境】奇境危机总时长（分钟）",
+            "Id": 6209,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Crisis_battletime",
+            "ConfigValue": 3,
+            "Description": "【幻色奇境】奇境危机战斗时长限制（分钟）",
+            "Id": 6210,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Crisis_map",
+            "ConfigValue": "1,2659,2320",
+            "Description": "【幻色奇境】奇境危机地图坐标设置(地图id，底图宽高，地图坐标）",
+            "Id": 6211,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Crisis_map_activity",
+            "ConfigValue": 10,
+            "Description": "【幻色奇境】奇境危机初始行动力",
+            "Id": 6212,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Crisis_activity_consume",
+            "ConfigValue": 1,
+            "Description": "【幻色奇境】每走一步消耗行动力",
+            "Id": 6213,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Crisis_activity_additional",
+            "ConfigValue": "10,10",
+            "Description": "【幻色奇境】用x钻石购买y行动力价格",
+            "Id": 6214,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Crisis_pic",
+            "ConfigValue": "crisis_1,crisis_2",
+            "Description": "【幻色奇境】拍脸图国内id，拍脸图海外id",
+            "Id": 6215,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Crisis_Move",
+            "ConfigValue": "8595,50,0",
+            "Description": "【幻色奇境】坐骑UP展示偏移（坐骑id，x偏移，y偏移）",
+            "Id": 6216,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "SeasonPass_Levelcost",
+            "ConfigValue": 300,
+            "Description": "【赛季】战令购买等级消耗钻石",
+            "Id": 6217,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "SeasonPass_Maxgrade",
+            "ConfigValue": 35,
+            "Description": "【赛季】战令可购买最大等级",
+            "Id": 6218,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "SeasonPass_Exhibition",
+            "ConfigValue": "3000,38888",
+            "Description": "【赛季】战令展示用：【性价比(百分比)，物品价值】",
+            "Id": 6219,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "GuardPatrol_DiamondRefresh",
+            "ConfigValue": 15,
+            "Description": "【守卫巡逻】刷新花费钻石",
+            "Id": 6220,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_Rank_Base",
+            "ConfigValue": 1000,
+            "Description": "【3V3】3V3初始积分",
+            "Id": 6221,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_Win",
+            "ConfigValue": 100,
+            "Description": "【3V3】3V3获胜基础加分",
+            "Id": 6222,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_Lose",
+            "ConfigValue": 20,
+            "Description": "【3V3】3V3失败基础加分",
+            "Id": 6223,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_Winstreakscore",
+            "ConfigValue": 100,
+            "Description": "【3V3】3V3连胜加分",
+            "Id": 6224,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_Wincurrency",
+            "ConfigValue": "208096,20",
+            "Description": "【3V3】3V3获胜可得天梯币",
+            "Id": 6225,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_Losecurrency",
+            "ConfigValue": "208096,10",
+            "Description": "【3V3】3V3失败可得天梯币",
+            "Id": 6226,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_Limit",
+            "ConfigValue": "10",
+            "Description": "【3V3】3V3每日可获得奖励上限（积分/天梯币）",
+            "Id": 6227,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_Time",
+            "ConfigValue": 90,
+            "Description": "【3V3】3V3匹配时长",
+            "Id": 6228,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_TimeRandom",
+            "ConfigValue": 10,
+            "Description": "【3V3】3V3匹配额外随机时长",
+            "Id": 6229,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_LoseSession",
+            "ConfigValue": 3,
+            "Description": "【3V3】3V3连续失败场次",
+            "Id": 6230,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_LoseTime",
+            "ConfigValue": 20,
+            "Description": "【3V3】3V3连续失败匹配镜像随机时间",
+            "Id": 6231,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_ScoreCloseto",
+            "ConfigValue": 200,
+            "Description": "【3V3】3V3队伍点击匹配积分接近范围",
+            "Id": 6232,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_ExpansionScore",
+            "ConfigValue": 500,
+            "Description": "【3V3】3V3匹配中扩池范围",
+            "Id": 6233,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_ExpansionTime",
+            "ConfigValue": 10,
+            "Description": "【3V3】3V3匹配中扩池间隔时长",
+            "Id": 6234,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_WinningStreak",
+            "ConfigValue": 3,
+            "Description": "【3V3】3V3连续胜利场次",
+            "Id": 6235,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_pvp_sign",
+            "ConfigValue": "1,00:00:00|4,23:59:59",
+            "Description": "【天梯赛报名】时间配置(第a天,开启时间|第b天,结束时间)",
+            "Id": 6236,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_ranking_day",
+            "ConfigValue": "5,18",
+            "Description": "【天梯赛PVP】精英赛时间配置(开始时间,结束时间 )",
+            "Id": 6237,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_ranking_time",
+            "ConfigValue": "17:00:00,17:59:59|20:00:00,20:59:59",
+            "Description": "【天梯赛PVP】精英赛每天比赛时间（开始时间,结束时间|开始时间,结束时间）",
+            "Id": 6238,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_top_time",
+            "ConfigValue": "20,20:05:00|21,20:05:00|22,20:05:00|23,20:05:00",
+            "Description": "【天梯赛PVP】巅峰赛时间配置（初赛/复赛/半决赛/决赛 第a1天开启,比赛时间| 第a2天开启,比赛时间）",
+            "Id": 6239,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_top12_bet",
+            "ConfigValue": "20,05:00:00|20,20:04:59",
+            "Description": "【天梯赛竞猜】巅峰初赛竞猜时间配置（第a天,开启时间|第b天,结束时间）",
+            "Id": 6240,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_top8_bet",
+            "ConfigValue": "21,05:00:00|21,20:04:59",
+            "Description": "【天梯赛竞猜】巅峰复赛竞猜时间配置（第a天,开启时间|第b天,结束时间）",
+            "Id": 6241,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_top4_bet",
+            "ConfigValue": "22,05:00:00|22,20:04:59",
+            "Description": "【天梯赛竞猜】巅峰半决赛竞猜时间配置（第a天,开启时间|第b天,结束时间）",
+            "Id": 6242,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_top1_bet",
+            "ConfigValue": "23,05:00:00|23,20:04:59",
+            "Description": "【天梯赛竞猜】巅峰决赛竞猜时间配置（第a天,开启时间|第b天,结束时间）",
+            "Id": 6243,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_currency_bet",
+            "ConfigValue": 8800,
+            "Description": "【天梯赛PVP】竞猜天梯水晶数显示——【已废弃】",
+            "Id": 6244,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_sign_Teampay",
+            "ConfigValue": 50000,
+            "Description": "【天梯赛报名】创建队伍花费黄金(数量)",
+            "Id": 6245,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_ranking_loc",
+            "ConfigValue": 240,
+            "Description": "【天梯赛PVP】精英赛战斗时长(单位:秒)",
+            "Id": 6246,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_top_loc",
+            "ConfigValue": 500,
+            "Description": "【天梯赛PVP】巅峰赛战斗时长(单位:秒)",
+            "Id": 6247,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "GuildEscort_BattleDefenceTime",
+            "ConfigValue": 5,
+            "Description": "公会推车战斗保护时间（s）",
+            "Id": 6248,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "CrossServer_HappyLandminesRewardTime",
+            "ConfigValue": 2,
+            "Description": "【赛季】跨服小游戏欢乐踩地雷每日奖励次数",
+            "Id": 6249,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_pve_countdown",
+            "ConfigValue": 30,
+            "Description": "【赛季PVE】副本倒计时，单位分钟",
+            "Id": 6250,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_pve_rebirth",
+            "ConfigValue": 30,
+            "Description": "【赛季PVE】复活倒计时，单位秒",
+            "Id": 6251,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_pve_skiplevel",
+            "ConfigValue": "5,5",
+            "Description": "【赛季PVE】跳关，X回合内结束战斗可跳Y关",
+            "Id": 6252,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_pve_revenue",
+            "ConfigValue": 1,
+            "Description": "【赛季PVE】周收益次数",
+            "Id": 6253,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ChatHall_MaxPlayerLimit",
+            "ConfigValue": 50,
+            "Description": "【跨服聊天大厅】最大玩家数",
+            "Id": 6254,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "GuardPatrol_TasksNumber",
+            "ConfigValue": 5,
+            "Description": "【守卫巡逻】最大刷新任务数量",
+            "Id": 6255,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "GuardPatrol_DayLimit",
+            "ConfigValue": 10,
+            "Description": "【守卫巡逻】守卫巡逻每日派遣上限",
+            "Id": 6256,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "GuardPatrol_FreeRefreshTimes",
+            "ConfigValue": 3,
+            "Description": "【守卫巡逻】每日免费刷新次数",
+            "Id": 6257,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "GuardPatrol_Boost",
+            "ConfigValue": "5,2",
+            "Description": "【守卫巡逻】守卫巡逻任务加速消耗（分钟,钻石）（每加速填表分钟，消耗填表钻石数目）",
+            "Id": 6258,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "ChatHall_LogoutTimeOut",
+            "ConfigValue": 8,
+            "Description": "【赛季大厅】掉线踢出延迟（分钟）",
+            "Id": 6259,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "navigation_addprice",
+            "ConfigValue": "150,150",
+            "Description": "【航海】绑钻付费增加额外购买次数",
+            "Id": 6260,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "passcheck_luxuryreward_open_level",
+            "ConfigValue": 81,
+            "Description": "【通行证】勇士犒赏令晋升档位开启等级（大于等于该等级）",
+            "Id": 6261,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "legendmonthpass_open_level",
+            "ConfigValue": 999,
+            "Description": "【月卡】神兵月卡开启等级（大于等于该等级）",
+            "Id": 6262,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "t_s_Guildmaze_time",
+            "ConfigValue": "6,12|20,26",
+            "Description": "【公会迷宫】活动时间配置(每月 开始第n号,结束第n号|开始第n号,结束第n号)——【已废弃】",
+            "Id": 6263,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "t_s_Guildmaze_pick",
+            "ConfigValue": 10,
+            "Description": "【公会迷宫】每人每日迷宫行动次数配置(次数)",
+            "Id": 6264,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "t_s_Guildmaze_fight",
+            "ConfigValue": 3,
+            "Description": "【公会迷宫】每人每日挑战次数配置(次数)",
+            "Id": 6265,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Regress_Day",
+            "ConfigValue": 30,
+            "Description": "【领主回归】回归活动开启需玩家离线天数",
+            "Id": 6266,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Regress_Buff",
+            "ConfigValue": 14,
+            "Description": "【领主回归】回归玩家获得buff持续时间（天）——【已废弃】",
+            "Id": 6267,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Recall_Times",
+            "ConfigValue": 10,
+            "Description": "【领主回归】召回玩家邀请码可用次数限制",
+            "Id": 6268,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Regress_Times",
+            "ConfigValue": 99,
+            "Description": "【领主回归】回归玩家使用邀请码多次活动与同一人绑定次数限制",
+            "Id": 6269,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_top_buff",
+            "ConfigValue": "1,4,4001,10080|5,8,4002,10080|9,12,4003,10080",
+            "Description": "【天梯赛PVP】巅峰赛排名a,排名b,BuffId,持续时长(分钟)|巅峰赛排名c,排名d,BuffId,持续时长(分钟)|巅峰赛排名f,排名g,BuffId,持续时长(分钟)",
+            "Id": 6270,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Regress_Pass_Exp",
+            "ConfigValue": "15,300",
+            "Description": "【领主回归】战令最大购买等级，每级战令钻石价格",
+            "Id": 6271,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "t_s_Guildmaze_reward",
+            "ConfigValue": 3,
+            "Description": "【公会迷宫】通关n层后，伤害奖励生效(层数)",
+            "Id": 6272,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_RobotCoefficient",
+            "ConfigValue": 9500,
+            "Description": "【3V3】匹配机器人攻击防御血量系数（万分比）",
+            "Id": 6273,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "legendmonthpass_rebate",
+            "ConfigValue": 2388,
+            "Description": "【月卡】神兵月卡返利倍数",
+            "Id": 6274,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "Season_pvp_open",
+            "ConfigValue": 30,
+            "Description": "【天梯赛参与】开服时间未达到n天,入口图标置灰(单位:天)",
+            "Id": 6275,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "t_s_Guildmaze_Start",
+            "ConfigValue": "2026-08-06 00:00:00",
+            "Description": "【公会迷宫】活动开启的初始时间配置",
+            "Id": 6276,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "3V3_Rank_RobotdifScore",
+            "ConfigValue": 1,
+            "Description": "【3V3】结算时玩家与机器人积分差",
+            "Id": 6291,
+            "IsClient": 0
+        },
+        {
+            "ConfigName": "RechargeRank_Money_Percent",
+            "ConfigValue": 1,
+            "Description": "【充值排行活动】充值积分比率(积分=充值分/比率)，国内100，海外1",
+            "Id": 6292,
+            "IsClient": 0
+        }
+    ]
+}

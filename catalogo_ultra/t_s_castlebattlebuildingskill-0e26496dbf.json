@@ -1,0 +1,914 @@
+{
+    "t_s_castlebattlebuildingskill": [
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 430,
+            "BattleBuilding": 101,
+            "Id": 10101
+        },
+        {
+            "ActiveConditionNum": 40000,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 431,
+            "BattleBuilding": 101,
+            "Id": 10102
+        },
+        {
+            "ActiveConditionNum": 80000,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 432,
+            "BattleBuilding": 101,
+            "Id": 10103
+        },
+        {
+            "ActiveConditionNum": 120000,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 433,
+            "BattleBuilding": 101,
+            "Id": 10104
+        },
+        {
+            "ActiveConditionNum": 160000,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 434,
+            "BattleBuilding": 101,
+            "Id": 10105
+        },
+        {
+            "ActiveConditionNum": 200000,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 435,
+            "BattleBuilding": 101,
+            "Id": 10106
+        },
+        {
+            "ActiveConditionNum": 240000,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 436,
+            "BattleBuilding": 101,
+            "Id": 10107
+        },
+        {
+            "ActiveConditionNum": 280000,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 437,
+            "BattleBuilding": 101,
+            "Id": 10108
+        },
+        {
+            "ActiveConditionNum": 320000,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 438,
+            "BattleBuilding": 101,
+            "Id": 10109
+        },
+        {
+            "ActiveConditionNum": 360000,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 439,
+            "BattleBuilding": 101,
+            "Id": 10110
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 320,
+            "BattleBuilding": 301,
+            "Id": 30101
+        },
+        {
+            "ActiveConditionNum": 200000,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 321,
+            "BattleBuilding": 301,
+            "Id": 30102
+        },
+        {
+            "ActiveConditionNum": 400000,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 322,
+            "BattleBuilding": 301,
+            "Id": 30103
+        },
+        {
+            "ActiveConditionNum": 600000,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 323,
+            "BattleBuilding": 301,
+            "Id": 30104
+        },
+        {
+            "ActiveConditionNum": 800000,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 324,
+            "BattleBuilding": 301,
+            "Id": 30105
+        },
+        {
+            "ActiveConditionNum": 1000000,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 325,
+            "BattleBuilding": 301,
+            "Id": 30106
+        },
+        {
+            "ActiveConditionNum": 1200000,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 326,
+            "BattleBuilding": 301,
+            "Id": 30107
+        },
+        {
+            "ActiveConditionNum": 1400000,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 327,
+            "BattleBuilding": 301,
+            "Id": 30108
+        },
+        {
+            "ActiveConditionNum": 1600000,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 328,
+            "BattleBuilding": 301,
+            "Id": 30109
+        },
+        {
+            "ActiveConditionNum": 1800000,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 329,
+            "BattleBuilding": 301,
+            "Id": 30110
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 310,
+            "BattleBuilding": 402,
+            "Id": 40201
+        },
+        {
+            "ActiveConditionNum": 40,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 311,
+            "BattleBuilding": 402,
+            "Id": 40202
+        },
+        {
+            "ActiveConditionNum": 80,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 312,
+            "BattleBuilding": 402,
+            "Id": 40203
+        },
+        {
+            "ActiveConditionNum": 120,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 313,
+            "BattleBuilding": 402,
+            "Id": 40204
+        },
+        {
+            "ActiveConditionNum": 160,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 314,
+            "BattleBuilding": 402,
+            "Id": 40205
+        },
+        {
+            "ActiveConditionNum": 200,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 315,
+            "BattleBuilding": 402,
+            "Id": 40206
+        },
+        {
+            "ActiveConditionNum": 240,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 316,
+            "BattleBuilding": 402,
+            "Id": 40207
+        },
+        {
+            "ActiveConditionNum": 280,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 317,
+            "BattleBuilding": 402,
+            "Id": 40208
+        },
+        {
+            "ActiveConditionNum": 320,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 318,
+            "BattleBuilding": 402,
+            "Id": 40209
+        },
+        {
+            "ActiveConditionNum": 360,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 319,
+            "BattleBuilding": 402,
+            "Id": 40210
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 410,
+            "BattleBuilding": 501,
+            "Id": 50101
+        },
+        {
+            "ActiveConditionNum": 40000,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 411,
+            "BattleBuilding": 501,
+            "Id": 50102
+        },
+        {
+            "ActiveConditionNum": 80000,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 412,
+            "BattleBuilding": 501,
+            "Id": 50103
+        },
+        {
+            "ActiveConditionNum": 120000,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 413,
+            "BattleBuilding": 501,
+            "Id": 50104
+        },
+        {
+            "ActiveConditionNum": 160000,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 414,
+            "BattleBuilding": 501,
+            "Id": 50105
+        },
+        {
+            "ActiveConditionNum": 200000,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 415,
+            "BattleBuilding": 501,
+            "Id": 50106
+        },
+        {
+            "ActiveConditionNum": 240000,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 416,
+            "BattleBuilding": 501,
+            "Id": 50107
+        },
+        {
+            "ActiveConditionNum": 280000,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 417,
+            "BattleBuilding": 501,
+            "Id": 50108
+        },
+        {
+            "ActiveConditionNum": 320000,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 418,
+            "BattleBuilding": 501,
+            "Id": 50109
+        },
+        {
+            "ActiveConditionNum": 360000,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 419,
+            "BattleBuilding": 501,
+            "Id": 50110
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 300,
+            "BattleBuilding": 901,
+            "Id": 90101
+        },
+        {
+            "ActiveConditionNum": 200000,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 301,
+            "BattleBuilding": 901,
+            "Id": 90102
+        },
+        {
+            "ActiveConditionNum": 400000,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 302,
+            "BattleBuilding": 901,
+            "Id": 90103
+        },
+        {
+            "ActiveConditionNum": 600000,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 303,
+            "BattleBuilding": 901,
+            "Id": 90104
+        },
+        {
+            "ActiveConditionNum": 800000,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 304,
+            "BattleBuilding": 901,
+            "Id": 90105
+        },
+        {
+            "ActiveConditionNum": 1000000,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 305,
+            "BattleBuilding": 901,
+            "Id": 90106
+        },
+        {
+            "ActiveConditionNum": 1200000,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 306,
+            "BattleBuilding": 901,
+            "Id": 90107
+        },
+        {
+            "ActiveConditionNum": 1400000,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 307,
+            "BattleBuilding": 901,
+            "Id": 90108
+        },
+        {
+            "ActiveConditionNum": 1600000,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 308,
+            "BattleBuilding": 901,
+            "Id": 90109
+        },
+        {
+            "ActiveConditionNum": 1800000,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 309,
+            "BattleBuilding": 901,
+            "Id": 90110
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 330,
+            "BattleBuilding": 1201,
+            "Id": 120101
+        },
+        {
+            "ActiveConditionNum": 200000,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 331,
+            "BattleBuilding": 1201,
+            "Id": 120102
+        },
+        {
+            "ActiveConditionNum": 400000,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 332,
+            "BattleBuilding": 1201,
+            "Id": 120103
+        },
+        {
+            "ActiveConditionNum": 600000,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 333,
+            "BattleBuilding": 1201,
+            "Id": 120104
+        },
+        {
+            "ActiveConditionNum": 800000,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 334,
+            "BattleBuilding": 1201,
+            "Id": 120105
+        },
+        {
+            "ActiveConditionNum": 1000000,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 335,
+            "BattleBuilding": 1201,
+            "Id": 120106
+        },
+        {
+            "ActiveConditionNum": 1200000,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 336,
+            "BattleBuilding": 1201,
+            "Id": 120107
+        },
+        {
+            "ActiveConditionNum": 1400000,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 337,
+            "BattleBuilding": 1201,
+            "Id": 120108
+        },
+        {
+            "ActiveConditionNum": 1600000,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 338,
+            "BattleBuilding": 1201,
+            "Id": 120109
+        },
+        {
+            "ActiveConditionNum": 1800000,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 339,
+            "BattleBuilding": 1201,
+            "Id": 120110
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 420,
+            "BattleBuilding": 1504,
+            "Id": 150401
+        },
+        {
+            "ActiveConditionNum": 40000,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 421,
+            "BattleBuilding": 1504,
+            "Id": 150402
+        },
+        {
+            "ActiveConditionNum": 80000,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 422,
+            "BattleBuilding": 1504,
+            "Id": 150403
+        },
+        {
+            "ActiveConditionNum": 120000,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 423,
+            "BattleBuilding": 1504,
+            "Id": 150404
+        },
+        {
+            "ActiveConditionNum": 160000,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 424,
+            "BattleBuilding": 1504,
+            "Id": 150405
+        },
+        {
+            "ActiveConditionNum": 200000,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 425,
+            "BattleBuilding": 1504,
+            "Id": 150406
+        },
+        {
+            "ActiveConditionNum": 240000,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 426,
+            "BattleBuilding": 1504,
+            "Id": 150407
+        },
+        {
+            "ActiveConditionNum": 280000,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 427,
+            "BattleBuilding": 1504,
+            "Id": 150408
+        },
+        {
+            "ActiveConditionNum": 320000,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 428,
+            "BattleBuilding": 1504,
+            "Id": 150409
+        },
+        {
+            "ActiveConditionNum": 360000,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 429,
+            "BattleBuilding": 1504,
+            "Id": 150410
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 450,
+            "BattleBuilding": 1506,
+            "Id": 150601
+        },
+        {
+            "ActiveConditionNum": 40000,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 451,
+            "BattleBuilding": 1506,
+            "Id": 150602
+        },
+        {
+            "ActiveConditionNum": 80000,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 452,
+            "BattleBuilding": 1506,
+            "Id": 150603
+        },
+        {
+            "ActiveConditionNum": 120000,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 453,
+            "BattleBuilding": 1506,
+            "Id": 150604
+        },
+        {
+            "ActiveConditionNum": 160000,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 454,
+            "BattleBuilding": 1506,
+            "Id": 150605
+        },
+        {
+            "ActiveConditionNum": 200000,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 455,
+            "BattleBuilding": 1506,
+            "Id": 150606
+        },
+        {
+            "ActiveConditionNum": 240000,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 456,
+            "BattleBuilding": 1506,
+            "Id": 150607
+        },
+        {
+            "ActiveConditionNum": 280000,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 457,
+            "BattleBuilding": 1506,
+            "Id": 150608
+        },
+        {
+            "ActiveConditionNum": 320000,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 458,
+            "BattleBuilding": 1506,
+            "Id": 150609
+        },
+        {
+            "ActiveConditionNum": 360000,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 459,
+            "BattleBuilding": 1506,
+            "Id": 150610
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 440,
+            "BattleBuilding": 1512,
+            "Id": 151201
+        },
+        {
+            "ActiveConditionNum": 40000,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 441,
+            "BattleBuilding": 1512,
+            "Id": 151202
+        },
+        {
+            "ActiveConditionNum": 80000,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 442,
+            "BattleBuilding": 1512,
+            "Id": 151203
+        },
+        {
+            "ActiveConditionNum": 120000,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 443,
+            "BattleBuilding": 1512,
+            "Id": 151204
+        },
+        {
+            "ActiveConditionNum": 160000,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 444,
+            "BattleBuilding": 1512,
+            "Id": 151205
+        },
+        {
+            "ActiveConditionNum": 200000,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 445,
+            "BattleBuilding": 1512,
+            "Id": 151206
+        },
+        {
+            "ActiveConditionNum": 240000,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 446,
+            "BattleBuilding": 1512,
+            "Id": 151207
+        },
+        {
+            "ActiveConditionNum": 280000,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 447,
+            "BattleBuilding": 1512,
+            "Id": 151208
+        },
+        {
+            "ActiveConditionNum": 320000,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 448,
+            "BattleBuilding": 1512,
+            "Id": 151209
+        },
+        {
+            "ActiveConditionNum": 360000,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 449,
+            "BattleBuilding": 1512,
+            "Id": 151210
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 350,
+            "BattleBuilding": 1513,
+            "Id": 151301
+        },
+        {
+            "ActiveConditionNum": 40,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 351,
+            "BattleBuilding": 1513,
+            "Id": 151302
+        },
+        {
+            "ActiveConditionNum": 80,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 352,
+            "BattleBuilding": 1513,
+            "Id": 151303
+        },
+        {
+            "ActiveConditionNum": 120,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 353,
+            "BattleBuilding": 1513,
+            "Id": 151304
+        },
+        {
+            "ActiveConditionNum": 160,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 354,
+            "BattleBuilding": 1513,
+            "Id": 151305
+        },
+        {
+            "ActiveConditionNum": 200,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 355,
+            "BattleBuilding": 1513,
+            "Id": 151306
+        },
+        {
+            "ActiveConditionNum": 240,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 356,
+            "BattleBuilding": 1513,
+            "Id": 151307
+        },
+        {
+            "ActiveConditionNum": 280,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 357,
+            "BattleBuilding": 1513,
+            "Id": 151308
+        },
+        {
+            "ActiveConditionNum": 320,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 358,
+            "BattleBuilding": 1513,
+            "Id": 151309
+        },
+        {
+            "ActiveConditionNum": 360,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 359,
+            "BattleBuilding": 1513,
+            "Id": 151310
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 400,
+            "BattleBuilding": 1514,
+            "Id": 151401
+        },
+        {
+            "ActiveConditionNum": 40000,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 401,
+            "BattleBuilding": 1514,
+            "Id": 151402
+        },
+        {
+            "ActiveConditionNum": 80000,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 402,
+            "BattleBuilding": 1514,
+            "Id": 151403
+        },
+        {
+            "ActiveConditionNum": 120000,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 403,
+            "BattleBuilding": 1514,
+            "Id": 151404
+        },
+        {
+            "ActiveConditionNum": 160000,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 404,
+            "BattleBuilding": 1514,
+            "Id": 151405
+        },
+        {
+            "ActiveConditionNum": 200000,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 405,
+            "BattleBuilding": 1514,
+            "Id": 151406
+        },
+        {
+            "ActiveConditionNum": 240000,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 406,
+            "BattleBuilding": 1514,
+            "Id": 151407
+        },
+        {
+            "ActiveConditionNum": 280000,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 407,
+            "BattleBuilding": 1514,
+            "Id": 151408
+        },
+        {
+            "ActiveConditionNum": 320000,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 408,
+            "BattleBuilding": 1514,
+            "Id": 151409
+        },
+        {
+            "ActiveConditionNum": 360000,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 409,
+            "BattleBuilding": 1514,
+            "Id": 151410
+        },
+        {
+            "ActiveConditionNum": 0,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 340,
+            "BattleBuilding": 1515,
+            "Id": 151501
+        },
+        {
+            "ActiveConditionNum": 40,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 341,
+            "BattleBuilding": 1515,
+            "Id": 151502
+        },
+        {
+            "ActiveConditionNum": 80,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 342,
+            "BattleBuilding": 1515,
+            "Id": 151503
+        },
+        {
+            "ActiveConditionNum": 120,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 343,
+            "BattleBuilding": 1515,
+            "Id": 151504
+        },
+        {
+            "ActiveConditionNum": 160,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 344,
+            "BattleBuilding": 1515,
+            "Id": 151505
+        },
+        {
+            "ActiveConditionNum": 200,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 345,
+            "BattleBuilding": 1515,
+            "Id": 151506
+        },
+        {
+            "ActiveConditionNum": 240,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 346,
+            "BattleBuilding": 1515,
+            "Id": 151507
+        },
+        {
+            "ActiveConditionNum": 280,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 347,
+            "BattleBuilding": 1515,
+            "Id": 151508
+        },
+        {
+            "ActiveConditionNum": 320,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 348,
+            "BattleBuilding": 1515,
+            "Id": 151509
+        },
+        {
+            "ActiveConditionNum": 360,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 349,
+            "BattleBuilding": 1515,
+            "Id": 151510
+        },
+        {
+            "ActiveConditionNum": 20,
+            "ActiveSkillLevel": 1,
+            "ActiveSkillTemplate": 360,
+            "BattleBuilding": 1516,
+            "Id": 151601
+        },
+        {
+            "ActiveConditionNum": 17,
+            "ActiveSkillLevel": 2,
+            "ActiveSkillTemplate": 361,
+            "BattleBuilding": 1516,
+            "Id": 151602
+        },
+        {
+            "ActiveConditionNum": 14,
+            "ActiveSkillLevel": 3,
+            "ActiveSkillTemplate": 362,
+            "BattleBuilding": 1516,
+            "Id": 151603
+        },
+        {
+            "ActiveConditionNum": 12,
+            "ActiveSkillLevel": 4,
+            "ActiveSkillTemplate": 363,
+            "BattleBuilding": 1516,
+            "Id": 151604
+        },
+        {
+            "ActiveConditionNum": 10,
+            "ActiveSkillLevel": 5,
+            "ActiveSkillTemplate": 364,
+            "BattleBuilding": 1516,
+            "Id": 151605
+        },
+        {
+            "ActiveConditionNum": 9,
+            "ActiveSkillLevel": 6,
+            "ActiveSkillTemplate": 365,
+            "BattleBuilding": 1516,
+            "Id": 151606
+        },
+        {
+            "ActiveConditionNum": 8,
+            "ActiveSkillLevel": 7,
+            "ActiveSkillTemplate": 366,
+            "BattleBuilding": 1516,
+            "Id": 151607
+        },
+        {
+            "ActiveConditionNum": 7,
+            "ActiveSkillLevel": 8,
+            "ActiveSkillTemplate": 367,
+            "BattleBuilding": 1516,
+            "Id": 151608
+        },
+        {
+            "ActiveConditionNum": 6,
+            "ActiveSkillLevel": 9,
+            "ActiveSkillTemplate": 368,
+            "BattleBuilding": 1516,
+            "Id": 151609
+        },
+        {
+            "ActiveConditionNum": 5,
+            "ActiveSkillLevel": 10,
+            "ActiveSkillTemplate": 369,
+            "BattleBuilding": 1516,
+            "Id": 151610
+        }
+    ]
+}

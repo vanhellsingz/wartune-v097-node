@@ -15,6 +15,10 @@ const sylphEquipment = require('./sylph-equipment-state');
 const atollEncounters = require('./atoll-encounters');
 const targetResolver = require('./wartune-battle-targets');
 const remotePetState = require('./uiplay-state');
+const runeBattleState = require('./rune-battle-state');
+const hallExperience = require('./hall-experience-state');
+const guardSystem = require('./guard-system-state');
+const sylphAwakening = require('./sylph-awakening-state');
 
 const configRoot = path.resolve(__dirname, '../res/release/config');
 
@@ -35,6 +39,8 @@ const rawHeros = loadCatalog('t_s_herotemplate');
 const rawSkills = loadCatalog('t_s_skilltemplate');
 const rawPets = loadCatalog('t_s_pettemplate');
 const rawKingTowerBoss = loadCatalog('t_s_kingtowerboss');
+const rawSkillBuffers = loadCatalog('t_s_skillbuffertemplate');
+const skillBufferById = new Map(rawSkillBuffers.map(row => [Number(row.Id), row]));
 
 const petById = new Map();
 for (const p of rawPets) {
@@ -66,12 +72,8 @@ for (const s of rawSkills) {
   skillById.set(Number(s.TemplateId), s);
 }
 
-function calcGradeFromXp(totalXp, currentGrade = 1) {
-  let g = currentGrade;
-  while (g < 80 && totalXp >= resource.totalAtLevel(g + 1)) {
-    g++;
-  }
-  return g;
+function calcGradeFromXp(totalXp, currentGrade = 1, state = {}) {
+  return resource.calcGradeFromXp(totalXp,currentGrade,state);
 }
 
 function formatAttackMillis(d = new Date()) {
@@ -126,18 +128,30 @@ class BattleEngine {
       state.activeBattle = null;
     }
     const remotePhase = options.remotePetPhase || null;
-    const nodeOriginal = remotePhase ? {
+    const outerMonster = options.outerMonster || null;
+    const nodeOriginal = outerMonster ? {
+      Id: Number(outerMonster.ID || nodeId),
+      CampaignId: Number(state.character.map_id || 5),
+      MasterType: 42,
+      BattleType: 3841,
+      // Monstros comuns da Cidade Externa trazem somente Soldiers. 6120 e
+      // template de tropa, nunca de heroi; inventa-lo em Heros aborta a luta.
+      Heros: outerMonster.Heroes || '',
+      Soldiers: outerMonster.Soldiers || '',
+      HeroGP: 0,
+      AI: 'com.road.yishi.mapphysics.node.ai.CNCommonAi'
+    } : (remotePhase ? {
       Id: -Number(remotePhase.IndexID), CampaignId: Number(state.character.map_id || 5),
       MasterType: 42, BattleType: 0, Heros: remotePhase.Heros,
       Soldiers: remotePhase.Soldiers, HeroGP: 0
-    } : nodeById.get(Number(nodeId));
-    const node = remotePhase ? nodeOriginal : atollEncounters.normalizedMonster(nodeOriginal);
+    } : nodeById.get(Number(nodeId)));
+    const node = (remotePhase || outerMonster) ? nodeOriginal : atollEncounters.normalizedMonster(nodeOriginal);
     if (!node) {
       throw new Error(`No de campanha/tutorial ${nodeId} nao encontrado`);
     }
     const isAtollBattle=atollEncounters.hostile(node);
     const isKingTowerBoss = (node.AI === 'com.road.yishi.mapphysics.node.ai.CNKingTowerBossAi' || (Number(node.CampaignId) === 8200 && Number(nodeId) >= 820002 && Number(nodeId) <= 820006));
-    if (![41,42].includes(Number(node.MasterType)) && !isAtollBattle && !isKingTowerBoss) throw new Error(`No ${nodeId} nao e encontro de combate`);
+    if (![41,42].includes(Number(node.MasterType)) && !isAtollBattle && !isKingTowerBoss && !outerMonster) throw new Error(`No ${nodeId} nao e encontro de combate`);
 
     const character = state.character;
     const saved = typeof character.state_json === 'string' ? JSON.parse(character.state_json) : (character.state_json || {});
@@ -149,7 +163,7 @@ class BattleEngine {
       if (Number(saved.tutorial?.mapId) !== mapId && Number(saved.position?.mapId) !== mapId && Number(saved.campaigns?.current?.mapId) !== mapId) {
         throw new Error('No fora do mapa tutorial atual');
       }
-    } else if (Number(saved.campaigns?.current?.mapId) !== mapId && Number(saved.position?.mapId) !== mapId) {
+    } else if (!outerMonster && Number(saved.campaigns?.current?.mapId) !== mapId && Number(saved.position?.mapId) !== mapId) {
       throw new Error('No fora da instancia de campanha atual');
     }
     if(isAtollBattle && !atollEncounters.canFight(saved,node))
@@ -244,6 +258,7 @@ class BattleEngine {
     const heroSkillsState = skillsState.getSkillsState(saved, heroJob);
     const learnedSkills = Array.isArray(heroSkillsState.learned) ? heroSkillsState.learned : [];
     const baseSkills = [heroTemp.DefaultSkill || defaultJobSkill].concat(heroTemp.SkillScript || []);
+    const runeItems = runeBattleState.equippedRuneItems(saved, character.grade);
     const heroSkills = [...new Set([...baseSkills, ...learnedSkills])].map(Number);
 
     // Determina formação oficial (Frente vs Trás)
@@ -264,7 +279,11 @@ class BattleEngine {
     const playerSoldiers = [];
     const formation = saved.army?.formation || {};
     const primarySonType = formation[0] || Object.values(saved.army?.pawns || {}).find(item => Number(item.ownPawns || 0) > 0)?.sonType || 101;
-    for (const slot of [0, 1]) {
+    const campaignId = Number(campaignState.MAP_TO_CAMPAIGN[mapId] || mapId);
+    const isHeroesHall = Number(campaignState.campaignById.get(campaignId)?.Capacity) === 3;
+    const hasPlayerTroops = Boolean(outerMonster || (!remotePhase &&
+      !campaignState.towerFloor(mapId) && !isHeroesHall));
+    for (const slot of (hasPlayerTroops ? [0, 1] : [])) {
       let sonType = formation[slot] !== undefined ? formation[slot] : primarySonType;
       let p = sonType ? saved.army?.pawns?.[sonType] : null;
       if (!p || Number(p.ownPawns || 0) <= 0) {
@@ -315,6 +334,8 @@ class BattleEngine {
     const battleState = {
       battleId,
       nodeId: Number(nodeId),
+      outerMonster: outerMonster || null,
+      outerRewards: outerMonster ? (options.outerRewards || []) : [],
       remotePetIndex: remotePhase ? Number(remotePhase.IndexID) : 0,
       mapId,
       stateSessionId: state.id,
@@ -349,11 +370,13 @@ class BattleEngine {
         fightingCapacity: heroBattleStats.fightingCapacity
       },
       playerSoldiers,
+      runeItems: runeItems.map(item => ({...item})),
       monsters,
       monster: monsters[0], // compatibilidade retroativa
       rewards: {
-        xp: isAtollBattle ? (Number(node.HeroGP)||0) : (Number(node.HeroGP) || 2500),
-        gold: isAtollBattle ? 0 : 100
+        xp: isAtollBattle ? (Number(node.HeroGP)||0)
+          : (hallExperience.hallNodeExperience(node, mapId, campaignState) ?? (Number(node.HeroGP) || 2500)),
+        gold: isAtollBattle ? 0 : (outerMonster ? 0 : 100)
       }
     };
 
@@ -388,7 +411,7 @@ class BattleEngine {
     if (activeSylph) {
       const sylphLivingId = 15;
       heroLivingId2 = sylphLivingId;
-      heroAwake = 100;
+      heroAwake = sylphAwakening.startingAwake(saved);
       const petTpl = petById.get(Number(activeSylph.templateId));
       const defaultAttackSkill = (petTpl && Array.isArray(petTpl.DefaultSkills) && petTpl.DefaultSkills[0]) || 701000;
       const rawChange = String(activeSylph.changeSkills || '').split(',').map(Number).filter(n => Number.isSafeInteger(n) && n > 0);
@@ -436,12 +459,40 @@ class BattleEngine {
         changeSkillId: heroChangeSkills,
         serverName: character.site || 'S1',
         isChange: false,
-        awake: 100
+        awake: heroAwake
       });
     }
 
     battleState.activeSylph = activeSylph;
     battleState.battlePets = battlePets;
+    battleState.hero.awake = heroAwake;
+    battleState.hero.morphed = false;
+    battleState.hero.normalSkills = heroSkills;
+    battleState.hero.changeSkills = heroChangeSkills;
+
+    const battleGuards = (saved.guardians?.list || []).filter(guard => guard && guard.isFight)
+      .slice(0, 3).map((guard, index) => {
+        const attributes = guardSystem.calculateGuardAttributes(guard, {...saved, grade: character.grade});
+        const value = id => Math.max(0, Number(attributes.get(id) || 0));
+        const skills = String(guard.firstKey || guard.skills || '').split(',')
+          .map(Number).filter(id => Number.isSafeInteger(id) && id > 0 && skillById.has(id));
+        const maxHp = Math.max(1, value(10));
+        return {
+          heroId: Number(guard.guardId), livingId: 16 + index,
+          userId: Number(character.id), tempId: Number(guard.guardId),
+          growthGrade: Math.max(0, Math.min(4, Number(guard.guardStage) || 0)),
+          type: 1, nickName: String(guard.guardName || ''),
+          grade: Number(character.grade), side: 1, pos: [2, 5, 8][index],
+          maxHp, hp: maxHp, initHp: maxHp,
+          sp: 100, spMax: 100, awake: heroAwake, upaniValue: 100,
+          phyAttack: value(6), phyDefence: value(7),
+          magAttack: value(8), magDefence: value(9),
+          forceHit: value(12), parry: value(13),
+          skillId: skills, castTime: 3000, qteTime: 0,
+          isShow: true, hasShadow: true, serverName: character.site || 'S1'
+        };
+      });
+    battleState.battleGuards = battleGuards;
 
     // Monta protobuf battle.BattlePrepareMsg
     const prepareMsg = {
@@ -492,6 +543,10 @@ class BattleEngine {
           qteTime: 0,
           castTime: 3000,
           skillId: heroSkills,
+          item: runeItems.map(item => ({
+            ...item, userId: character.id, battleId,
+            serverName: character.site || 'S1', uItemId: 0
+          })),
           changeSkillId: heroChangeSkills,
           serverName: character.site || 'S1',
           multiLanNickName: [],
@@ -547,7 +602,7 @@ class BattleEngine {
       currentWave: 1,
       pets: battlePets,
       watchHeros: [],
-      guards: [],
+      guards: battleGuards,
       redTeamName: 'Jogador',
       blueTeamName: 'Inimigo',
       curTurn: 0
@@ -623,13 +678,57 @@ class BattleEngine {
     // S2C Opcode 75 (battle.HeroOrderMsg) ACK com result: 0 e targetIndexs
     // Obrigatório para o cliente destravar a seleção da skill (onSkillUseServerBack) e iniciar a animação
     const hero = battle.hero;
+    const requestedId = Number(req.skillId);
+    if (requestedId === 700001 || requestedId === 700002) {
+      const canChange = requestedId === 700001
+        ? Boolean(battle.activeSylph && !hero.morphed && hero.awake >= 3000)
+        : Boolean(battle.activeSylph && hero.morphed);
+      this.server.sendGameSession(state, 75, pb.encode('battle.HeroOrderMsg', {
+        battleId: battle.battleId, heroIndexId: hero.livingId,
+        skillId: requestedId, result: canChange ? 0 : 1,
+        castTime: 0, qteTime: 0, targetIndexs: []
+      }));
+      if (!canChange) return;
+      battle.waitingHeroAction = false;
+      battle.turn++;
+      hero.morphed = requestedId === 700001;
+      if (hero.morphed) battle.awakeningUsed = true;
+      hero.skills = hero.morphed ? hero.changeSkills : hero.normalSkills;
+      hero.awake = hero.morphed ? 3000 : 0;
+      battle.attackSeq = (battle.attackSeq || 0) + 1;
+      this.server.sendGameSession(state, 153, pb.encode('battle.AttackOrderMsg', {
+        battleId: battle.battleId, frame: battle.attackSeq,
+        orderId: requestedId, isPassive: false, livingId: hero.livingId,
+        sp: hero.sp, spAdded: 0, damages: [], awakenSoldiers: [],
+        attackOrderSeq: battle.attackSeq, curTurn: battle.turn,
+        awake: hero.awake, awakeAdd: 0
+      }));
+      this.server.sendGameSession(state, 4600, pb.encode('battle.AwakeMsg', {
+        awake: [{ livingId: hero.livingId, awake: hero.awake }]
+      }));
+      battle.waitingHeroAction = true;
+      battle.turnTimer = this.schedule(state, battle, () => {
+        if (battle.waitingHeroAction) this.executeTurn(state, battle);
+      }, 2800);
+      return;
+    }
     // ACK uses the SAME target plan that the damage resolver will execute.
     // Validate the requested skill and rage before choosing hit targets.
-    const requestedId=Number(req.skillId);
-    const validId=hero.skills.includes(requestedId)?requestedId:null;
+    // Passive Sylph skills are equipped effects, never player-cast attacks.
+    if (hero.skills.includes(requestedId) && Number(skillById.get(requestedId)?.UseWay) === 2) {
+      this.server.sendGameSession(state,75,pb.encode('battle.HeroOrderMsg',{
+        battleId:battle.battleId,heroIndexId:hero.livingId,skillId:requestedId,
+        result:1,castTime:0,qteTime:0,targetIndexs:[]
+      }));
+      battle.turnTimer=this.schedule(state,battle,()=>{
+        if(battle.waitingHeroAction)this.executeTurn(state,battle);
+      },2800);
+      return;
+    }
+    const validId=hero.skills.includes(requestedId) && Number(skillById.get(requestedId)?.UseWay) === 1 ? requestedId : null;
     const requestedTpl=validId===null?null:skillById.get(validId);
     const unaffordable=requestedTpl && Number(requestedTpl.Cost)<0 && hero.sp<Math.abs(Number(requestedTpl.Cost));
-    const chosenSkill=validId!==null&&!unaffordable?validId:(hero.skills.find(id=>Number(skillById.get(id)?.Cost)>0)||hero.skills[0]);
+    const chosenSkill=validId!==null&&!unaffordable?validId:(hero.skills.find(id=>Number(skillById.get(id)?.UseWay)===1 && Number(skillById.get(id)?.Cost)>0)||hero.skills.find(id=>Number(skillById.get(id)?.UseWay)===1)||hero.normalSkills?.[0]);
     const chosenTemplate=skillById.get(chosenSkill);
     const targets=targetResolver.choose(chosenTemplate,battle.monsters);
     battle.pendingHeroTargets={skillId:chosenSkill,targets};
@@ -646,6 +745,58 @@ class BattleEngine {
     this.executeTurn(state, battle, chosenSkill);
   }
 
+  handleBattleRuneItem(state, payload) {
+    let req;
+    try { req = pb.decode('battle.BattleItemMsg', payload); }
+    catch (error) { this.server.log(`[BATTLE RUNE #${state.id}] Pacote invalido: ${error.message}`); return; }
+    const battle = state.activeBattle;
+    const item = battle?.runeItems?.find(entry => entry.skillTempId === Number(req.skillTempId));
+    const valid = Boolean(battle && !state.closed && battle.waitingHeroAction &&
+      ['START', 'FIGHT'].includes(battle.phase) &&
+      (!req.battleId || req.battleId === battle.battleId) && item && item.count > 0);
+    if (!valid) {
+      this.server.sendGameSession(state, 158, pb.encode('battle.ItemUseResultMsg', {
+        result: 1, tempId: Number(req.skillTempId || 0), count: item?.count || 0,
+        livingId: battle?.hero?.livingId || 0
+      }));
+      return;
+    }
+    if (battle.turnTimer) clearTimeout(battle.turnTimer);
+    battle.waitingHeroAction = false;
+    battle.phase = 'FIGHT';
+    battle.turn++;
+    item.count--;
+    const hero = battle.hero;
+    const skill = skillById.get(item.skillTempId);
+    const oldSp = hero.sp;
+    hero.sp = Math.min(100, hero.sp + Math.max(0, Number(skill?.Cost) || 0));
+    const buffers = String(skill?.BufferIds || '').split('|').map(Number).filter(Boolean)
+      .flatMap(id => {
+        const template = skillBufferById.get(id);
+        if (!template) return [];
+        hero.runeBuffs ||= new Map();
+        hero.runeBuffs.set(id, { template, remaining: Math.max(1, Number(template.ValidCount) || 1) });
+        return [{bufferId: id, templateId: id, sourceId: hero.livingId,
+          targetId: hero.livingId, curTurn: battle.turn, execFrame: 0,
+          maxTurn: Math.max(1, Number(template.ValidCount) || 1), seeType: 1, exeWay: 1}];
+      });
+    this.server.sendGameSession(state, 158, pb.encode('battle.ItemUseResultMsg', {
+      uItemId: 0, bagPos: item.bagPos, count: item.count,
+      result: 0, livingId: hero.livingId, tempId: item.tempId, type: 0
+    }));
+    battle.attackSeq = (battle.attackSeq || 0) + 1;
+    this.server.sendGameSession(state, 153, pb.encode('battle.AttackOrderMsg', {
+      battleId: battle.battleId, frame: battle.attackSeq, orderId: item.skillTempId,
+      isPassive: false, livingId: hero.livingId, sp: hero.sp,
+      spAdded: hero.sp - oldSp, damages: [], buffers,
+      awakenSoldiers: [], attackOrderSeq: battle.attackSeq, curTurn: battle.turn
+    }));
+    battle.waitingHeroAction = true;
+    battle.turnTimer = this.schedule(state, battle, () => {
+      if (battle.waitingHeroAction) this.executeTurn(state, battle);
+    }, 2800);
+  }
+
   executeTurn(state, battle, requestedSkillId = null) {
     if (state.closed || state.activeBattle !== battle || !['START','FIGHT'].includes(battle.phase)) return;
     battle.phase = 'FIGHT';
@@ -655,6 +806,10 @@ class BattleEngine {
     const hero = battle.hero;
     const target = battle.monsters.find(monster => monster.hp > 0);
     if (!target) return this.finishBattleVictory(state, battle);
+    const previousAwake = Number(hero.awake || 0);
+    if (battle.activeSylph && !hero.morphed) hero.awake = sylphAwakening.gainAwake(previousAwake);
+    else if (battle.activeSylph && hero.morphed) hero.awake = Math.max(0, previousAwake - 100);
+    const awakeAdd = Number(hero.awake || 0) - previousAwake;
 
     // 1. Resolver template da habilidade e custo de fúria (Rage)
     let skillId = hero.skills.includes(Number(requestedSkillId)) ? Number(requestedSkillId) : (hero.skills[1] || hero.skills[0] || 10000);
@@ -735,7 +890,10 @@ class BattleEngine {
         const tgtDef = isMagic ? (tgt.magDefence || 0) : (tgt.phyDefence || tgt.defence || 0);
         const rawDmg = Math.floor(effectiveAtk * (p1 > 0 ? (p1 / 100) : 1.1) + p2);
         const netDmg = Math.max(1, rawDmg - Math.floor(tgtDef * 0.3));
-        const finalDamage = Math.min(tgt.hp, netDmg);
+        const outgoing = [...(hero.runeBuffs?.values() || [])]
+          .filter(buff => Number(buff.template.AttackType) === 20 && buff.remaining > 0)
+          .reduce((factor, buff) => factor * (1 + Number(buff.template.ValuePercent || 0) / 100), 1);
+        const finalDamage = Math.min(tgt.hp, Math.max(1, Math.floor(netDmg * outgoing)));
         tgt.hp -= finalDamage;
 
         damages.push({
@@ -753,6 +911,29 @@ class BattleEngine {
     }
 
     battle.pendingHeroTargets=null;
+    for (const [id, buff] of hero.runeBuffs || []) {
+      if (Number(buff.template.AttackType) === 20 && --buff.remaining <= 0) hero.runeBuffs.delete(id);
+    }
+    const appliedBuffers=[];
+    if (hero.morphed && skillTpl) {
+      for (const id of String(skillTpl.BufferIds || '').split('|').map(Number).filter(Boolean)) {
+        const template=skillBufferById.get(id);
+        if (!template) continue;
+        const type=Number(template.AttackType);
+        if (type===20) {
+          hero.runeBuffs ||= new Map();
+          hero.runeBuffs.set(id,{template,remaining:Math.max(1,Number(template.ValidCount)||1)});
+        } else if (type===33) {
+          const healed=Math.min(hero.maxHp-hero.hp,Math.max(1,Math.floor(hero.maxHp*Number(template.ValuePercent||0)/100)));
+          if (healed>0) {
+            hero.hp+=healed;
+            damages.push({livingId:hero.livingId,damageType:6,isHarmful:false,damageValue:healed,leftValue:hero.hp,extraData:0,parry:0,order:damages.length+1});
+          }
+        } else continue;
+        appliedBuffers.push({bufferId:id,templateId:id,sourceId:hero.livingId,targetId:hero.livingId,
+          curTurn:battle.turn,execFrame:0,maxTurn:Math.max(1,Number(template.ValidCount)||1),seeType:1,exeWay:1});
+      }
+    }
     battle.attackSeq = (battle.attackSeq || 0) + 1;
     this.server.sendGameSession(state, 153, pb.encode('battle.AttackOrderMsg', {
       battleId: battle.battleId,
@@ -762,16 +943,23 @@ class BattleEngine {
       livingId: hero.livingId,
       sp: hero.sp,
       spAdded: spAdded,
+      awake: hero.awake || 0,
+      awakeAdd,
       damages: damages,
       execFrame: 0,
       frameNum: battle.attackSeq,
       attackMillis: formatAttackMillis(),
-      buffers: [],
+      buffers: appliedBuffers,
       awakenSoldiers: [],
       attackOrderSeq: battle.attackSeq,
       cdTime: 0,
       curTurn: battle.turn
     }));
+    if (battle.activeSylph && awakeAdd !== 0) {
+      this.server.sendGameSession(state, 4600, pb.encode('battle.AwakeMsg', {
+        awake: [{ livingId: hero.livingId, awake: hero.awake }]
+      }));
+    }
 
     // 3. Ação independente das Tropas da Formação (se houver tropas vivas e monstros vivos)
     if (battle.playerSoldiers && battle.playerSoldiers.length > 0) {
@@ -876,6 +1064,14 @@ class BattleEngine {
       const tgtDef = isTargetHero ? (hero.defence || 0) : (targetUnit.phyDefence || 10);
       const rawCounter = Math.max(1, Math.floor(enemy.attack) - Math.floor(tgtDef / 15));
       let counterDamage = rawCounter;
+      if (isTargetHero) {
+        for (const [id, buff] of hero.runeBuffs || []) {
+          if (Number(buff.template.AttackType) !== 15 || buff.remaining <= 0) continue;
+          counterDamage = Math.max(1, Math.floor(counterDamage *
+            (1 + Number(buff.template.ValuePercent || 0) / 100)));
+          if (--buff.remaining <= 0) hero.runeBuffs.delete(id);
+        }
+      }
 
       if (isTargetHero) {
         // Absorção por escudo do herói
@@ -947,17 +1143,37 @@ class BattleEngine {
     }, 1400);
   }
 
-  finishBattleDefeat(state,battle) {
-    if(state.activeBattle!==battle || battle.phase==='OVER')return;
-    this.server.sendGameSession(state,4103,pb.encode('battle.BattleReportMsg',{
-      battleResult:2,strategyBonus:0,gpBonus:0,posX:0,posY:0,signId:'',baseItem:[],
-      battleScene:0,failCount:1,goldBonus:0,petGpBonus:0,param1:0,param2:0,battleId:battle.battleId
+  async finishBattleDefeat(state,battle) {
+    if(state.activeBattle!==battle || battle.phase==='OVER' || battle.phase==='COMMITTING')return;
+    battle.phase='COMMITTING';
+    try {
+      if (battle.activeSylph) {
+        const result=await db.mutateCharacterState(state.gatewayId, saved => {
+          sylphAwakening.saveAwake(saved,battle.awakeningUsed ? 0 : battle.hero.awake);
+          return {state:saved};
+        });
+        state.character.state_json=result.state;
+      }
+      this.sendAwakeningReset(state,battle);
+      this.server.sendGameSession(state,4103,pb.encode('battle.BattleReportMsg',{
+        battleResult:2,strategyBonus:0,gpBonus:0,posX:0,posY:0,signId:'',baseItem:[],
+        battleScene:0,failCount:1,goldBonus:0,petGpBonus:0,param1:0,param2:0,battleId:battle.battleId
+      }));
+      this.server.sendGameSession(state,159,pb.encode('battle.BattleResultMsg',{
+        proxyId:'',combatResult:2,army:[],castleRoomId:0,beatNum:0,startTime:0,recordUri:'',remoteKills:0
+      }));
+      this.server.log(`[BATTLE #${state.id}] Derrota sem recompensa; despertar ${battle.activeSylph ? state.character.state_json?.sylphs?.awake : 0}/3000 salvo.`);
+    } finally {
+      this.cancelBattle(state);
+    }
+  }
+
+  sendAwakeningReset(state,battle) {
+    if (!battle.awakeningUsed || !battle.activeSylph) return;
+    battle.hero.awake = 0;
+    this.server.sendGameSession(state,4600,pb.encode('battle.AwakeMsg',{
+      awake:[{livingId:battle.hero.livingId,awake:0}]
     }));
-    this.server.sendGameSession(state,159,pb.encode('battle.BattleResultMsg',{
-      proxyId:'',combatResult:2,army:[],castleRoomId:0,beatNum:0,startTime:0,recordUri:'',remoteKills:0
-    }));
-    this.server.log(`[BATTLE #${state.id}] Derrota sem recompensa nem alteracao de wonNodes.`);
-    this.cancelBattle(state);
   }
 
   async finishBattleVictory(state, battle) {
@@ -968,6 +1184,7 @@ class BattleEngine {
     if (battle.remotePetIndex) {
       try {
         const committed = await db.mutateCharacterState(state.gatewayId, saved => {
+          if (battle.activeSylph) sylphAwakening.saveAwake(saved,battle.awakeningUsed ? 0 : battle.hero.awake);
           const outcome = remotePetState.challengeRemotePet(saved, battle.remotePetIndex, inventoryState.addItem);
           if (!outcome.success) throw Error(outcome.error);
           const wire = pb.encode('remotepet.RemotePetMsg',
@@ -981,6 +1198,7 @@ class BattleEngine {
           return { state: saved, outcome, wire, report };
         });
         state.character = await db.characterById(state.gatewayId);
+        this.sendAwakeningReset(state,battle);
         this.server.sendGameSession(state, 4103, committed.report);
         this.server.sendGameSession(state, 159, pb.encode('battle.BattleResultMsg', {
           proxyId: '', combatResult: 1, army: [], castleRoomId: 0,
@@ -997,6 +1215,7 @@ class BattleEngine {
     }
 
     const nodeId = battle.nodeId;
+    const cNode = battle.outerMonster ? null : nodeById.get(Number(nodeId));
     const character = state.character;
     const xpReward = battle.rewards.xp;
     const goldReward = battle.rewards.gold;
@@ -1045,13 +1264,27 @@ class BattleEngine {
     let committed=false;
     try {
       const mutResult = await db.mutateCharacterState(state.gatewayId, saved => {
-        const cNode = nodeById.get(Number(nodeId));
-        const battleMapId = Number(cNode.CampaignId);
-        const cId = campaignState.resolveCampaignForMap(battleMapId) || battleMapId;
+        const battleMapId = battle.outerMonster ? Number(battle.mapId) : Number(cNode.CampaignId);
+        const cId = battle.outerMonster ? battleMapId : (campaignState.resolveCampaignForMap(battleMapId) || battleMapId);
         let finalBoss = false;
+        let nextTrialNodeId = 0;
+        let trialRewardItem = 0;
         let awardedXp = xpReward, awardedGold = goldReward;
         let atollReward=null;
-        if (atollEncounters.hostile(cNode)) {
+        if (battle.outerMonster) {
+          const kills = saved.outerCityKills || {count1:0,count2:0,count3:0,lastReset:Date.now()};
+          const kind = Number(battle.outerMonster.Type);
+          const counter = kind === 4 ? 'count3' : kind === 5 ? 'count2' : 'count1';
+          const limit = kind === 4 ? 1 : kind === 5 ? 3 : 5;
+          if (Number(kills[counter] || 0) < limit) kills[counter] = Number(kills[counter] || 0) + 1;
+          saved.outerCityKills = kills;
+          for (const drop of battle.outerRewards) {
+            const itemId = Number(drop.itemId);
+            const count = Math.max(0, Number(drop.count) || 0);
+            if (itemId === -100) awardedGold += count;
+            else if (itemId > 0 && count > 0) inventoryState.addItem(saved,itemId,count);
+          }
+        } else if (atollEncounters.hostile(cNode)) {
           atollReward=atollEncounters.commitVictory(saved,cNode,{addItem:inventoryState.addItem});
         } else if (battleMapId === 10001 || battleMapId === 10002) {
           if (!saved.tutorial) saved.tutorial = {version:1,mapId:battleMapId,completed:[],wonNodes:[]};
@@ -1077,10 +1310,25 @@ class BattleEngine {
           }
           const current = saved.campaigns.current;
           if (!Array.isArray(current.runWonNodes)) current.runWonNodes=[];
+          const trialFirstVictory = !current.runWonNodes.includes(nodeId);
           if (!current.runWonNodes.includes(nodeId)) current.runWonNodes.push(nodeId);
           if (!saved.campaigns.wonNodes) saved.campaigns.wonNodes={};
           if (!Array.isArray(saved.campaigns.wonNodes[cId])) saved.campaigns.wonNodes[cId]=[];
           if (!saved.campaigns.wonNodes[cId].includes(nodeId)) saved.campaigns.wonNodes[cId].push(nodeId);
+          if (campaignState.trialChallengeNodes(battleMapId).some(row => Number(row.Id) === Number(nodeId))) {
+            if (trialFirstVictory) {
+              // t_s_config Trial_Tower_Reward_*/EXP_*: um baú e EXP por etapa.
+              // O nó é persistido junto com a entrega para não duplicar em retries.
+              trialRewardItem = battleMapId === 8205 ? 2060505 : 2060045;
+              awardedXp = battleMapId === 8205 ? 450000 : 300000;
+              inventoryState.addItem(saved, trialRewardItem, 1);
+            } else {
+              awardedXp = 0;
+            }
+            const nextTrial = campaignState.nextTrialChallenge(battleMapId, current.runWonNodes);
+            nextTrialNodeId = Number(nextTrial?.Id) || 0;
+            if (!nextTrialNodeId) current.trialCompleted = true;
+          }
           const towerFloor=campaignState.towerFloor(battleMapId);
           if (towerFloor && saved.towers?.[towerFloor.campaignId]?.rewardedNodes?.includes(Number(nodeId))) {
             awardedXp=0;
@@ -1090,6 +1338,17 @@ class BattleEngine {
             awardedGold *= 2;
           }
           campaignState.recordTowerVictory(saved, battleMapId, nodeId, awardedXp, awardedGold);
+          if (towerFloor) {
+            // Drops canônicos de Labirinto / Catacumbas:
+            // Moedas do Labirinto (208006): base 5 + floor * 2
+            const mult = Number(saved.towers?.[towerFloor.campaignId]?.rewardMultiplier) === 2 ? 2 : 1;
+            const mazeCoinCount = Math.max(5, (towerFloor.floor * 2 + 5)) * mult;
+            inventoryState.addItem(saved, 208006, mazeCoinCount);
+            if (towerFloor.floor % 5 === 0) {
+              // Andares múltiplos de 5: Pedra de Encantamento (208007)
+              inventoryState.addItem(saved, 208007, 2 * mult);
+            }
+          }
           finalBoss=campaignState.isFinalBossNode(cNode);
           if (finalBoss) {
             campaignState.prepareCardReward(saved,cNode,battle.battleId,xpReward);
@@ -1097,11 +1356,19 @@ class BattleEngine {
           }
         }
 
+        // Catalog property 2030 is a percentage bonus to campaign/MPD XP.
+        // Trial Tower and labyrinths are explicitly excluded by the scroll text.
+        const expScrollPct=require('./item-consumable-state').activeBuffValue(saved,2030);
+        const excludedExpMap=Boolean(campaignState.towerFloor(battleMapId)) ||
+          (Number(battleMapId)>=8200&&Number(battleMapId)<=8205);
+        if(cNode&&expScrollPct>0&&!excludedExpMap)
+          awardedXp=Math.floor(awardedXp*(100+expScrollPct)/100);
+
         // Progression & Wallet
         if (!saved.progression) saved.progression = { currentXp: 0, totalXp: 0 };
         saved.progression.totalXp = (saved.progression.totalXp || 0) + awardedXp;
 
-        const newGrade = calcGradeFromXp(saved.progression.totalXp, character.grade);
+        const newGrade = calcGradeFromXp(saved.progression.totalXp, character.grade,saved);
         const atLevel = resource.totalAtLevel(newGrade);
         saved.progression.currentXp = Math.max(0, saved.progression.totalXp - atLevel);
 
@@ -1120,8 +1387,10 @@ class BattleEngine {
           mapId: battleMapId,
           campaignId: cId
         });
+        if (battle.activeSylph) sylphAwakening.saveAwake(quest.state,battle.awakeningUsed ? 0 : battle.hero.awake);
         return { state: quest.state, resources, newGrade, totalXp: saved.progression.totalXp,
-          awardedXp, awardedGold, quest, finalBoss, atollReward, completedCampaigns: saved.campaigns?.completed || [] };
+          awardedXp, awardedGold, quest, finalBoss, atollReward, nextTrialNodeId, trialRewardItem,
+          completedCampaigns: saved.campaigns?.completed || [] };
       });
       committed=true;
 
@@ -1131,11 +1400,33 @@ class BattleEngine {
       state.character.gold = mutResult.state.wallet.gold;
 
       reportMsg.gpBonus=mutResult.awardedXp;
+      if (mutResult.trialRewardItem) reportMsg.baseItem=[{templateId:mutResult.trialRewardItem,count:1,type:0}];
       reportMsg.goldBonus=mutResult.awardedGold;
       reportMsg.param1=mutResult.awardedGold;
+      this.sendAwakeningReset(state,battle);
       this.server.sendGameSession(state, 4103, pb.encode('battle.BattleReportMsg', reportMsg));
       this.server.sendGameSession(state, 159, encGameOver);
       this.server.sendGameSession(state, 128, encNodeUpdate);
+      if (mutResult.nextTrialNodeId) {
+        this.server.sendGameSession(state, 128, pb.encode('campaign.CampaignNodeUpdateMsg', {
+          nodeId: mutResult.nextTrialNodeId, nodeState: 1, userId: Number(character.id), sonType: 2174
+        }));
+        this.server.log(`[PINACULO #${state.id}] Vitoria ${nodeId}; proximo oponente ${mutResult.nextTrialNodeId} liberado.`);
+      }
+
+      // Se o nó possuía um próximo nó (ex: portal de transição para próximo andar),
+      // desbloqueia o nó com nodeState: 1 (ativo) para permitir interação imediata
+      const nextNodeId = Number(cNode?.NextNodeIds || 0);
+      if (nextNodeId > 0) {
+        const nextNode = nodeById.get(nextNodeId);
+        const encNextUpdate = pb.encode('campaign.CampaignNodeUpdateMsg', {
+          nodeId: nextNodeId,
+          nodeState: 1,
+          userId: Number(character.id),
+          sonType: Number(nextNode?.SonType || 0)
+        });
+        this.server.sendGameSession(state, 128, encNextUpdate);
+      }
       if(mutResult.atollReward){
         // Contador oficial: U_C_PETLAND_REWARDCOUNT (4643), campaign.PetLandRewardMsg.
         // Atualizado mesmo se a Essencia nao for sorteada; apenas apos COMMIT.
@@ -1168,6 +1459,9 @@ class BattleEngine {
             },mutResult.atollReward.respawnMs);
         } catch(syncErr){this.server.log(`[ATOL RESPAWN #${state.id}] Falha ao agendar: ${syncErr.message}`);}
       }
+      if (battle.outerMonster && battle.outerRewards.some(drop => Number(drop.itemId) > 0))
+        this.server.sendInventorySnapshot(state);
+      if (mutResult.trialRewardItem) this.server.sendInventorySnapshot(state);
       const completedTowerFloor=campaignState.towerFloor(Number(nodeById.get(Number(nodeId))?.CampaignId));
       if (completedTowerFloor) {
         try {

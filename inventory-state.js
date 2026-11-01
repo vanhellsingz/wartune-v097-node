@@ -46,6 +46,13 @@ function inventory(state) {
   if (!bag.testGrants || typeof bag.testGrants !== 'object') bag.testGrants = {};
   if (!bag.equipment || typeof bag.equipment !== 'object') bag.equipment = {};
   if (!Array.isArray(bag.items)) bag.items = [];
+  // Equipamentos de guardiao pertencem exclusivamente aos guardioes e nunca a bolsa (BAG) geral
+  bag.items = bag.items.filter(item => {
+    if (!item || !item.templateId) return false;
+    const tid = Number(item.templateId);
+    const isGuardEquip = (tid >= 10201 && tid <= 10608) || (tid >= 20201 && tid <= 20608) || (tid >= 30201 && tid <= 30608);
+    return !isGuardEquip;
+  });
   if (!Number.isSafeInteger(bag.nextInstanceId) || bag.nextInstanceId < 1) bag.nextInstanceId = 1;
   const ids = new Set(), positions=new Set();
   for (const item of bag.items) {
@@ -138,8 +145,8 @@ function addItem(stateRaw, templateId, count = 1, resolveTemplate = null) {
   const bag = inventory(state);
   const tId = Number(templateId);
   if (!Number.isSafeInteger(tId) || tId < 1) throw Error('templateId invalido');
-  const addCount = Number(count) || 1;
-  if (!Number.isSafeInteger(addCount) || addCount < 1) throw Error('quantidade invalida');
+  let remainingCount = Number(count) || 1;
+  if (!Number.isSafeInteger(remainingCount) || remainingCount < 1) throw Error('quantidade invalida');
   if (resolveTemplate) {
     const template = resolveTemplate(tId);
     if (template) validateTemplate(template);
@@ -147,18 +154,53 @@ function addItem(stateRaw, templateId, count = 1, resolveTemplate = null) {
   const template = resolveTemplate ? resolveTemplate(tId) : canonicalConfigs?.getItemTemplate?.(tId);
   const petEquipment = sylphEquipment.isSylphEquipment(template);
   const added = [];
-  for (let index = 0; index < (petEquipment ? addCount : 1); index++) {
-    const item = {
-      instanceId: bag.nextInstanceId++, templateId: tId,
-      pos: petEquipment ? sylphEquipment.firstFreePos(bag.items) : firstFreeBagPos(bag.items),
-      count: petEquipment ? 1 : addCount, bagType: petEquipment ? 27 : 1,
-      bind: true, used: false
-    };
-    ensureItemRandomSkills(item, template);
-    if (petEquipment) sylphEquipment.initializeAttributes(item, template);
-    bag.items.push(item);
-    added.push(structuredClone(item));
+
+  if (petEquipment) {
+    for (let index = 0; index < remainingCount; index++) {
+      const item = {
+        instanceId: bag.nextInstanceId++, templateId: tId,
+        pos: sylphEquipment.firstFreePos(bag.items),
+        count: 1, bagType: 27,
+        bind: true, used: false
+      };
+      sylphEquipment.initializeAttributes(item, template);
+      bag.items.push(item);
+      added.push(structuredClone(item));
+    }
+  } else {
+    const isEquipment = Number(template?.MasterType) === 1 || Number(template?.MasterType) === 5;
+    const maxStack = isEquipment ? 1 : (Number(template?.MaxCount) > 0 ? Number(template.MaxCount) : 99);
+
+    if (maxStack > 1) {
+      // Tenta empilhar em slots existentes primeiro
+      for (const existing of bag.items) {
+        if (existing.bagType === 1 && Number(existing.templateId) === tId && existing.count < maxStack) {
+          const space = maxStack - existing.count;
+          const take = Math.min(space, remainingCount);
+          existing.count += take;
+          remainingCount -= take;
+          added.push(structuredClone(existing));
+          if (remainingCount <= 0) break;
+        }
+      }
+    }
+
+    // Se ainda restou quantidade (ou se é equipamento não empilhável), cria novo(s) slot(s)
+    while (remainingCount > 0) {
+      const stackAmount = Math.min(maxStack, remainingCount);
+      const item = {
+        instanceId: bag.nextInstanceId++, templateId: tId,
+        pos: firstFreeBagPos(bag.items),
+        count: stackAmount, bagType: 1,
+        bind: true, used: false
+      };
+      ensureItemRandomSkills(item, template);
+      bag.items.push(item);
+      added.push(structuredClone(item));
+      remainingCount -= stackAmount;
+    }
   }
+
   return { state, item: added[0], items: added };
 }
 

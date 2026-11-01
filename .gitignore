@@ -1,10 +1,10 @@
-@"
-node_modules/
-logs/
-*.log
 config.local.json
-package-lock.json
-captures/
-screenshots/
-.env
-"@ | Out-File -Encoding utf8 .gitignore
+node_modules/
+*.log
+logs/
+webroot.path.txt
+_teste_webroot_temporario/
+
+node_modules/
+*.log
+.git/
