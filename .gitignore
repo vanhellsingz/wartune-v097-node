@@ -1,0 +1,10 @@
+@"
+node_modules/
+logs/
+*.log
+config.local.json
+package-lock.json
+captures/
+screenshots/
+.env
+"@ | Out-File -Encoding utf8 .gitignore

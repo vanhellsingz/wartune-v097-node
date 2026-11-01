@@ -1,0 +1,187 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "table": "t_s_battlefieldhonorgroup",
+      "file": "t_s_battlefieldhonorgroup-9d479ce70a.json",
+      "rows": 22,
+      "sha256": "bdb45eaa797962eaf9ff74b07f9813ccf8efec07383f0c6a4c2349aa47b2b428",
+      "fields": 4
+    },
+    {
+      "table": "t_s_battlefieldtemplate",
+      "file": "t_s_battlefieldtemplate-a7c4afae64.json",
+      "rows": 8,
+      "sha256": "764a19cd74f213972431731514338e8b11c54f6a7934ce4714544ccc5842ca08",
+      "fields": 5
+    },
+    {
+      "table": "t_s_buildingtemplate",
+      "file": "t_s_buildingtemplate-2ed88419b6.json",
+      "rows": 2434,
+      "sha256": "59cb603368426a0dc6d6cf2498e4cf0c4c3b6cfde5377301decf599cbe95e91a",
+      "fields": 52
+    },
+    {
+      "table": "t_s_castlebattlebuilding",
+      "file": "t_s_castlebattlebuilding-d2e0497ef7.json",
+      "rows": 12,
+      "sha256": "962b6dd8d740baa9e721b330e2dd04a2c10dc0e5fc9584dd93b5a61d404d1040",
+      "fields": 8
+    },
+    {
+      "table": "t_s_castlebattlebuildingskill",
+      "file": "t_s_castlebattlebuildingskill-0e26496dbf.json",
+      "rows": 130,
+      "sha256": "d154ed354bd6f61932b0abf9c51f4c3526ee34fc478510cc904f633426e38e30",
+      "fields": 5
+    },
+    {
+      "table": "t_s_compose",
+      "file": "t_s_compose-9b5ac04f09.json",
+      "rows": 574,
+      "sha256": "05cbdbef11f90131e5863826033dc6a9ebc3fba67bb85d1b8022edf62af5ac56",
+      "fields": 17
+    },
+    {
+      "table": "t_s_config",
+      "file": "t_s_config-67431a67e3.json",
+      "rows": 599,
+      "sha256": "a6b110c4a63fd08557a688eb97f574ed857f16e3161749e92f63d279dd014356",
+      "fields": 5
+    },
+    {
+      "table": "t_s_mail",
+      "file": "t_s_mail-a3eb2c759f.json",
+      "rows": 6,
+      "sha256": "7316f493b7789a11aa9da5b410a2adfb6d578b6fd55a1cc88460d4940b3fbe0d",
+      "fields": 27
+    },
+    {
+      "table": "t_s_map",
+      "file": "t_s_map-4d7dc88f8b.json",
+      "rows": 433,
+      "sha256": "bc7972abf30210b035b52ccf2b4bcc46c440ef58b1a18e6109237d6cd120aebf",
+      "fields": 33
+    },
+    {
+      "table": "t_s_mapbossconfig",
+      "file": "t_s_mapbossconfig-f92eb5011c.json",
+      "rows": 30,
+      "sha256": "6b29614bb9cc0cf4425ff5d111a81f325a59eed1af0305bc8fd93adcb579ffce",
+      "fields": 4
+    },
+    {
+      "table": "t_s_mapbosscount",
+      "file": "t_s_mapbosscount-5527ff455c.json",
+      "rows": 5,
+      "sha256": "7ff1e3e66118a27e0060d3f364a9396bfbd46323ece57d287ac6109ad0b916bd",
+      "fields": 7
+    },
+    {
+      "table": "t_s_mapmine",
+      "file": "t_s_mapmine-b2b9ade466.json",
+      "rows": 221,
+      "sha256": "f23b9e2e57c525c41794b50f3ba7edf104040ef52c177cc7842069b4a7615541",
+      "fields": 8
+    },
+    {
+      "table": "t_s_mapnode",
+      "file": "t_s_mapnode-9461763798.json",
+      "rows": 77,
+      "sha256": "9b3e59e7fa2030a1d8d97e5f06a0a2c5caa6a979119d3b833c35f81e9eb7ae7c",
+      "fields": 79
+    },
+    {
+      "table": "t_s_mapphysicposition",
+      "file": "t_s_mapphysicposition-32d01b1380.json",
+      "rows": 86,
+      "sha256": "e240e12be0de41a1c7cb8f35f1893f9a241566d644ce7897d44f0dc48dff6b25",
+      "fields": 25
+    },
+    {
+      "table": "t_s_mapphysicstemplate",
+      "file": "t_s_mapphysicstemplate-4289410c5f.json",
+      "rows": 90,
+      "sha256": "1ff6e442a598747d3386b9f0f173453a32d2ca448ec79fd09f57d94c8f186589",
+      "fields": 33
+    },
+    {
+      "table": "t_s_mapphysicstreasure",
+      "file": "t_s_mapphysicstreasure-01db5fd12f.json",
+      "rows": 20,
+      "sha256": "08ff26fe0b8b345de25aea0ddf9081dbc6c4e0ad39a8cf2b37bc5ff53e30f5a0",
+      "fields": 17
+    },
+    {
+      "table": "t_s_starmap",
+      "file": "t_s_starmap-5baf6d204e.json",
+      "rows": 12960,
+      "sha256": "40dd0c8247060eae7e402f87bef2ef6df30a9b8775687a6bd37906a887f2ddeb",
+      "fields": 22
+    },
+    {
+      "table": "t_s_startemplate",
+      "file": "t_s_startemplate-2bd161795d.json",
+      "rows": 76,
+      "sha256": "991f1428c277b913327738fddaab975f4bb59b62d4e6e8fe08bf5b05b83265a2",
+      "fields": 40
+    },
+    {
+      "table": "t_s_system_introduce",
+      "file": "t_s_system_introduce-dd2d0af3ee.json",
+      "rows": 25,
+      "sha256": "a46503863fef360729aa72f0d5b33aeefb06b4849a4278fce06fd29175778fec",
+      "fields": 31
+    },
+    {
+      "table": "t_s_system_picture",
+      "file": "t_s_system_picture-7d4a2726e4.json",
+      "rows": 56,
+      "sha256": "6cb385cc914a5c48f86bc2c3664005072233a2b506617bf688904297d72539ef",
+      "fields": 17
+    },
+    {
+      "table": "t_s_system_task",
+      "file": "t_s_system_task-8198eb1a0e.json",
+      "rows": 45,
+      "sha256": "77d6cfd57c0e95af947cfcafc80538cc2b96d704f39e0f620f0ecb8fd9902825",
+      "fields": 19
+    },
+    {
+      "table": "t_s_systemopen",
+      "file": "t_s_systemopen-99bc54d992.json",
+      "rows": 93,
+      "sha256": "962f29e85e51404b1385ab8aef5c25f59d5abcdf2b8ee0e49ee21102bd00df7b",
+      "fields": 24
+    },
+    {
+      "table": "t_s_systemopentips",
+      "file": "t_s_systemopentips-e8c833c1f6.json",
+      "rows": 57,
+      "sha256": "e429b20ff14b6373bebeddab98bf00ec270df2b24c91d23b6c110df77b3626c4",
+      "fields": 17
+    },
+    {
+      "table": "t_s_uiplaybase",
+      "file": "t_s_uiplaybase-570907378f.json",
+      "rows": 3,
+      "sha256": "3c09ab7e7d0fe130ba289c8f5abe2fbebf13d74ca7063f3249f1d1a3f3deba25",
+      "fields": 45
+    },
+    {
+      "table": "t_s_uiplaylevel",
+      "file": "t_s_uiplaylevel-5c75b3297d.json",
+      "rows": 413,
+      "sha256": "fd6161b109b41ee3fe7746dd86d357a45a102774a54acb56de5fd889243ae5d4",
+      "fields": 29
+    },
+    {
+      "table": "t_s_uiplayshop",
+      "file": "t_s_uiplayshop-d0f69f30b9.json",
+      "rows": 18,
+      "sha256": "bfabdc5166623ca8c4bbe091b67c7f9679761598d9e75ffb07807206a4a5cf75",
+      "fields": 9
+    }
+  ]
+}

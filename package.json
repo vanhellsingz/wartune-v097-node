@@ -1,0 +1,31 @@
+{
+  "name": "wartune-ultra-mysql-local",
+  "version": "0.9.7",
+  "private": true,
+  "description": "Wartune Ultra local candidate v0.9.7",
+  "main": "servidor_v08.js",
+  "scripts": {
+    "start": "node iniciar.js",
+    "check": "node --check iniciar.js && node --check servidor_v08.js && node --check TESTES_AUTOMATIZADOS_V096.js && node --check TESTE_HTTP_NORMAL_V096.js && node --check AUDITAR_BANCO_READONLY_V096.js && node --check VERIFICAR_BACKUP_V096.js && node --check TESTE_CONTA_NOVA_V097.js && node --check TESTE_HTTP_NORMAL_V097.js && node --check AUDITAR_PERMISSOES_V097.js && node --check AUDITAR_TRILHA_INICIAL_V097.js && node --check CRIAR_BACKUP_READONLY_V097.js && node --check VERIFICAR_BACKUP_V097.js",
+    "test": "node TESTE_V08_LOCAL.js",
+    "catalog": "node importar_catalogo_legado.js",
+    "test:map": "node TESTE_V089_MAPA.js",
+    "test:inventory": "node TESTE_V091_INVENTARIO.js && node TESTE_V092_INVENTARIO.js",
+    "test:inventory:v092": "node TESTE_V092_INVENTARIO.js",
+    "test:regression": "node run-tests.js",
+    "test:v094": "node TESTE_V094_PERSONAGEM.js && node TESTE_V094_ORDEM.js",
+    "test:v096:local": "node TESTES_AUTOMATIZADOS_V096.js",
+    "test:v096:http": "node TESTE_HTTP_NORMAL_V096.js",
+    "audit:v096:db-readonly": "node AUDITAR_BANCO_READONLY_V096.js",
+    "verify:v096:backup": "node VERIFICAR_BACKUP_V096.js",
+    "test:v097:account": "node TESTE_CONTA_NOVA_V097.js",
+    "test:v097:http": "node TESTE_HTTP_NORMAL_V097.js",
+    "audit:v097:catalog": "node AUDITAR_TRILHA_INICIAL_V097.js",
+    "audit:v097:mysql": "node AUDITAR_PERMISSOES_V097.js",
+    "backup:v097": "node CRIAR_BACKUP_READONLY_V097.js",
+    "verify:v097:backup": "node VERIFICAR_BACKUP_V097.js"
+  },
+  "dependencies": {
+    "mysql2": "^3.14.0"
+  }
+}
